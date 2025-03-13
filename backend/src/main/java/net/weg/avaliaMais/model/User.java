@@ -1,8 +1,5 @@
 package net.weg.avaliaMais.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +20,14 @@ public class User {
     private String email;
     private String workShift;
     private Double workloadWeek;
+
+    public User(UUID uuid, String username, String password, String email, String workShift, Double workloadWeek) {
+        this.uuid = uuid;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.workShift = workShift;
+        this.workloadWeek = workloadWeek;
+    }
 
 }

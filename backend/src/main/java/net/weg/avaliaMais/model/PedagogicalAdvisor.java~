@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedagogicalAdvisor extends User {
+public class PedagogicalAdvisor extends User{
     public PedagogicalAdvisor(UUID uuid, String username, String password, String email, String workShift, Double workloadWeek) {
         super(uuid, username, password, email, workShift, workloadWeek);
     }
