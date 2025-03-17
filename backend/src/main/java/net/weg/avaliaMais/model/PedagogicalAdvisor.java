@@ -1,17 +1,20 @@
 package net.weg.avaliaMais.model;
+
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
+
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 public class PedagogicalAdvisor extends User {
-    public PedagogicalAdvisor(UUID uuid, String username, String password, String email, String workShift, Double workloadWeek) {
-        super(uuid, username, password, email, workShift, workloadWeek);
+
+    public PedagogicalAdvisorResponseDTO toDto() {
+        return new PedagogicalAdvisorResponseDTO(this.getUuid(), this.getUsername(), this.getPassword(), this.getEmail(), this.getWorkShift(), this.getWorkloadWeek());
     }
 }

@@ -1,0 +1,4 @@
+package net.weg.avaliaMais.model.dto.response;
+
+public record CourseResponseDTO() {
+}

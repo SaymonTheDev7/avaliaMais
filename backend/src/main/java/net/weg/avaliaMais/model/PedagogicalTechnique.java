@@ -4,15 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import net.weg.avaliaMais.model.dto.response.PedagogicalTechniqueResponseDTO;
+
 import java.util.UUID;
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 public class PedagogicalTechnique extends User {
 
-    public PedagogicalTechnique(UUID uuid, String username, String password, String email, String workShift, Double workloadWeek) {
-        super(uuid, username, password, email, workShift, workloadWeek);
+    public PedagogicalTechniqueResponseDTO toDto() {
+        return new PedagogicalTechniqueResponseDTO(this.getUuid(), this.getUsername(), this.getPassword(), this.getEmail(), this.getWorkShift(), this.getWorkloadWeek());
     }
 }
