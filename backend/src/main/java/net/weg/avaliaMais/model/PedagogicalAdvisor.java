@@ -1,17 +1,16 @@
 package net.weg.avaliaMais.model;
 
 import jakarta.persistence.Entity;
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
 
 @Entity
 @Data
 @SuperBuilder
-@NoArgsConstructor
+@AllArgsConstructor
 public class PedagogicalAdvisor extends User {
 
     public PedagogicalAdvisorResponseDTO toDto() {

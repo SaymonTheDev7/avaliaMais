@@ -18,11 +18,17 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
+    @Column(nullable = false, unique = true)
     private String nameCourse;
+    @Column(nullable = false)
     private String startAndEndLocation;
+    @Column(nullable = false)
     private String typeCourse;
+    @Column(nullable = false)
     private String shift;
+    @Column(nullable = false)
     private Double workloadCourse;
+    @Column(nullable = false)
     private Double time;
 
     public CourseResponseDTO toDto() {

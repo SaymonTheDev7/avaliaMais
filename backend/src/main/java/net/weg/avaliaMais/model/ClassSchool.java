@@ -21,36 +21,24 @@ public class ClassSchool {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
-
     @ManyToOne
     private Course uuid_course;
-
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Student> students;
-
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Teacher> teachers;
-
+    @Column(nullable = false, unique = true)
     private String nameClass;
+    @Column(nullable = false)
     private Double workloadClass;
+    @Column(nullable = false)
     private Double time;
+    @Column(nullable = false)
     private Integer quantityStudents;
+    @Column(nullable = false)
     private String shift;
 
     public ClassResponseDTO toDto() {
-        return new ClassResponseDTO(
-                this.uuid,
-                this.nameClass,
-                this.workloadClass,
-                this.time,
-                this.quantityStudents,
-                this.shift,
-                this.uuid_course.getUuid(),
-                this.uuid_course.getNameCourse(),
-                this.students.stream().map(Student::getUuid).collect(Collectors.toList()),
-                this.teachers.stream().map(Teacher::getUuid).collect(Collectors.toList())
-        );
+        return new ClassResponseDTO(this.uuid, this.nameClass, this.workloadClass, this.time, this.quantityStudents, this.shift, this.uuid_course.getUuid(), this.uuid_course.getNameCourse(), this.students.stream().map(Student::getUuid).collect(Collectors.toList()), this.teachers.stream().map(Teacher::getUuid).collect(Collectors.toList()));
     }
-
-
 }
