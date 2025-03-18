@@ -57,9 +57,7 @@ public class ClassService {
     }
 
     public ClassResponseDTO findClassPerName(String nameClass) {
-        return classRepository.findByNameClass(nameClass)
-                .map(ClassResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+        return classRepository.findByNameClass(nameClass).map(ClassResponseDTO::new).orElseThrow(() -> new RuntimeException("Class not found"));
     }
 
 
