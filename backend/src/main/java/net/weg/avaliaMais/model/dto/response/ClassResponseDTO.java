@@ -3,19 +3,35 @@ package net.weg.avaliaMais.model.dto.response;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Course;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public record ClassResponseDTO(
-
         UUID uuid,
         String nameClass,
         Double workloadClass,
         Double time,
         Integer quantityStudents,
-        String shift
+        String shift,
+        UUID courseUuid,
+        String courseName,
+        List<UUID> studentIds, // Lista de IDs dos alunos
+        List<UUID> teacherIds  // Lista de IDs dos professores
 ) {
 
-    public ClassResponseDTO (ClassSchool ActualClassSchool) {
-        this(ActualClassSchool.getUuid(), ActualClassSchool.getNameClass(), ActualClassSchool.getWorkloadClass(), ActualClassSchool.getTime(), ActualClassSchool.getQuantityStudents(), ActualClassSchool.getShift());
+    public ClassResponseDTO(ClassSchool actualClassSchool) {
+        this(
+                actualClassSchool.getUuid(),
+                actualClassSchool.getNameClass(),
+                actualClassSchool.getWorkloadClass(),
+                actualClassSchool.getTime(),
+                actualClassSchool.getQuantityStudents(),
+                actualClassSchool.getShift(),
+                actualClassSchool.getUuid_course().getUuid(),
+                actualClassSchool.getUuid_course().getNameCourse(),
+                actualClassSchool.getStudents().stream().map(student -> student.getUuid()).collect(Collectors.toList()),
+                actualClassSchool.getTeachers().stream().map(teacher -> teacher.getUuid()).collect(Collectors.toList())
+        );
     }
 }
