@@ -32,13 +32,16 @@ public record TeacherPostRequestDTO(
 
         @NotNull(message = "A lista de turmas não pode ser nula")
         @Size(min = 1, message = "A lista de turmas não pode ser vazia")
-        List<UUID> classIds
+        List<UUID> classIds,
+
+        @NotBlank(message = "A area profissional nao pode estar em branco")
+        String professionalArea
 
 ) {
 
     public Teacher converter(List<ClassSchool> allClasses) {
         List<ClassSchool> classesList = allClasses.stream().filter(classSchool -> classIds.contains(classSchool.getUuid())).toList();
 
-        return Teacher.builder().username(username).password(password).email(email).workShift(workShift).workloadWeek(workloadWeek).classIds(classesList).build();
+        return Teacher.builder().username(username).password(password).email(email).workShift(workShift).workloadWeek(workloadWeek).classIds(classesList).professionalArea(professionalArea).build();
     }
 }

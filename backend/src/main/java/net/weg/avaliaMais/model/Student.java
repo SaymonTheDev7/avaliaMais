@@ -19,4 +19,8 @@ public class Student extends User {
         return new StudentResponseDTO(
                 this.getUuid(), this.getUsername(), this.getEmail(), this.getWorkShift(), this.getWorkloadWeek(), this.getClassIds());
     }
+
+    public List<ClassSchool> getClassesIds() {
+        return classIds;
+    }
 }

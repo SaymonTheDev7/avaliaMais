@@ -40,9 +40,9 @@ public class PedagogicalTechniqueService {
         return "Técnico Pedagógico não encontrado";
     }
 
-    public PedagogicalTechniqueResponseDTO findPedagogicalTechniquePerUsername(String username) {
-        PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Técnico Pedagógico nao encontrado: " + username));
-        return new PedagogicalTechniqueResponseDTO(pedagogicalTechnique);
+    public PedagogicalTechnique findPedagogicalTechniquePerUsername(String username) {
+        return pedagogicalTechniqueRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Técnico Pedagógico não encontrado: " + username));
     }
 
     public Page<PedagogicalTechniqueResponseDTO> findAllPedagogicalTechniques(int page, int size) {

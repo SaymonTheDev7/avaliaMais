@@ -12,10 +12,11 @@ public record TeacherResponseDTO(
         String email,
         String workShift,
         Double workloadWeek,
-        List<UUID> classIds
+        List<UUID> classIds,
+        String professionalArea
 ) {
 
     public TeacherResponseDTO(Teacher actualTeacher) {
-        this(actualTeacher.getUuid(), actualTeacher.getUsername(), actualTeacher.getEmail(), actualTeacher.getWorkShift(), actualTeacher.getWorkloadWeek(), actualTeacher.getClassIds().stream().map(ClassSchool::getUuid).toList());
+        this(actualTeacher.getUuid(), actualTeacher.getUsername(), actualTeacher.getEmail(), actualTeacher.getWorkShift(), actualTeacher.getWorkloadWeek(), actualTeacher.getClassIds().stream().map(ClassSchool::getUuid).toList(), actualTeacher.getProfessionalArea());
     }
 }

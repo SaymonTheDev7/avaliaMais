@@ -38,8 +38,7 @@ public class PedagogicalTechniqueController {
 
     @GetMapping("/find/{username}")
     public ResponseEntity<PedagogicalTechniqueResponseDTO> findPedagogicalTechniquePerUsername (@PathVariable String username) {
-        PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueService.findPedagogicalTechniquePerUsername(username);
-        return new ResponseEntity<>(new PedagogicalTechniqueResponseDTO(pedagogicalTechnique), HttpStatus.OK);
+        return new ResponseEntity<>(pedagogicalTechniqueService.findPedagogicalTechniquePerUsername(username), HttpStatus.OK);
     }
 
     @GetMapping("/find/all")
