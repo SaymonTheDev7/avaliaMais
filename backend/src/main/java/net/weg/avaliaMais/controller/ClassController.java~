@@ -3,13 +3,14 @@ package net.weg.avaliaMais.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.ClassPostRequestDTO;
-import net.weg.avaliaMais.model.dto.request.ClassUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.service.ClassService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/class")
@@ -24,14 +25,14 @@ public class ClassController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ClassResponseDTO> updateClass(@RequestBody @Valid ClassUpdateRequestDTO classUpdateRequestDTO) {
-        return new ResponseEntity<>(classService.updateClass(classUpdateRequestDTO), HttpStatus.OK);
+    public ResponseEntity<ClassResponseDTO> updateClass(@RequestBody @Valid ClassPostRequestDTO classPostRequestDTO) {
+        return new ResponseEntity<>(classService.updateClass(classPostRequestDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{nameClass}")
     public ResponseEntity<String> deleteClassPerName(@PathVariable String nameClass) {
         classService.deleteClassPerName(nameClass);
-        return new ResponseEntity<>("Turma deletada com sucesso", HttpStatus.OK);
+        return new ResponseEntity<>("Class deleted successfully", HttpStatus.OK);
     }
 
     @GetMapping("/find/{nameClass}")

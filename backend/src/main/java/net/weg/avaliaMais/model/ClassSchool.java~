@@ -9,7 +9,6 @@ import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -23,12 +22,12 @@ public class ClassSchool {
     private UUID uuid;
 
     @ManyToOne
-    private Course course;  // Renomeado para 'course' (em vez de 'uuid_course')
+    private Course course;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Student> students;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Teacher> teachers;
 
     @Column(nullable = false, unique = true)
@@ -47,17 +46,6 @@ public class ClassSchool {
     private String shift;
 
     public ClassResponseDTO toDto() {
-        return new ClassResponseDTO(
-                this.uuid,
-                this.nameClass,
-                this.workloadClass,
-                this.time,
-                this.quantityStudents,
-                this.shift,
-                this.course.getUuid(),
-                this.course.getNameCourse(),
-                this.students.stream().map(Student::getUuid).collect(Collectors.toList()),
-                this.teachers.stream().map(Teacher::getUuid).collect(Collectors.toList())
-        );
+        return new ClassResponseDTO(this);
     }
 }

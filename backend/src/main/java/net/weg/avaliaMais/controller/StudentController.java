@@ -24,9 +24,10 @@ public class StudentController {
         return new ResponseEntity<>(studentService.addStudent(studentPostRequestDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     public ResponseEntity<StudentResponseDTO> updateStudent (@RequestBody @Valid StudentPostRequestDTO studentPostRequestDTO) {
-        return new ResponseEntity<>(studentService.updateStudent(studentPostRequestDTO), HttpStatus.OK);
+        StudentResponseDTO studentResponseDTO = studentService.updateStudent(studentPostRequestDTO);
+        return new ResponseEntity<>(studentResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{uuid}")

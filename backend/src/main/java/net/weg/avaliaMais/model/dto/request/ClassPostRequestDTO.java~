@@ -1,30 +1,11 @@
-package net.weg.avaliaMais.model.dto.request;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-import net.weg.avaliaMais.model.ClassSchool;
-import net.weg.avaliaMais.model.Course;
-import net.weg.avaliaMais.model.Student;
-import net.weg.avaliaMais.model.Teacher;
-
-import java.util.List;
-import java.util.UUID;
-
 public record ClassPostRequestDTO(
 
         @NotNull(message = "O UUID do curso não pode ser nulo")
-        UUID courseUuid,
+        UUID courseUuid,  // O parâmetro será o UUID do curso
 
-        @NotEmpty(message = "A lista de alunos não pode estar vazia")
-        @Size(min = 1, message = "Deve haver pelo menos um aluno")
-        List<UUID> studentIds,
+        List<UUID> studentIds,  // Lista de IDs de alunos, agora aceita vazio
 
-        @NotEmpty(message = "A lista de professores não pode estar vazia")
-        @Size(min = 1, message = "Deve haver pelo menos um professor")
-        List<UUID> teacherIds,
+        List<UUID> teacherIds,  // Lista de IDs de professores, agora aceita vazio
 
         @NotBlank(message = "O nome da turma não pode estar em branco")
         String nameClass,
@@ -62,7 +43,7 @@ public record ClassPostRequestDTO(
                         .toList();
 
         return ClassSchool.builder()
-                .course(course)  // Agora 'course' está correto
+                .course(course)  // Aqui você deve usar 'course' ao invés de 'uuid_course'
                 .students(studentsList)
                 .teachers(teachersList)
                 .nameClass(nameClass)

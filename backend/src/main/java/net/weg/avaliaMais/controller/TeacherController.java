@@ -1,4 +1,5 @@
 package net.weg.avaliaMais.controller;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.TeacherPostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.StudentResponseDTO;
@@ -23,9 +24,10 @@ public class TeacherController {
         return teacherService.addTeacher(teacherPostRequestDTO);
     }
 
-    @PutMapping("/update")
-    public TeacherResponseDTO updateTeacher(TeacherPostRequestDTO teacherPostRequestDTO) {
-        return teacherService.updateTeacher(teacherPostRequestDTO);
+    @PatchMapping("/update")
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
+        TeacherResponseDTO teacherResponseDTO = teacherService.updateTeacher(teacherPostRequestDTO);
+        return new ResponseEntity<>(teacherResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{uuid}")

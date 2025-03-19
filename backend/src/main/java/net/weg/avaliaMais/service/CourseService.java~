@@ -19,14 +19,17 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
+    // Adiciona um novo curso
     public CourseResponseDTO addCourse(CoursePostRequestDTO coursePostRequestDTO) {
         if (courseRepository.findByNameCourse(coursePostRequestDTO.nameCourse()) != null) {
             throw new IllegalArgumentException("Já existe um curso com o nome fornecido");
         }
+
         Course courseSave = courseRepository.save(coursePostRequestDTO.converter());
         return courseSave.toDto();
     }
 
+    // Atualiza um curso pelo nome
     public CourseResponseDTO updateCoursePerName(String nameCourse, CoursePostRequestDTO coursePostRequestDTO) {
         Course course = courseRepository.findByNameCourse(nameCourse);
         if (course == null) {
@@ -42,28 +45,52 @@ public class CourseService {
         return course.toDto();
     }
 
+    // Deleta um curso pelo nome
     public String deleteCoursePerName(String nameCourse) {
         List<Course> courses = courseRepository.findAllByNameCourse(nameCourse);
+
         if (courses.isEmpty()) {
             return "Curso não encontrado";
         }
-        courseRepository.delete(courses.get(0));
+
+        Course courseToDelete = courses.get(0);
+        courseRepository.delete(courseToDelete);
+
         return "Curso deletado com sucesso";
     }
 
+    // Busca um curso por UUID
     public CourseResponseDTO findCoursePerUuid(UUID uuid) {
         Course course = courseRepository.findByUuid(uuid);
         return course == null ? null : course.toDto();
     }
 
+    // Busca um curso por nome
     public CourseResponseDTO findCoursePerName(String nameCourse) {
-        if (nameCourse == null || nameCourse.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do curso não pode ser vazio");
+        try {
+            // Verificando se o nome do curso é válido
+            if (nameCourse == null || nameCourse.trim().isEmpty()) {
+                throw new IllegalArgumentException("O nome do curso não pode ser vazio");
+            }
+
+            Course course = courseRepository.findByNameCourse(nameCourse);
+            if (course == null) {
+                return null;  // Nenhum curso encontrado
+            }
+
+            return course.toDto();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Argumento inválido: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            // Logando erro completo para ajudar a identificar o problema
+            System.err.println("Erro ao buscar curso por nome: " + nameCourse);
+            e.printStackTrace();
+            throw new RuntimeException("Erro inesperado ao buscar curso.");
         }
-        Course course = courseRepository.findByNameCourse(nameCourse);
-        return course == null ? null : course.toDto();
     }
 
+    // Busca todos os cursos com paginação
     public Page<CourseResponseDTO> findAllCourses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Course> coursePage = courseRepository.findAll(pageable);

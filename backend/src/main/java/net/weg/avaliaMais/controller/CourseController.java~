@@ -23,31 +23,39 @@ public class CourseController {
         return courseService.addCourse(coursePostRequestDTO);
     }
 
+    // Endpoint para atualizar um curso pelo nome
     @PutMapping("/update/{nameCourse}")
     public CourseResponseDTO updateCoursePerName(@PathVariable String nameCourse, @RequestBody @Valid CoursePostRequestDTO coursePostRequestDTO) {
         return courseService.updateCoursePerName(nameCourse, coursePostRequestDTO);
     }
 
+    // Endpoint para deletar um curso pelo nome
     @DeleteMapping("/delete/{nameCourse}")
     public ResponseEntity<String> deleteCoursePerName(@PathVariable String nameCourse) {
         String response = courseService.deleteCoursePerName(nameCourse);
-        return response.equals("Curso não encontrado")
-                ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(response)
-                : ResponseEntity.ok(response);
+
+        if (response.equals("Curso não encontrado")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        return ResponseEntity.ok(response);
     }
 
+    // Endpoint para buscar um curso pelo nome
     @GetMapping("/findByName/{nameCourse}")
     public ResponseEntity<CourseResponseDTO> findCoursePerName(@PathVariable String nameCourse) {
         CourseResponseDTO course = courseService.findCoursePerName(nameCourse);
         return course == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(course);
     }
 
+    // Endpoint para buscar um curso pelo UUID
     @GetMapping("/findByUuid/{uuid}")
     public ResponseEntity<CourseResponseDTO> findCoursePerUuid(@PathVariable UUID uuid) {
         CourseResponseDTO course = courseService.findCoursePerUuid(uuid);
         return course == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(course);
     }
 
+    // Endpoint para buscar todos os cursos com paginação
     @GetMapping("/findAll")
     public ResponseEntity<Page<CourseResponseDTO>> findAllCourses(@RequestParam int page, @RequestParam int size) {
         Page<CourseResponseDTO> courses = courseService.findAllCourses(page, size);
