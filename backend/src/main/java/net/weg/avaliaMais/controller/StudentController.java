@@ -25,8 +25,8 @@ public class StudentController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<StudentResponseDTO> updateStudent (@RequestBody @Valid StudentPostRequestDTO studentPostRequestDTO) {
-        StudentResponseDTO studentResponseDTO = studentService.updateStudent(studentPostRequestDTO);
+    public ResponseEntity<StudentResponseDTO> updateStudentPerName(@RequestBody @Valid StudentPostRequestDTO studentPostRequestDTO) {
+        StudentResponseDTO studentResponseDTO = studentService.updateStudentPerName(studentPostRequestDTO);
         return new ResponseEntity<>(studentResponseDTO, HttpStatus.OK);
     }
 

@@ -32,6 +32,7 @@ public record StudentPostRequestDTO(
         Double workloadWeek,
 
         @NotNull(message = "A lista de turmas não pode ser nula")
+        @Size(min = 0, message = "A lista de turmas não pode ser vazia")
         List<UUID> classIds,
 
         @NotNull(message = "O ID do curso atual não pode ser nulo")

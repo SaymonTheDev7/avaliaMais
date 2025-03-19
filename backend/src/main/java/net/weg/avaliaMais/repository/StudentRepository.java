@@ -11,6 +11,8 @@ public interface StudentRepository extends JpaRepository <Student, Long> {
 
     Optional<Student> findByUsername(String username);
 
+    boolean existsByEmail(String email);
+
     void deleteByUuid(UUID uuid);
 
     boolean existsByUuid(UUID uuid);

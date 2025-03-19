@@ -23,7 +23,7 @@ public class ClassSchool {
     private UUID uuid;
 
     @ManyToOne
-    private Course course;  // Renomeado para 'course' (em vez de 'uuid_course')
+    private Course course;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Student> students;
