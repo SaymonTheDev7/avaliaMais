@@ -22,7 +22,7 @@ public class TeacherController {
     @PostMapping("/add")
     public ResponseEntity<TeacherResponseDTO> addTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
         TeacherResponseDTO response = teacherService.addTeacher(teacherPostRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);  
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/update")
