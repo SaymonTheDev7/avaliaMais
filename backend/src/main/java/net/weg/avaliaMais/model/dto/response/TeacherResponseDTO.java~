@@ -17,14 +17,6 @@ public record TeacherResponseDTO(
 ) {
 
     public TeacherResponseDTO(Teacher actualTeacher) {
-        this(
-                actualTeacher.getUuid(),
-                actualTeacher.getUsername(),
-                actualTeacher.getEmail(),
-                actualTeacher.getWorkShift(),
-                actualTeacher.getWorkloadWeek(),
-                actualTeacher.getClassIds().stream().map(ClassSchool::getUuid).toList(),
-                actualTeacher.getProfessionalArea()
-        );
+        this(actualTeacher.getUuid(), actualTeacher.getUsername(), actualTeacher.getEmail(), actualTeacher.getWorkShift(), actualTeacher.getWorkloadWeek(), actualTeacher.getClassIds().stream().map(ClassSchool::getUuid).toList(), actualTeacher.getProfessionalArea());
     }
 }
