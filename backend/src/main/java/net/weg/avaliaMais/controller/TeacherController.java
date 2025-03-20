@@ -20,29 +20,34 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping("/add")
-    public TeacherResponseDTO addTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
-        return teacherService.addTeacher(teacherPostRequestDTO);
+    public ResponseEntity<TeacherResponseDTO> addTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
+        TeacherResponseDTO response = teacherService.addTeacher(teacherPostRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);  
     }
 
     @PatchMapping("/update")
     public ResponseEntity<TeacherResponseDTO> updateTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
         TeacherResponseDTO teacherResponseDTO = teacherService.updateTeacherPerName(teacherPostRequestDTO);
-        return new ResponseEntity<>(teacherResponseDTO, HttpStatus.OK);
+        return ResponseEntity.ok(teacherResponseDTO);
     }
 
     @DeleteMapping("/delete/{uuid}")
     public ResponseEntity<Void> deleteTeacherPerUUID(@PathVariable UUID uuid) {
         teacherService.deleteTeacherByUUID(uuid);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/find/{username}")
     public ResponseEntity<TeacherResponseDTO> findTeacherPerUsername(@PathVariable String username) {
-        return new ResponseEntity<>(teacherService.findTeacherByUsername(username), HttpStatus.OK);
+        TeacherResponseDTO teacherResponseDTO = teacherService.findTeacherByUsername(username);
+        return teacherResponseDTO == null
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(teacherResponseDTO);
     }
 
     @GetMapping("/find/all")
     public ResponseEntity<Page<TeacherResponseDTO>> findAllTeachers(@RequestParam int page) {
-        return new ResponseEntity<>(teacherService.findAllTeachers(page, 4), HttpStatus.OK);
+        Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4);
+        return ResponseEntity.ok(teacherResponseDTOs);
     }
 }

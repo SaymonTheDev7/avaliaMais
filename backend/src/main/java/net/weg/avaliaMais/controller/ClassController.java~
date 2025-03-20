@@ -3,6 +3,7 @@ package net.weg.avaliaMais.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.ClassPostRequestDTO;
+import net.weg.avaliaMais.model.dto.request.ClassUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.service.ClassService;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/class")
@@ -21,18 +22,23 @@ public class ClassController {
 
     @PostMapping("/add")
     public ResponseEntity<ClassResponseDTO> addClass(@RequestBody @Valid ClassPostRequestDTO classPostRequestDTO) {
-        return new ResponseEntity<>(classService.addClass(classPostRequestDTO), HttpStatus.CREATED);
+        ClassResponseDTO classResponse = classService.addClass(classPostRequestDTO);
+        return ResponseEntity
+                .created(classResponse.getClassId() != null ?
+                        URI.create("/class/find/" + classResponse.getClassName()) : null)
+                .body(classResponse);
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ClassResponseDTO> updateClass(@RequestBody @Valid ClassPostRequestDTO classPostRequestDTO) {
-        return new ResponseEntity<>(classService.updateClass(classPostRequestDTO), HttpStatus.OK);
+    public ResponseEntity<ClassResponseDTO> updateClass(@RequestBody @Valid ClassUpdateRequestDTO classUpdateRequestDTO) {
+        ClassResponseDTO updatedClass = classService.updateClass(classUpdateRequestDTO);
+        return new ResponseEntity<>(updatedClass, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{nameClass}")
     public ResponseEntity<String> deleteClassPerName(@PathVariable String nameClass) {
         classService.deleteClassPerName(nameClass);
-        return new ResponseEntity<>("Class deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Turma deletada com sucesso", HttpStatus.OK);
     }
 
     @GetMapping("/find/{nameClass}")

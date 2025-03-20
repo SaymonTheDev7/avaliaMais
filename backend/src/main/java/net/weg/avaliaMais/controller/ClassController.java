@@ -20,27 +20,31 @@ public class ClassController {
 
     @PostMapping("/add")
     public ResponseEntity<ClassResponseDTO> addClass(@RequestBody @Valid ClassPostRequestDTO classPostRequestDTO) {
-        return new ResponseEntity<>(classService.addClass(classPostRequestDTO), HttpStatus.CREATED);
+        ClassResponseDTO response = classService.addClass(classPostRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/update")
     public ResponseEntity<ClassResponseDTO> updateClass(@RequestBody @Valid ClassUpdateRequestDTO classUpdateRequestDTO) {
-        return new ResponseEntity<>(classService.updateClass(classUpdateRequestDTO), HttpStatus.OK);
+        ClassResponseDTO response = classService.updateClass(classUpdateRequestDTO);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{nameClass}")
     public ResponseEntity<String> deleteClassPerName(@PathVariable String nameClass) {
         classService.deleteClassPerName(nameClass);
-        return new ResponseEntity<>("Turma deletada com sucesso", HttpStatus.OK);
+        return ResponseEntity.ok("Turma deletada com sucesso");
     }
 
     @GetMapping("/find/{nameClass}")
     public ResponseEntity<ClassResponseDTO> findClassPerName(@PathVariable String nameClass) {
-        return new ResponseEntity<>(classService.findClassPerName(nameClass), HttpStatus.OK);
+        ClassResponseDTO response = classService.findClassPerName(nameClass);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/find/all")
     public ResponseEntity<Page<ClassResponseDTO>> findAllClasses(@RequestParam int page) {
-        return new ResponseEntity<>(classService.findAllClasses(page, 4), HttpStatus.OK);
+        Page<ClassResponseDTO> response = classService.findAllClasses(page, 4);
+        return ResponseEntity.ok(response);
     }
 }

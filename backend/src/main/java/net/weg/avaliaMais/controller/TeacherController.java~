@@ -26,7 +26,7 @@ public class TeacherController {
 
     @PatchMapping("/update")
     public ResponseEntity<TeacherResponseDTO> updateTeacher(@RequestBody @Valid TeacherPostRequestDTO teacherPostRequestDTO) {
-        TeacherResponseDTO teacherResponseDTO = teacherService.updateTeacher(teacherPostRequestDTO);
+        TeacherResponseDTO teacherResponseDTO = teacherService.updateTeacherPerName(teacherPostRequestDTO);
         return new ResponseEntity<>(teacherResponseDTO, HttpStatus.OK);
     }
 
