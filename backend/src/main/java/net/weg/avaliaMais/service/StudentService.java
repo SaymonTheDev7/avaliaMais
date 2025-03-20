@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,8 +42,12 @@ public class StudentService {
 
     public StudentResponseDTO updateStudentPerName(StudentPostRequestDTO studentPostRequestDTO) {
         Student existingStudent = studentRepository.findByUsername(studentPostRequestDTO.username()).orElseThrow(() -> new RuntimeException("Student not found"));
+        if (!courseRepository.existsById(studentPostRequestDTO.currentCourseId())) {
+            throw new RuntimeException("Course not found");
+        }
         List<ClassSchool> allClasses = classRepository.findAll();
-        existingStudent.setClassIds(allClasses.stream().filter(classSchool -> studentPostRequestDTO.classIds().contains(classSchool.getUuid())).toList());
+        List<ClassSchool> classList = allClasses.stream().filter(classSchool -> studentPostRequestDTO.classIds().contains(classSchool.getUuid())).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        existingStudent.setClassIds(classList);
         existingStudent.setWorkloadWeek(studentPostRequestDTO.workloadWeek());
         existingStudent.setWorkShift(studentPostRequestDTO.workShift());
         Student updatedStudent = studentRepository.save(existingStudent);

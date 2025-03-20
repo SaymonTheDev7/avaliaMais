@@ -1,4 +1,5 @@
 package net.weg.avaliaMais.controller;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.StudentPostRequestDTO;
@@ -30,6 +31,7 @@ public class StudentController {
         return new ResponseEntity<>(studentResponseDTO, HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/delete/{uuid}")
     public ResponseEntity<Void> deleteStudentPerUUID (@PathVariable UUID uuid) {
         studentService.deleteStudentByUUID(uuid);
@@ -37,7 +39,7 @@ public class StudentController {
     }
 
     @GetMapping("/find/username/{username}")
-    public ResponseEntity<StudentResponseDTO> findStudentPerUsername (@RequestParam String username) {
+    public ResponseEntity<StudentResponseDTO> findStudentPerUsername (@PathVariable String username) {
         return new ResponseEntity<>(studentService.findStudentByUsername(username), HttpStatus.OK);
     }
 

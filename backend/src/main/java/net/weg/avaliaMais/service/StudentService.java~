@@ -25,16 +25,18 @@ public class StudentService {
     private final CourseRepository courseRepository;
 
     public StudentResponseDTO addStudent(StudentPostRequestDTO studentPostRequestDTO) {
+        List<Course> allCourses = courseRepository.findAll();
+        Course currentCourse = allCourses.stream().filter(course -> course.getUuid().equals(studentPostRequestDTO.currentCourseId())).findFirst().orElseThrow(() -> new RuntimeException("Curso não encontrado"));
         if (studentRepository.existsByEmail(studentPostRequestDTO.email())) {
             throw new RuntimeException("Já existe um aluno com este e-mail");
         }
         List<ClassSchool> allClasses = classRepository.findAll();
-        List<Course> allCourses = courseRepository.findAll();
         Student studentSave = studentPostRequestDTO.converter(allClasses, allCourses);
         studentSave.setClassIds(List.of());
         studentSave = studentRepository.save(studentSave);
         return studentSave.toDto();
     }
+
 
 
     public StudentResponseDTO updateStudentPerName(StudentPostRequestDTO studentPostRequestDTO) {
