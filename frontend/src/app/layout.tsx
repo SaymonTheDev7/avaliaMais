@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Home from "./page";
 
 
 export const metadata: Metadata = {
@@ -14,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className="bg-white">{children}</body>
     </html>
   );

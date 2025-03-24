@@ -7,7 +7,7 @@ export default function LoginForm() {
   return (
     <div className="w-full max-w-md space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-[#003366]">LOGIN</h2>
+        <h2 className="text-5xl font-bold text-[#003366]">LOGIN</h2>
       </div>
       
       <div className="space-y-6">
@@ -18,7 +18,7 @@ export default function LoginForm() {
           <Input 
             type="text" 
             placeholder="Insira seu login" 
-            className="pl-10 border-t-0 border-x-0 border-b-2 rounded-none focus-visible:ring-0 focus-visible:border-[#003366]" 
+            className="pl-10 border-t-0  border-x-0 border-b-2 rounded-none focus-visible:ring-0 focus-visible:border-[#003366]" 
           />
         </div>
         
@@ -34,13 +34,13 @@ export default function LoginForm() {
         </div>
         
         <div className="text-right">
-          <a href="#" className="text-sm text-[#003366] hover:underline">
+          <a href="#" className="text-start text-[#003366] hover:underline">
             Esqueceu a senha?
           </a>
         </div>
         
         <Button 
-          className="w-full bg-[#003366] hover:bg-[#002244] text-white py-6"
+          className="w-full bg-[#003366] hover:bg-[#002244] text-white text-2xl py-6"
         >
           Entrar
         </Button>

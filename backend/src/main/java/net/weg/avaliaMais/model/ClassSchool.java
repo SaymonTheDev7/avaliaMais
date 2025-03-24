@@ -35,7 +35,13 @@ public class ClassSchool {
     private String nameClass;
 
     @Column(nullable = false)
+    private Integer year;
+
+    @Column(nullable = false)
     private Double workloadClass;
+
+    @Column(nullable = false)
+    private String location;
 
     @Column(nullable = false)
     private Double time;
@@ -50,7 +56,9 @@ public class ClassSchool {
         return new ClassResponseDTO(
                 this.uuid,
                 this.nameClass,
+                this.year,
                 this.workloadClass,
+                this.location,
                 this.time,
                 this.quantityStudents,
                 this.shift,

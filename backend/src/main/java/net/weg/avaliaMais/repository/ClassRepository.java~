@@ -15,6 +15,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSpecificationExecutor<ClassSchool> {
 
     void deleteByNameClass(String nameClass);
-    Optional<ClassSchool> findByNameClass(String nameClass);
-
 }

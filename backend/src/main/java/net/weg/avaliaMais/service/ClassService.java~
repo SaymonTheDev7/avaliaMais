@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.Specification.where;
-
 @Service
 @RequiredArgsConstructor
 public class ClassService {
@@ -95,7 +93,7 @@ public class ClassService {
         return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
     }
 
-    public Page<ClassResponseDTO> getByAdvancedFiltration(Integer year, String location, String course, String shift, Pageable pageable) {
+    public Page<ClassResponseDTO> getByFiltros(Integer year, String location, String course, String shift, Pageable pageable) {
         Specification<ClassSchool> filtros = where(null);
 
         if (year != null) {

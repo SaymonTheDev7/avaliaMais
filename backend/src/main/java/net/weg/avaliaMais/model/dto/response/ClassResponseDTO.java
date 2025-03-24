@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 public record ClassResponseDTO(
         UUID uuid,
         String nameClass,
+        Integer year,
         Double workloadClass,
+        String location,
         Double time,
         Integer quantityStudents,
         String shift,
@@ -24,7 +26,9 @@ public record ClassResponseDTO(
         this(
                 actualClassSchool.getUuid(),
                 actualClassSchool.getNameClass(),
+                actualClassSchool.getYear(),
                 actualClassSchool.getWorkloadClass(),
+                actualClassSchool.getLocation(),
                 actualClassSchool.getTime(),
                 actualClassSchool.getQuantityStudents(),
                 actualClassSchool.getShift(),
