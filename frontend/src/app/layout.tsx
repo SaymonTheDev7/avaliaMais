@@ -1,20 +1,26 @@
-import React from 'react';
-import HomePage from '@/app/page'; // Ajuste o caminho conforme necessário
+import type { Metadata } from "next";
+import "./globals.css";
+import Home from "./page";
 
-export const metadata = {
-  title: 'Sua Página',
-  description: 'Descrição da sua página',
+
+export const metadata: Metadata = {
+  title: "Avalia +",
+  description: "Sistema de conselho de classe",
 };
 
-export default function Layout() {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
-      <html lang="pt-br">
-        <body>
-          {/* Aqui você pode adicionar qualquer estrutura global, como barras de navegação, modais, etc. */}
-          <HomePage />
-        </body>
-      </html>
-    </>
+    <html lang="en">
+      <body className="bg-white">{children}</body>
+    </html>
   );
 }
+
+
+
+
+
