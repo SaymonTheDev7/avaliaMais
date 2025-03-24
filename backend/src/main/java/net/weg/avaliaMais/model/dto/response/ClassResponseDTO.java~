@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public record ClassResponseDTO(
         UUID uuid,
         String nameClass,
-        String year,
+        Integer year,
         Double workloadClass,
         String location,
         Double time,
@@ -39,3 +39,5 @@ public record ClassResponseDTO(
         );
     }
 }
+
+

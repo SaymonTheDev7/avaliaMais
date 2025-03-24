@@ -12,7 +12,6 @@ import net.weg.avaliaMais.repository.ClassRepository;
 import net.weg.avaliaMais.repository.CourseRepository;
 import net.weg.avaliaMais.repository.StudentRepository;
 import net.weg.avaliaMais.repository.TeacherRepository;
-import net.weg.avaliaMais.repository.specification.ClassSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,44 +72,5 @@ public class ClassService {
     public Page<ClassResponseDTO> findAllClasses(int page, int size) {
         Page<ClassSchool> classPage = classRepository.findAll(PageRequest.of(page, size));
         return classPage.map(ClassResponseDTO::new);
-    }
-
-    public Page<ClassResponseDTO> findClassPerYear(Integer year, Pageable pageable) {
-        Specification<ClassSchool> spec = ClassSpecification.hasYear(year);
-        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<ClassResponseDTO> findClassPerLocation(String location, Pageable pageable) {
-        Specification<ClassSchool> spec = ClassSpecification.hasLocation(location);
-        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<ClassResponseDTO> findClassesByCourse(String nameCourse, Pageable pageable) {
-        Specification<ClassSchool> spec = ClassSpecification.hasCourse(nameCourse);
-        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<ClassResponseDTO> findClassPerShift(String shift, Pageable pageable) {
-        Specification<ClassSchool> spec = ClassSpecification.hasShift(shift);
-        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<ClassResponseDTO> getByAdvancedFiltration(Integer year, String location, String course, String shift, Pageable pageable) {
-        Specification<ClassSchool> filtros = where(null);
-
-        if (year != null) {
-            filtros = filtros.and(ClassSpecification.hasYear(year));
-        }
-        if (location != null && !location.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasLocation(location));
-        }
-        if (course != null && !course.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasCourse(course));
-        }
-        if (shift != null && !shift.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasShift(shift));
-        }
-
-        return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
     }
 }

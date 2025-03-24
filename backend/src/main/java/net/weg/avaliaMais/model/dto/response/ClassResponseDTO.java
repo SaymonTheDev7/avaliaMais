@@ -38,4 +38,7 @@ public record ClassResponseDTO(
                 actualClassSchool.getTeachers().stream().map(teacher -> teacher.getUuid()).collect(Collectors.toList())
         );
     }
+
 }
+
+

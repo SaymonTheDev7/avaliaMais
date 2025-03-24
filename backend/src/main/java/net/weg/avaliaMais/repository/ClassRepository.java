@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
-public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSpecificationExecutor<ClassSchool> {
+public interface ClassRepository extends JpaRepository<ClassSchool, UUID> {
 
     void deleteByNameClass(String nameClass);
-    Optional<ClassSchool> findByNameClass(String nameClass);
 
+    Optional<ClassSchool> findByNameClass(String nameClass);
 }
