@@ -42,6 +42,7 @@ public class PedagogicalTechniqueService {
         return updatedPedagogicalTechnique.toDto();
     }
 
+
     public String deletePedagogicalTechniquePerUsername(String username) {
         if (pedagogicalTechniqueRepository.findByUsername(username).isPresent()) {
             pedagogicalTechniqueRepository.delete(pedagogicalTechniqueRepository.findByUsername(username).get());
@@ -61,7 +62,7 @@ public class PedagogicalTechniqueService {
         return pedagogicalTechniquePage.map(PedagogicalTechniqueResponseDTO::new);
     }
 
-    public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisors(int page, int size) {
+    public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisors (int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<PedagogicalAdvisor> pedagogicalAdvisorPage = pedagogicalAdvisorRepository.findAll(pageable);
         return pedagogicalAdvisorPage.map(PedagogicalAdvisorResponseDTO::new);

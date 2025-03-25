@@ -27,7 +27,7 @@ public class PedagogicalAdvisorService {
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
 
-    public PedagogicalAdvisorResponseDTO addPedagogicalAdvisor (PedagogicalAdvisorPostRequestDTO pedagogicalAdvisorPostRequestDTO) {
+    public PedagogicalAdvisorResponseDTO addPedagogicalAdvisor(PedagogicalAdvisorPostRequestDTO pedagogicalAdvisorPostRequestDTO) {
         PedagogicalAdvisor pedagogicalAdvisorSave = pedagogicalAdvisorRepository.save(pedagogicalAdvisorPostRequestDTO.converter());
         return pedagogicalAdvisorSave.toDto();
     }
@@ -62,7 +62,7 @@ public class PedagogicalAdvisorService {
         return pedagogicalAdvisorPage.map(PedagogicalAdvisorResponseDTO::new);
     }
 
-    public Page<PedagogicalTechniqueResponseDTO> findAllPedagogicalTechniques (int page, int size) {
+    public Page<PedagogicalTechniqueResponseDTO> findAllPedagogicalTechniques(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<PedagogicalTechnique> pedagogicalTechniquePage = pedagogicalTechniqueRepository.findAll(pageable);
         return pedagogicalTechniquePage.map(PedagogicalTechniqueResponseDTO::new);
