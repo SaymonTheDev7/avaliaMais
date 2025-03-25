@@ -1,11 +1,11 @@
 package net.weg.avaliaMais.repository.specification;
 
-import net.weg.avaliaMais.model.Teacher;
+import net.weg.avaliaMais.model.Course;
 import org.springframework.data.jpa.domain.Specification;
 
-public class TeacherSpecification {
+public class CourseSpecification {
 
-    public static Specification<Teacher> hasName(String name) {
+    public static Specification<Course> hasName(String name) {
         return (root, query, criteriaBuilder) -> {
             if (name == null || name.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -14,21 +14,22 @@ public class TeacherSpecification {
         };
     }
 
-    public static Specification<Teacher> hasEmail(String email) {
+    public static Specification<Course> hasShift(String shift) {
         return (root, query, criteriaBuilder) -> {
-            if (email == null || email.isEmpty()) {
+            if (shift == null || shift.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            return criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), "%" + email.toLowerCase() + "%");
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("shift")), "%" + shift.toLowerCase() + "%");
         };
     }
 
-    public static Specification<Teacher> hasCourse(String course) {
+    public static Specification<Course> hasType(String type) {
         return (root, query, criteriaBuilder) -> {
-            if (course == null || course.isEmpty()) {
+            if (type == null || type.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            return criteriaBuilder.like(criteriaBuilder.lower(root.join("courses").get("name")), "%" + course.toLowerCase() + "%");
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("type")), "%" + type.toLowerCase() + "%");
         };
     }
+
 }

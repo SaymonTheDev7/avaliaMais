@@ -1,0 +1,95 @@
+package net.weg.avaliaMais.service;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class LoggingAspect {
+
+    private final LogService logService;
+
+    public LoggingAspect(LogService logService) {
+        this.logService = logService;
+    }
+
+    // Ponto de corte para capturar todos os métodos de serviço (qualquer operação de persistência)
+    @Pointcut("execution(* net.weg.avaliaMais.service.*.*(..))")
+    public void allServiceMethods() {}
+
+    @Before("allServiceMethods()")
+    public void logBeforeAction(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        String actionType = determineActionType(methodName);
+
+        // Se os argumentos forem passados, pegamos o nome da classe do primeiro argumento
+        String entityName = args.length > 0 ? args[0].getClass().getSimpleName() : "Entidade";
+        String message = generateLogMessage(methodName, entityName, args);
+
+        logService.logAction(actionType + " | " + message);
+    }
+
+    @After("allServiceMethods()")
+    public void logAfterAction(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        String actionType = determineActionType(methodName);
+        String message = "Ação de " + methodName + " concluída com sucesso.";
+
+        logService.logAction(actionType + " | " + message);
+    }
+
+    // Determina o tipo de ação (CREATE, UPDATE, DELETE, etc.) com base no nome do método
+    private String determineActionType(String methodName) {
+        if (methodName.startsWith("save") || methodName.startsWith("add")) {
+            return "CREATE";
+        } else if (methodName.startsWith("update") || methodName.startsWith("edit")) {
+            return "UPDATE";
+        } else if (methodName.startsWith("delete")) {
+            return "DELETE";
+        } else if (methodName.startsWith("get") || methodName.startsWith("find")) {
+            return "GET";
+        } else if (methodName.startsWith("patch")) {
+            return "PATCH";
+        } else {
+            return "ACTION";
+        }
+    }
+
+    // Gera a mensagem de log com base no tipo de método (ex: "Criando a entidade", "Deletando a entidade", etc.)
+    private String generateLogMessage(String methodName, String entityName, Object[] args) {
+        StringBuilder message = new StringBuilder();
+
+        if (methodName.startsWith("save") || methodName.startsWith("add")) {
+            message.append("Criando a entidade ").append(entityName);
+            if (args.length > 0) {
+                message.append(" com dados: ").append(args[0]);
+            }
+        } else if (methodName.startsWith("update") || methodName.startsWith("edit")) {
+            message.append("Atualizando a entidade ").append(entityName);
+            if (args.length > 0) {
+                message.append(" com dados: ").append(args[0]);
+            }
+        } else if (methodName.startsWith("delete")) {
+            message.append("Deletando a entidade ").append(entityName);
+            if (args.length > 0) {
+                message.append(" com identificador: ").append(args[0]);
+            }
+        } else if (methodName.startsWith("get") || methodName.startsWith("find")) {
+            message.append("Consultando dados com o método: ").append(methodName);
+        } else if (methodName.startsWith("patch")) {
+            message.append("Atualizando parcialmente a entidade ").append(entityName);
+            if (args.length > 0) {
+                message.append(" com dados: ").append(args[0]);
+            }
+        } else {
+            message.append("Executando a ação no método ").append(methodName);
+        }
+
+        return message.toString();
+    }
+}

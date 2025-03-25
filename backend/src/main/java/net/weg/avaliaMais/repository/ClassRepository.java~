@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSpecificationExecutor<ClassSchool> {
+public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSpecificationExecutor {
 
     void deleteByNameClass(String nameClass);
 
     Optional<ClassSchool> findByNameClass(String nameClass);
 }
-

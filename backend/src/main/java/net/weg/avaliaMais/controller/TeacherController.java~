@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.TeacherPostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.model.dto.response.TeacherResponseDTO;
+import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.service.TeacherService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -32,7 +32,7 @@ public record StudentPostRequestDTO(
         Double workloadWeek,
 
         @NotNull(message = "A lista de turmas não pode ser nula")
-        List<UUID> classIds,
+        List<UUID> classIds,  // Turmas podem ser passadas nulas
 
         @NotNull(message = "O ID do curso atual não pode ser nulo")
         UUID currentCourseId  // Novo atributo para o curso atual
@@ -41,24 +41,26 @@ public record StudentPostRequestDTO(
 
     public Student converter(List<ClassSchool> allClasses, List<Course> allCourses) {
 
+        // Filtra as turmas com base nos UUIDs passados
         List<ClassSchool> classList = allClasses.stream()
                 .filter(classSchool -> classIds.contains(classSchool.getUuid()))
                 .toList();
 
-        // Atribuindo o curso atual ao aluno com base no ID do curso
+        // Busca o curso atual com base no ID
         Course currentCourse = allCourses.stream()
                 .filter(course -> course.getUuid().equals(currentCourseId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+                .orElse(null);  // Se o curso não for encontrado, retorna null
 
+        // Cria e retorna o objeto Student
         return Student.builder()
                 .username(username)
                 .password(password)
                 .email(email)
                 .workShift(workShift)
                 .workloadWeek(workloadWeek)
-                .classIds(classList)
-                .currentCourse(currentCourse)  // Atribuindo o curso atual ao aluno
+                .classIds(classList)  // Atribui as turmas
+                .currentCourse(currentCourse)  // Atribui o curso atual
                 .build();
     }
 }

@@ -18,7 +18,7 @@ public class LoggingAspect {
         this.logService = logService;
     }
 
-    @Pointcut("execution(* net.weg.avaliaMais.service.*.save*(..))")
+    @Pointcut("execution(* net.weg.avaliaMais.service*.save*(..))")
     public void saveMethods() {}
 
     @Pointcut("execution(* net.weg.avaliaMais.service*.update*(..))")

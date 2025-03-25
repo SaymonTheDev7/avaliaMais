@@ -29,6 +29,12 @@ public record ClassPostRequestDTO(
         @NotBlank(message = "O nome da turma não pode estar em branco")
         String nameClass,
 
+        @NotNull(message = "O ano da turma não pode ser nulo")
+        Integer year,
+
+        @NotBlank(message = "O local não pode estar em branco")
+        String location,
+
         @NotNull(message = "A carga horária não pode ser nula")
         @Positive(message = "A carga horária deve ser positiva")
         Double workloadClass,
@@ -43,6 +49,8 @@ public record ClassPostRequestDTO(
 
         @NotBlank(message = "O turno não pode estar em branco")
         String shift
+
+
 
 ) {
     public ClassSchool converter(List<Course> allCourses, List<Student> allStudents, List<Teacher> allTeachers) {
@@ -66,6 +74,8 @@ public record ClassPostRequestDTO(
                 .students(studentsList)
                 .teachers(teachersList)
                 .nameClass(nameClass)
+                .year(year)
+                .location(location)
                 .workloadClass(workloadClass)
                 .time(time)
                 .quantityStudents(quantityStudents)

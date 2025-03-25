@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: "Avalia +",
   description: "Sistema de conselho de classe",
 };
+
 
 export default function RootLayout({
   children,
@@ -14,12 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="bg-white">{children}</body>
+      <body className="bg-white">
+        {children}
+      </body>
     </html>
   );
 }
-
-
-
-
-

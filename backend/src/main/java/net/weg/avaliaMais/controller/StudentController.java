@@ -4,9 +4,12 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.StudentPostRequestDTO;
+import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.model.dto.response.StudentResponseDTO;
 import net.weg.avaliaMais.service.StudentService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,4 +55,22 @@ public class StudentController {
         Page<StudentResponseDTO> studentResponseDTOs = studentService.findAllStudents(page, 4);
         return ResponseEntity.ok(studentResponseDTOs);
     }
+
+    @GetMapping("/{studentUuid}/classes")
+    public ResponseEntity<Page<ClassResponseDTO>> findStudentClasses(
+            @PathVariable UUID studentUuid,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) String course,
+            @RequestParam(required = false) String shift,
+            @RequestParam(required = false) String location,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ClassResponseDTO> studentClasses = studentService.findStudentClasses(studentUuid, year, course, shift, location, pageable);
+
+        return ResponseEntity.ok(studentClasses);
+    }
+
+
 }

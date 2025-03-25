@@ -7,6 +7,7 @@ export default function LoginPage() {
       <div className="absolute top-0 left-0 w-screen bg-[#003366] p-4 z-20">
         <div className="flex items-center">
           <Image
+            className="ml-15"
             src="/Logo.png"
             alt="Logo Avalia+"
             width={150}

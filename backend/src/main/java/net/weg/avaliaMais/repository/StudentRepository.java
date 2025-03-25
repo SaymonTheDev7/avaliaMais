@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface StudentRepository extends JpaRepository <Student, UUID>, JpaSpecificationExecutor {
+public interface StudentRepository extends JpaRepository <Student, UUID>, JpaSpecificationExecutor<Student> {
 
     Optional<Student> findByUsername(String username);
 

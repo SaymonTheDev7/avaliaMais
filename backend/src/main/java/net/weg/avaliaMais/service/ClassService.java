@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Course;
@@ -12,6 +13,7 @@ import net.weg.avaliaMais.repository.ClassRepository;
 import net.weg.avaliaMais.repository.CourseRepository;
 import net.weg.avaliaMais.repository.StudentRepository;
 import net.weg.avaliaMais.repository.TeacherRepository;
+import net.weg.avaliaMais.repository.specification.ClassSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ClassService {
 
     private final ClassRepository classRepository;
@@ -35,10 +38,36 @@ public class ClassService {
         List<Course> allCourses = courseRepository.findAll();
         List<Student> allStudents = studentRepository.findAll();
         List<Teacher> allTeachers = teacherRepository.findAll();
+
+        // Verificar se o curso existe
+        Course course = allCourses.stream()
+                .filter(c -> c.getUuid().equals(classPostRequestDTO.courseUuid()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        // Verificar se os alunos existem
+        List<Student> studentsList = classPostRequestDTO.studentIds().stream()
+                .map(studentId -> allStudents.stream()
+                        .filter(s -> s.getUuid().equals(studentId))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + studentId)))
+                .toList();
+
+        // Verificar se os professores existem
+        List<Teacher> teachersList = classPostRequestDTO.teacherIds().stream()
+                .map(teacherId -> allTeachers.stream()
+                        .filter(t -> t.getUuid().equals(teacherId))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Professor não encontrado: " + teacherId)))
+                .toList();
+
+        // Converte e salva a classe
         ClassSchool classSchoolSave = classPostRequestDTO.converter(allCourses, allStudents, allTeachers);
         classSchoolSave = classRepository.save(classSchoolSave);
+
         return classSchoolSave.toDto();
     }
+
 
     public ClassResponseDTO updateClass(ClassUpdateRequestDTO classUpdateRequestDTO) {
         ClassSchool classSchoolToUpdate = classRepository.findById(classUpdateRequestDTO.classUuid())
@@ -73,4 +102,44 @@ public class ClassService {
         Page<ClassSchool> classPage = classRepository.findAll(PageRequest.of(page, size));
         return classPage.map(ClassResponseDTO::new);
     }
+
+    public Page<ClassResponseDTO> findClassPerYear(Integer year, Pageable pageable) {
+        Specification<ClassSchool> spec = ClassSpecification.hasYear(year);
+        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
+    }
+
+    public Page<ClassResponseDTO> findClassPerLocation(String location, Pageable pageable) {
+        Specification<ClassSchool> spec = ClassSpecification.hasLocation(location);
+        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
+    }
+
+    public Page<ClassResponseDTO> findClassesByCourse(String nameCourse, Pageable pageable) {
+        Specification<ClassSchool> spec = ClassSpecification.hasCourse(nameCourse);
+        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
+    }
+
+    public Page<ClassResponseDTO> findClassPerShift(String shift, Pageable pageable) {
+        Specification<ClassSchool> spec = ClassSpecification.hasShift(shift);
+        return classRepository.findAll(spec, pageable).map(ClassResponseDTO::new);
+    }
+
+    public Page<ClassResponseDTO> getByAdvancedFiltration(Integer year, String location, String course, String shift, Pageable pageable) {
+        Specification<ClassSchool> filtros = where(null);
+
+        if (year != null) {
+            filtros = filtros.and(ClassSpecification.hasYear(year));
+        }
+        if (location != null && !location.isEmpty()) {
+            filtros = filtros.and(ClassSpecification.hasLocation(location));
+        }
+        if (course != null && !course.isEmpty()) {
+            filtros = filtros.and(ClassSpecification.hasCourse(course));
+        }
+        if (shift != null && !shift.isEmpty()) {
+            filtros = filtros.and(ClassSpecification.hasShift(shift));
+        }
+
+        return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
+    }
+
 }
