@@ -22,7 +22,7 @@ const PaginaDeAjustes = () => {
                 <div className="mb-6">
                     <NotificationSettings />
                 </div>
-                <Button className="mt-6 bg-[#02335E] hover:bg-[#011E3D] text-white text-xl py-3 px-8 rounded-lg">
+                <Button className=" bg-[#02335E] hover:bg-[#011E3D] text-white text-xl py-3 px-8 rounded-lg">
                     Salvar Ajustes
                 </Button>
             </div>

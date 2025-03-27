@@ -16,14 +16,7 @@ export function AccessibilitySettings() {
         <div className="grid gap-4">
           <div className="flex items-center justify-between text-lg">
             <Label htmlFor="highContrast" className="text-[#02335E] text-lg">Alto Contraste</Label>
-            <Switch 
-              id="highContrast" 
-              checked={highContrast}
-              onCheckedChange={(checked) => setHighContrast(checked)}
-              className={`${
-                highContrast ? ' bg-[#02335E] border-[#02335E]' : 'bg-gray-300 border-gray-300'
-              } rounded-full transition-colors duration-300`}
-            />
+            <Switch />
           </div>
         </div>
       </CardContent>
