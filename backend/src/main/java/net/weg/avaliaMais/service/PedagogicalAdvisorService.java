@@ -26,6 +26,7 @@ public class PedagogicalAdvisorService {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
+    private final SupervisorRepository supervisorRepository;
 
     public PedagogicalAdvisorResponseDTO addPedagogicalAdvisor(PedagogicalAdvisorPostRequestDTO pedagogicalAdvisorPostRequestDTO) {
         PedagogicalAdvisor pedagogicalAdvisorSave = pedagogicalAdvisorRepository.save(pedagogicalAdvisorPostRequestDTO.converter());
@@ -42,18 +43,12 @@ public class PedagogicalAdvisorService {
         return updatedPedagogicalAdvisor.toDto();
     }
 
-
     public String deletePedagogicalAdvisorPerUsername (String username) {
         if (pedagogicalAdvisorRepository.findByUsername(username).isPresent()) {
             pedagogicalAdvisorRepository.delete(pedagogicalAdvisorRepository.findByUsername(username).get());
             return "Orientador deletado com sucesso";
         }
         return "Orientador não encontrado";
-    }
-
-    public PedagogicalAdvisor findPedagogicalAdvisorPerUsername(String username) {
-        return pedagogicalAdvisorRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Orientador não encontrado: " + username));
     }
 
     public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisors (int page, int size) {
@@ -66,6 +61,102 @@ public class PedagogicalAdvisorService {
         Pageable pageable = PageRequest.of(page, size);
         Page<PedagogicalTechnique> pedagogicalTechniquePage = pedagogicalTechniqueRepository.findAll(pageable);
         return pedagogicalTechniquePage.map(PedagogicalTechniqueResponseDTO::new);
+    }
+
+    public PedagogicalAdvisorResponseDTO findPedagogicalAdvisorPerUsernameOrEmail(String username, String email) {
+        return pedagogicalAdvisorRepository.findByUsernameOrEmail(username, email)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Coordenador/a pedagógico não encontrado com os dados: " + username + " " + email));
+    }
+
+    public PedagogicalAdvisorResponseDTO findPedagogicalTechniquePerUsernameOrEmail(String username, String email) {
+        return pedagogicalAdvisorRepository.findByUsernameOrEmail(username, email)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Técnico/a pedagógico não encontrado com os dados: " + username + " " + email));
+    }
+
+    public PedagogicalAdvisorResponseDTO findTeacherPerUsernameOrEmail(String username, String email) {
+        return pedagogicalAdvisorRepository.findByUsernameOrEmail(username, email)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado com os dados: " + username + " " + email));
+    }
+
+    public Page<PedagogicalAdvisorResponseDTO> findAllTeachers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PedagogicalAdvisor> teacherPage = pedagogicalAdvisorRepository.findAll(pageable);
+        return teacherPage.map(PedagogicalAdvisorResponseDTO::new);
+    }
+
+    public PedagogicalAdvisorResponseDTO findStudentPerUsernameOrEmail(String username, String email) {
+        return pedagogicalAdvisorRepository.findByUsernameOrEmail(username, email)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado com os dados: " + username + " " + email));
+    }
+
+    public Page<PedagogicalAdvisorResponseDTO> findAllStudents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PedagogicalAdvisor> studentPage = pedagogicalAdvisorRepository.findAll(pageable);
+        return studentPage.map(PedagogicalAdvisorResponseDTO::new);
+    }
+
+    public PedagogicalAdvisorResponseDTO findSupervisorPerUsernameOrEmail(String username, String email) {
+        return pedagogicalAdvisorRepository.findByUsernameOrEmail(username, email)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Supervisor não encontrado com os dados: " + username + " " + email));
+    }
+
+    public Page<PedagogicalAdvisorResponseDTO> findAllSupervisors(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PedagogicalAdvisor> supervisorPage = pedagogicalAdvisorRepository.findAll(pageable);
+        return supervisorPage.map(PedagogicalAdvisorResponseDTO::new);
+    }
+
+    public PedagogicalAdvisorResponseDTO findClassPerName(String nameClass) {
+        return pedagogicalAdvisorRepository.findByNameClass(nameClass)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + nameClass));
+    }
+
+    public PedagogicalAdvisorResponseDTO findClassPerYear(Integer year) {
+        return pedagogicalAdvisorRepository.findByYear(year)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + year));
+    }
+
+    public PedagogicalAdvisorResponseDTO findClassPerLocation(String location) {
+        return pedagogicalAdvisorRepository.findByLocation(location)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + location));
+    }
+
+    public PedagogicalAdvisorResponseDTO findClassPerShift(String shift) {
+        return pedagogicalAdvisorRepository.findByShift(shift)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + shift));
+    }
+
+    public Page<PedagogicalAdvisorResponseDTO> findAllClasses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PedagogicalAdvisor> classPage = pedagogicalAdvisorRepository.findAll(pageable);
+        return classPage.map(PedagogicalAdvisorResponseDTO::new);
+    }
+
+    public PedagogicalAdvisorResponseDTO findCoursePerName(String nameCourse) {
+        return pedagogicalAdvisorRepository.findByNameCourse(nameCourse)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + nameCourse));
+    }
+
+    public PedagogicalAdvisorResponseDTO findCoursePerType(String typeCourse) {
+        return pedagogicalAdvisorRepository.findByTypeCourse(typeCourse)
+                .map(PedagogicalAdvisorResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + typeCourse));
+    }
+
+    public Page<PedagogicalAdvisorResponseDTO> findAllCourses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PedagogicalAdvisor> coursePage = pedagogicalAdvisorRepository.findAll(pageable);
+        return coursePage.map(PedagogicalAdvisorResponseDTO::new);
     }
 
     public Page<ClassResponseDTO> findClasses(Integer year, String course, String shift, String location, Pageable pageable) {
@@ -120,5 +211,13 @@ public class PedagogicalAdvisorService {
         if (type != null && !type.trim().isEmpty()) filtros = filtros.and(CourseSpecification.hasType(type));
 
         return courseRepository.findAll(filtros, pageable).map(CourseResponseDTO::new);
+    }
+
+    public Page<SupervisorResponseDTO> findSupervisors(String name, String email, Pageable pageable) {
+        Specification<Supervisor> filtros = where(null);
+        if (name != null) filtros = filtros.and(SupervisorSpecification.hasName(name));
+        if (email != null) filtros = filtros.and(SupervisorSpecification.hasEmail(email));
+
+        return supervisorRepository.findAll(filtros, pageable).map(SupervisorResponseDTO::new);
     }
 }

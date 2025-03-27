@@ -44,11 +44,11 @@ public class PedagogicalAdvisorController {
     }
 
     @GetMapping("/find/{username}")
-    public ResponseEntity<PedagogicalAdvisorResponseDTO> findPedagogicalAdvisorPerUsername(@PathVariable String username) {
-        PedagogicalAdvisor pedagogicalAdvisor = pedagogicalAdvisorService.findPedagogicalAdvisorPerUsername(username);
+    public ResponseEntity<PedagogicalAdvisorResponseDTO> findPedagogicalAdvisorPerUsername(@PathVariable String username, String email) {
+        PedagogicalAdvisorResponseDTO pedagogicalAdvisor = pedagogicalAdvisorService.findPedagogicalAdvisorPerUsernameOrEmail(username, email);
         return pedagogicalAdvisor == null
                 ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(new PedagogicalAdvisorResponseDTO(pedagogicalAdvisor));
+                : ResponseEntity.ok((pedagogicalAdvisor));
     }
 
     @GetMapping("/find/all/advisors")
