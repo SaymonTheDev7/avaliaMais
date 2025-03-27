@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.weg.spring</groupId>
-	<artifactId>estoque</artifactId>
+	<artifactId>avaliaMais</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>estoque</name>
 	<description>Demo project for Spring Boot</description>
