@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 export function AccessibilitySettings() {
-  const [highContrast, setHighContrast] = useState(false);
 
   return (
     <Card className="mb-4">
