@@ -8,60 +8,55 @@ import Image from "next/image";
 import SidebarNavigation from "@/components/sidebar-navigation";
 
 export default function Header() {
-    
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setIsSidebarOpen((prevState) => !prevState);
-    };
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prevState) => !prevState);
+  };
 
-    const closeSidebar = () => {
-        setIsSidebarOpen(false);
-    };
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
 
-    return (
-        <div>
-            
-            <header className="flex items-center justify-between p-4 bg-[#003366] text-white relative z-10">
-                <div className="flex items-center">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-white"
-                        onClick={toggleSidebar}
-                    >
-                        <Menu style={{ width: "32px", height: "32px" }} />
-                    </Button>
-                    <div className="flex items-center">
-                        <Image
-                            className="ml-10"
-                            src="/Logo.png"
-                            alt="Logo Avalia+"
-                            width={150}
-                            height={50}
-                        />
-                    </div>
-                </div>
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" className="text-white">
-                        <Bell style={{ width: "32px", height: "32px" }} />
-                    </Button>
-                    <Avatar className="h-10 w-10 border-2 border-white">
-                        <AvatarImage
-                            src="https://tryeasel.dev/placeholder.svg?width=40&height=40"
-                            alt="User profile"
-                        />
-                        <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                </div>
-            </header>
-
-            <div
-                className={`fixed top-0 left-0 h-full bg-white z-50 transition-all duration-500 ease-in-out transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-                    }`}
-            >
-                {isSidebarOpen && <SidebarNavigation onClose={closeSidebar} />}
-            </div>
+  return (
+    <div>
+      <header className="flex items-center justify-between p-4 bg-[#003366] text-white relative z-10">
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white"
+            onClick={toggleSidebar}
+          >
+            <Menu style={{ width: "32px", height: "32px" }} />
+          </Button>
+          <div className="flex items-center">
+            <Image
+              className="ml-10"
+              src="/Logo.png"
+              alt="Logo Avalia+"
+              width={150}
+              height={50}
+            />
+          </div>
         </div>
-    );
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="text-white">
+            <Bell style={{ width: "32px", height: "32px" }} />
+          </Button>
+          <Avatar className="h-10 w-10 border-2 border-white">
+            <AvatarImage
+              src="https://tryeasel.dev/placeholder.svg?width=40&height=40"
+              alt="User profile"
+            />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+        </div>
+      </header>
+
+      {isSidebarOpen && (
+        <SidebarNavigation onClose={closeSidebar} />
+      )}
+    </div>
+  );
 }

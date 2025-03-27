@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { Home, Users, FileText, MessageCircle, Settings, Archive, LogOut, Plus } from 'lucide-react';
