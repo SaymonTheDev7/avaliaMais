@@ -8,13 +8,18 @@ public record SupervisorResponseDTO(
 
         UUID uuid,
         String name,
-        String email
+        String email,
+        String workShift,
+        Double workloadWeek
 
 ) {
 
     public SupervisorResponseDTO(Supervisor actualSupervisor) {
         this(actualSupervisor.getUuid(),
                 actualSupervisor.getUsername(),
-                actualSupervisor.getEmail());
+                actualSupervisor.getEmail(),
+                actualSupervisor.getWorkShift(),
+                actualSupervisor.getWorkloadWeek());
     }
+
 }

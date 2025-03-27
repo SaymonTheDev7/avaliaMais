@@ -61,9 +61,7 @@ public class TeacherService {
     }
 
     public TeacherResponseDTO findTeacherByUsername(String username) {
-        return teacherRepository.findByUsername(username)
-                .map(TeacherResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+        return teacherRepository.findByUsername(username).map(TeacherResponseDTO::new).orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 
     public Page<TeacherResponseDTO> findAllTeachers(int page, int size) {
