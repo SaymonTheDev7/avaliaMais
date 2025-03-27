@@ -45,16 +45,28 @@ public class SupervisorService {
         return pedagogicalAdvisorPage.map(SupervisorResponseDTO::new);
     }
 
+    public Page<SupervisorResponseDTO> findAllPedagogicalTechniques(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Supervisor> pedagogicalTechniquePage = supervisorRepository.findAll(pageable);
+        return pedagogicalTechniquePage.map(SupervisorResponseDTO::new);
+    }
+
     public SupervisorResponseDTO findTeacherPerUsernameOrEmail(String username, String email) {
         return supervisorRepository.findByUsernameOrEmail(username, email)
                 .map(SupervisorResponseDTO::new)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado com os dados: " + username + " " + email));
     }
 
-    public Page<SupervisorResponseDTO> findAllTeachers(String type, int page, int size) {
+    public Page<SupervisorResponseDTO> findAllTeachers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Supervisor> teacherPage = supervisorRepository.findAll(type, pageable);
+        Page<Supervisor> teacherPage = supervisorRepository.findAll(pageable);
         return teacherPage.map(SupervisorResponseDTO::new);
+    }
+
+    public Page<SupervisorResponseDTO> findAllStudents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Supervisor> studentPage = supervisorRepository.findAll(pageable);
+        return studentPage.map(SupervisorResponseDTO::new);
     }
 
     public SupervisorResponseDTO findStudentPerUsernameOrEmail(String username, String email) {
@@ -63,11 +75,6 @@ public class SupervisorService {
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado com os dados: " + username + " " + email));
     }
 
-    public Page<SupervisorResponseDTO> findAllStudents(String type, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Supervisor> studentPage = supervisorRepository.findAll(type, pageable);
-        return studentPage.map(SupervisorResponseDTO::new);
-    }
 
     public SupervisorResponseDTO findSupervisorPerUsernameOrEmail(String username, String email) {
         return supervisorRepository.findByUsernameOrEmail(username, email)

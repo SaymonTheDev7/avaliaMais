@@ -22,6 +22,8 @@ import java.util.UUID;
 public class SupervisorController {
 
     private final SupervisorService supervisorService;
+    private final PedagogicalTechniqueService pedagogicalTechniqueService;
+    private final PedagogicalAdvisorService pedagogicalAdvisorService;
 
     @GetMapping("/find/all/advisors")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllPedagogicalAdvisors(@RequestParam int page) {
@@ -75,7 +77,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<ClassResponseDTO> classes = supervisorService.findClasses(year, course, shift, location, pageable);
+        Page<ClassResponseDTO> classes = pedagogicalAdvisorService.findClasses(year, course, shift, location, pageable);
         return ResponseEntity.ok(classes);
     }
 
@@ -87,7 +89,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalAdvisorResponseDTO> advisors = supervisorService.findPedagogicalAdvisor(name, email, pageable);
+        Page<PedagogicalAdvisorResponseDTO> advisors = pedagogicalAdvisorService.findPedagogicalAdvisor(name, email, pageable);
         return ResponseEntity.ok(advisors);
     }
 
@@ -98,7 +100,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalTechniqueResponseDTO> techniques = supervisorService.findPedagogicalTechnique(name, email, pageable);
+        Page<PedagogicalTechniqueResponseDTO> techniques = pedagogicalAdvisorService.findPedagogicalTechnique(name, email, pageable);
         return ResponseEntity.ok(techniques);
     }
 
@@ -111,7 +113,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<TeacherResponseDTO> teachers = supervisorService.findTeachers(name, email, course, pageable);
+        Page<TeacherResponseDTO> teachers = pedagogicalAdvisorService.findTeachers(name, email, course, pageable);
         return ResponseEntity.ok(teachers);
     }
 
@@ -125,7 +127,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<StudentResponseDTO> students = supervisorService.findStudents(name, email, classUuid, course, pageable);
+        Page<StudentResponseDTO> students = pedagogicalAdvisorService.findStudents(name, email, classUuid, course, pageable);
         return ResponseEntity.ok(students);
     }
 
@@ -138,7 +140,7 @@ public class SupervisorController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<CourseResponseDTO> courses = supervisorService.findCourses(name, shift, type, pageable);
+        Page<CourseResponseDTO> courses = pedagogicalAdvisorService.findCourses(name, shift, type, pageable);
         return ResponseEntity.ok(courses);
     }
 
