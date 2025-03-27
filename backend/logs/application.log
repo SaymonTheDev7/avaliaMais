@@ -1,0 +1,21 @@
+2025-03-27T15:04:42.710-03:00  INFO 14684 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Starting AvaliaMaisApplication using Java 22 with PID 14684 (C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes started by saymon_castro in C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend)
+2025-03-27T15:04:42.711-03:00 DEBUG 14684 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
+2025-03-27T15:04:42.711-03:00  INFO 14684 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-03-27T15:04:43.011-03:00  WARN 14684 --- [avaliaMais] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'loggingFilter' defined in class path resource [net/weg/avaliaMais/filter/FilterConfig.class]: Cannot register bean definition [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=filterConfig; factoryMethodName=loggingFilter; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [net/weg/avaliaMais/filter/FilterConfig.class]] for bean 'loggingFilter' since there is already [Generic bean: class=net.weg.avaliaMais.filter.LoggingFilter; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in file [C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes\net\weg\avaliaMais\filter\LoggingFilter.class]] bound.
+2025-03-27T15:04:43.016-03:00  INFO 14684 --- [avaliaMais] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-03-27T15:04:43.029-03:00 ERROR 14684 --- [avaliaMais] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'loggingFilter', defined in class path resource [net/weg/avaliaMais/filter/FilterConfig.class], could not be registered. A bean with that name has already been defined in file [C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes\net\weg\avaliaMais\filter\LoggingFilter.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
