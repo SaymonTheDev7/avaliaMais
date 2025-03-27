@@ -39,9 +39,9 @@ public class SupervisorService {
                 .orElseThrow(() -> new RuntimeException("Técnico/a pedagógico não encontrado com os dados: " + username + " " + email));
     }
 
-    public Page<SupervisorResponseDTO> findAllPedagogicalAdvisors(String type, int page, int size) {
+    public Page<SupervisorResponseDTO> findAllPedagogicalAdvisors(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Supervisor> pedagogicalAdvisorPage = supervisorRepository.findAll(type, pageable);
+        Page<Supervisor> pedagogicalAdvisorPage = supervisorRepository.findAll(pageable);
         return pedagogicalAdvisorPage.map(SupervisorResponseDTO::new);
     }
 
