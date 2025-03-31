@@ -47,7 +47,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
 
   return (
     <>
-      {/* Fundo escuro (overlay) */}
+     
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -57,16 +57,15 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
         onClick={handleClose}
       ></motion.div>
 
-      {/* Sidebar */}
       <motion.div
         initial={{ x: '-100%' }}
-        animate={{ x: isClosing ? '-100%' : '0' }} // Se estiver fechando, anima para fora da tela
-        exit={{ x: '-100%' }} // Quando sair, move para fora da tela
+        animate={{ x: isClosing ? '-100%' : '0' }} 
+        exit={{ x: '-100%' }} 
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-0 left-0 h-full w-72 bg-white border-r border-border z-50 shadow-lg"
         onAnimationComplete={() => {
           if (isClosing) {
-            // Após a animação de fechamento, chama o onClose real para remover o componente
+            
             onClose();
           }
         }}

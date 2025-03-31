@@ -1,6 +1,8 @@
 package net.weg.avaliaMais.repository;
 
 import net.weg.avaliaMais.model.Supervisor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -15,4 +17,5 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, UUID>, J
     Optional<Supervisor> findByTypeCourse(String typeCourse);
     Optional<Supervisor> findByNameClass(String nameClass);
     Optional<Supervisor> findByShift(String shift);
+    Page<Supervisor> findAll(String type, Pageable pageable);
 }

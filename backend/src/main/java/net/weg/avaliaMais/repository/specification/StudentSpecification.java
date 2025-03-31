@@ -42,5 +42,4 @@ public class StudentSpecification {
             return criteriaBuilder.like(criteriaBuilder.lower(root.join("classes").join("course").get("name")), "%" + course.toLowerCase() + "%");
         };
     }
-
 }

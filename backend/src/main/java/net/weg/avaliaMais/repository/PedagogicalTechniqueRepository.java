@@ -4,6 +4,7 @@ import io.micrometer.observation.ObservationFilter;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.PedagogicalAdvisor;
 import net.weg.avaliaMais.model.PedagogicalTechnique;
+import net.weg.avaliaMais.model.Supervisor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,12 @@ import java.util.UUID;
 public interface PedagogicalTechniqueRepository extends JpaRepository<PedagogicalTechnique, UUID>, JpaSpecificationExecutor<PedagogicalTechnique> {
 
     Optional<PedagogicalTechnique> findByUsername(String username);
+
+    Optional<Supervisor> findByYear(Integer year);
+    Optional<Supervisor> findByLocation(String location);
+    Optional<Supervisor> findByNameCourse(String nameCourse);
+    Optional<Supervisor> findByTypeCourse(String typeCourse);
+    Optional<Supervisor> findByNameClass(String nameClass);
+    Optional<Supervisor> findByShift(String shift);
 
 }

@@ -1,38 +1,84 @@
 import React from 'react';
-import { X, User } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Edit, Info } from 'lucide-react';
 
-interface ClassCardProps {
-  className: string;
-  studentCount: number;
-  time: string;
-  onRemove: () => void;
+interface FormField {
+  label: string;
+  type: string;
+  name: string;
 }
 
-export default function ClassCard({ className, studentCount, time, onRemove }: ClassCardProps) {
-  return (
-    <div className="w-full rounded-lg overflow-hidden shadow-md">
-      {/* Top blue section with image */}
-      <div className="h-24 bg-[#003366]">
-        <img
-          src="https://tryeasel.dev/placeholder.svg?width=400&height=96"
-          alt="Class Header"
-          className="w-full h-full object-cover"
-        />
-      </div>
+interface FormCardProps {
+  title: string;
+  fields: FormField[];
+  onSubmit: (data: any) => void;
+}
 
-      {/* Bottom section with class details */}
-      <div className="bg-[#02335E] text-white p-4">
-        <h3 className="text-2xl font-bold mb-2">{className}</h3>
-        <div className="flex items-center mb-2">
-          <User className="mr-2" size={20} />
-          <span>{studentCount}</span>
-          <span className="mx-2">-</span>
-          <span>{time}</span>
+export function FormCard({ title, fields, onSubmit }: FormCardProps) {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const formData: { [key: string]: string } = {};
+
+    fields.forEach((field) => {
+      const element = form.elements.namedItem(field.name) as HTMLInputElement | HTMLTextAreaElement;
+      if (element) {
+        formData[field.name] = element.value;
+      }
+    });
+
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="w-full max-w-2xl p-8 bg-[#003366] rounded-lg shadow-md text-white">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {fields.map((field) => (
+          <div key={field.name} className="relative">
+            <div className="flex items-center justify-between">
+              <Label htmlFor={field.name} className="block text-sm font-medium">
+                {field.label}
+              </Label>
+              {field.label === 'Carga horária' && (
+                <div className="absolute right-0 top-0 flex items-center">
+                  <Edit className="h-4 w-4 mr-2" />
+                  <Info className="h-4 w-4" />
+                </div>
+              )}
+            </div>
+            {field.type === 'textarea' ? (
+              <Textarea
+                id={field.name}
+                name={field.name}
+                className="mt-1 p-3 w-full border rounded-md focus:ring-0 focus:border-gray-300 text-black"
+                required
+                style={{ minHeight: '100px' }}
+                placeholder={field.label === 'Alunos' ? 'Os alunos aparecerão aqui :)' : ''}
+              />
+            ) : (
+              <Input
+                type={field.type}
+                id={field.name}
+                name={field.name}
+                className="mt-1 p-3 w-full border rounded-md focus:ring-0 focus:border-gray-300 text-black"
+                required
+              />
+            )}
+          </div>
+        ))}
+        <div className="flex justify-between mt-6">
+          <Button variant="destructive" className="w-1/2 mr-2">
+            Cancelar
+          </Button>
+          <Button type="submit" className="w-1/2 bg-green-500 hover:bg-green-700 text-white">
+            Confirmar
+          </Button>
         </div>
-        <button onClick={onRemove} className="text-red-500 hover:text-red-700">
-          <X size={24} />
-        </button>
-      </div>
+      </form>
     </div>
   );
 }

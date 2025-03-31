@@ -26,6 +26,7 @@ public class PedagogicalTechniqueService {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
+    private final SupervisorRepository supervisorRepository;
 
     public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
         PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueRepository.save(pedagogicalTechniquePostRequestDTO.converter());
@@ -119,5 +120,13 @@ public class PedagogicalTechniqueService {
         if (type != null) filtros = filtros.and(CourseSpecification.hasType(type));
 
         return courseRepository.findAll(filtros, pageable).map(CourseResponseDTO::new);
+    }
+
+    public Page<SupervisorResponseDTO> findSupervisors(String name, String email, Pageable pageable) {
+        Specification<Supervisor> filtros = where(null);
+        if (name != null) filtros = filtros.and(SupervisorSpecification.hasName(name));
+        if (email != null) filtros = filtros.and(SupervisorSpecification.hasEmail(email));
+
+        return supervisorRepository.findAll(filtros, pageable).map(SupervisorResponseDTO::new);
     }
 }
