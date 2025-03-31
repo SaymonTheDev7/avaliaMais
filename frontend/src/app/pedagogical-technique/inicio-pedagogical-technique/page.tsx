@@ -27,9 +27,9 @@ export default function InicioPedagogicalTechnique() {
       <Header />
       {/* Increased padding on the sides */}
       <main className="container mx-auto py-8 px-12"> {/* Increased py and px */}
-      <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
-  <span className="font-bold">INÍCIO</span>
-</h1>
+        <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
+          <span className="font-bold">INÍCIO</span>
+        </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8"> {/* Reduced gap */}
           <DashboardCard
