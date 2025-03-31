@@ -11,11 +11,8 @@ import java.util.UUID;
 
 public interface SupervisorRepository extends JpaRepository<Supervisor, UUID>, JpaSpecificationExecutor<Supervisor> {
     Optional<Supervisor> findByUsernameOrEmail(String username, String email);
-    Optional<Supervisor> findByYear(Integer year);
-    Optional<Supervisor> findByLocation(String location);
-    Optional<Supervisor> findByNameCourse(String nameCourse);
-    Optional<Supervisor> findByTypeCourse(String typeCourse);
-    Optional<Supervisor> findByNameClass(String nameClass);
-    Optional<Supervisor> findByShift(String shift);
-    Page<Supervisor> findAll(String type, Pageable pageable);
+
+    Optional<Supervisor> findByShift(String workShift);
+    Page<Supervisor> findAll(Pageable pageable);
+
 }

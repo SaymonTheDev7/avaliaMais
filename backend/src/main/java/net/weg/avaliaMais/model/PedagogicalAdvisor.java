@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,9 @@ import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
 @SuperBuilder
 @AllArgsConstructor
 public class PedagogicalAdvisor extends User {
+
+
+
 
     public PedagogicalAdvisorResponseDTO toDto() {
         return new PedagogicalAdvisorResponseDTO(this.getUuid(), this.getUsername(), this.getPassword(), this.getEmail(), this.getWorkShift(), this.getWorkloadWeek());

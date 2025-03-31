@@ -17,11 +17,4 @@ public interface PedagogicalTechniqueRepository extends JpaRepository<Pedagogica
 
     Optional<PedagogicalTechnique> findByUsername(String username);
 
-    Optional<Supervisor> findByYear(Integer year);
-    Optional<Supervisor> findByLocation(String location);
-    Optional<Supervisor> findByNameCourse(String nameCourse);
-    Optional<Supervisor> findByTypeCourse(String typeCourse);
-    Optional<Supervisor> findByNameClass(String nameClass);
-    Optional<Supervisor> findByShift(String shift);
-
 }

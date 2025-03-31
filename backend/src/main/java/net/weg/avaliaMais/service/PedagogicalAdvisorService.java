@@ -111,28 +111,14 @@ public class PedagogicalAdvisorService {
         return supervisorPage.map(PedagogicalAdvisorResponseDTO::new);
     }
 
-    public PedagogicalAdvisorResponseDTO findClassPerName(String nameClass) {
-        return pedagogicalAdvisorRepository.findByNameClass(nameClass)
-                .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + nameClass));
-    }
 
-    public PedagogicalAdvisorResponseDTO findClassPerYear(Integer year) {
-        return pedagogicalAdvisorRepository.findByYear(year)
-                .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + year));
-    }
 
-    public PedagogicalAdvisorResponseDTO findClassPerLocation(String location) {
-        return pedagogicalAdvisorRepository.findByLocation(location)
-                .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + location));
-    }
 
-    public PedagogicalAdvisorResponseDTO findClassPerShift(String shift) {
-        return pedagogicalAdvisorRepository.findByShift(shift)
+
+    public PedagogicalAdvisorResponseDTO findClassPerShift(String workShift) {
+        return pedagogicalAdvisorRepository.findByWorkShift(workShift)
                 .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + shift));
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + workShift));
     }
 
     public Page<PedagogicalAdvisorResponseDTO> findAllClasses(int page, int size) {
@@ -141,17 +127,8 @@ public class PedagogicalAdvisorService {
         return classPage.map(PedagogicalAdvisorResponseDTO::new);
     }
 
-    public PedagogicalAdvisorResponseDTO findCoursePerName(String nameCourse) {
-        return pedagogicalAdvisorRepository.findByNameCourse(nameCourse)
-                .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + nameCourse));
-    }
 
-    public PedagogicalAdvisorResponseDTO findCoursePerType(String typeCourse) {
-        return pedagogicalAdvisorRepository.findByTypeCourse(typeCourse)
-                .map(PedagogicalAdvisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + typeCourse));
-    }
+
 
     public Page<PedagogicalAdvisorResponseDTO> findAllCourses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

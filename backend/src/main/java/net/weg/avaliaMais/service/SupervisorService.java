@@ -88,28 +88,14 @@ public class SupervisorService {
         return supervisorPage.map(SupervisorResponseDTO::new);
     }
 
-    public SupervisorResponseDTO findClassPerName(String nameClass) {
-        return supervisorRepository.findByNameClass(nameClass)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + nameClass));
-    }
 
-    public SupervisorResponseDTO findClassPerYear(Integer year) {
-        return supervisorRepository.findByYear(year)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + year));
-    }
 
-    public SupervisorResponseDTO findClassPerLocation(String location) {
-        return supervisorRepository.findByLocation(location)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + location));
-    }
 
-    public SupervisorResponseDTO findClassPerShift(String shift) {
-        return supervisorRepository.findByShift(shift)
+
+    public SupervisorResponseDTO findClassPerShift(String workShift) {
+        return supervisorRepository.findByShift(workShift)
                 .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + shift));
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + workShift));
     }
 
     public Page<SupervisorResponseDTO> findAllClasses(int page, int size) {
@@ -118,17 +104,9 @@ public class SupervisorService {
         return classPage.map(SupervisorResponseDTO::new);
     }
 
-    public SupervisorResponseDTO findCoursePerName(String nameCourse) {
-        return supervisorRepository.findByNameCourse(nameCourse)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + nameCourse));
-    }
 
-    public SupervisorResponseDTO findCoursePerType(String typeCourse) {
-        return supervisorRepository.findByTypeCourse(typeCourse)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com os dados: " + typeCourse));
-    }
+
+
 
     public Page<SupervisorResponseDTO> findAllCourses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
