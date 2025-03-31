@@ -89,15 +89,6 @@ public class SupervisorService {
     }
 
 
-
-
-
-    public SupervisorResponseDTO findClassPerShift(String workShift) {
-        return supervisorRepository.findByShift(workShift)
-                .map(SupervisorResponseDTO::new)
-                .orElseThrow(() -> new RuntimeException("Turma não encontrada com os dados: " + workShift));
-    }
-
     public Page<SupervisorResponseDTO> findAllClasses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Supervisor> classPage = supervisorRepository.findAll(pageable);

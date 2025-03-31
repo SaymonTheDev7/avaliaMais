@@ -2,7 +2,6 @@ package net.weg.avaliaMais.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,7 +26,8 @@ public class ChatMessage {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    public ChatMessage() {
+    @PrePersist
+    public void prePersist() {
         this.timestamp = LocalDateTime.now();
     }
 }
