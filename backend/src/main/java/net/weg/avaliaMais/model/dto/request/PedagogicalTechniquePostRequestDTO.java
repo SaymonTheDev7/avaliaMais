@@ -1,10 +1,16 @@
 package net.weg.avaliaMais.model.dto.request;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import net.weg.avaliaMais.model.PedagogicalTechnique;
 
+/**
+ * DTO para representar os dados necessários para a criação de um Técnico Pedagógico.
+ * <p>
+ * Esta classe é usada para receber e validar as informações antes de persistir um novo técnico pedagógico no sistema.
+ */
 public record PedagogicalTechniquePostRequestDTO(
 
         @NotBlank(message = "O nome de usuário não pode estar em branco")
@@ -26,7 +32,18 @@ public record PedagogicalTechniquePostRequestDTO(
 
 ) {
 
+    /**
+     * Converte o DTO para uma entidade {@link PedagogicalTechnique}.
+     *
+     * @return Um objeto {@link PedagogicalTechnique} baseado nos dados fornecidos.
+     */
     public PedagogicalTechnique converter() {
-        return PedagogicalTechnique.builder().username(username).password(password).email(email).workShift(workShift).workloadWeek(workloadWeek).build();
+        return PedagogicalTechnique.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .workShift(workShift)
+                .workloadWeek(workloadWeek)
+                .build();
     }
 }

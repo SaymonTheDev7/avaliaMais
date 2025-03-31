@@ -4,6 +4,11 @@ import jakarta.validation.constraints.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO para representar os dados necessários para a atualização de uma turma.
+ * <p>
+ * Esta classe é usada para receber as informações da requisição e validá-las antes de atualizar uma turma existente.
+ */
 public record ClassUpdateRequestDTO(
 
         @NotNull(message = "O UUID da turma não pode ser nulo")

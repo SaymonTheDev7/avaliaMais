@@ -13,6 +13,12 @@ import net.weg.avaliaMais.model.Teacher;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO para representar os dados necessários para criar uma turma (classe).
+ * <p>
+ * Esta classe é usada para receber as informações da requisição e validá-las
+ * antes de criar uma entidade {@link ClassSchool}.
+ */
 public record ClassPostRequestDTO(
 
         @NotNull(message = "O UUID do curso não pode ser nulo")
@@ -50,27 +56,39 @@ public record ClassPostRequestDTO(
         @NotBlank(message = "O turno não pode estar em branco")
         String shift
 
-
-
 ) {
+
+    /**
+     * Converte o DTO em uma entidade {@link ClassSchool}, associando os cursos, alunos e professores correspondentes.
+     *
+     * @param allCourses  Lista de cursos disponíveis no sistema.
+     * @param allStudents Lista de alunos disponíveis no sistema.
+     * @param allTeachers Lista de professores disponíveis no sistema.
+     * @return Uma instância de {@link ClassSchool} contendo os dados validados e processados.
+     * @throws RuntimeException Se o curso especificado não for encontrado.
+     */
     public ClassSchool converter(List<Course> allCourses, List<Student> allStudents, List<Teacher> allTeachers) {
+        // Busca o curso pelo UUID informado
         Course course = allCourses.stream()
                 .filter(c -> c.getUuid().equals(courseUuid))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
+        // Filtra os alunos a partir dos IDs informados
         List<Student> studentsList = studentIds == null ? List.of() :
                 allStudents.stream()
                         .filter(student -> studentIds.contains(student.getUuid()))
                         .toList();
 
+        // Filtra os professores a partir dos IDs informados
         List<Teacher> teachersList = teacherIds == null ? List.of() :
                 allTeachers.stream()
                         .filter(teacher -> teacherIds.contains(teacher.getUuid()))
                         .toList();
 
+        // Retorna um objeto ClassSchool preenchido com os dados processados
         return ClassSchool.builder()
-                .course(course)  // Agora 'course' está correto
+                .course(course)
                 .students(studentsList)
                 .teachers(teachersList)
                 .nameClass(nameClass)

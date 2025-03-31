@@ -5,6 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entidade que representa um supervisor no sistema.
+ * Estende a classe {@link User} e herda os atributos e comportamentos de um usuário.
+ *
+ * A classe {@link Supervisor} não possui atributos adicionais além dos herdados de {@link User}.
+ */
 @Entity
 @Data
 @SuperBuilder

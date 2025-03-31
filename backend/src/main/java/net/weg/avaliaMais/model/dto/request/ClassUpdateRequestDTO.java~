@@ -1,4 +1,0 @@
-package net.weg.avaliaMais.model.dto.request;
-
-public record ClassUpdateRequestDTO() {
-}

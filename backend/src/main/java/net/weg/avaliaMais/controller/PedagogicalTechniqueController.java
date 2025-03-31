@@ -1,8 +1,10 @@
 package net.weg.avaliaMais.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.weg.avaliaMais.model.PedagogicalTechnique;
 import net.weg.avaliaMais.model.dto.request.PedagogicalTechniquePostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.*;
 import net.weg.avaliaMais.service.PedagogicalTechniqueService;
@@ -18,11 +20,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("users/pedagogical-techniques")
 @RequiredArgsConstructor
+@Tag(name = "Pedagogical Techniques", description = "API para gerenciamento de técnicas pedagógicas")
 public class PedagogicalTechniqueController {
 
     private final PedagogicalTechniqueService pedagogicalTechniqueService;
 
     @PostMapping("/add")
+    @Operation(summary = "Adicionar uma técnica pedagógica", description = "Adiciona uma nova técnica pedagógica ao sistema.")
     public ResponseEntity<PedagogicalTechniqueResponseDTO> addPedagogicalTechnique(
             @RequestBody @Valid PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
         PedagogicalTechniqueResponseDTO response = pedagogicalTechniqueService.addPedagogicalTechnique(pedagogicalTechniquePostRequestDTO);
@@ -30,18 +34,22 @@ public class PedagogicalTechniqueController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<PedagogicalTechniqueResponseDTO> updatePedagogicalTechnique(@RequestBody @Valid PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
+    @Operation(summary = "Atualizar uma técnica pedagógica", description = "Atualiza uma técnica pedagógica existente.")
+    public ResponseEntity<PedagogicalTechniqueResponseDTO> updatePedagogicalTechnique(
+            @RequestBody @Valid PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
         PedagogicalTechniqueResponseDTO updatedPedagogicalTechnique = pedagogicalTechniqueService.updatePedagogicalTechnique(pedagogicalTechniquePostRequestDTO);
         return ResponseEntity.ok(updatedPedagogicalTechnique);
     }
 
     @DeleteMapping("/delete/{username}")
+    @Operation(summary = "Excluir uma técnica pedagógica", description = "Remove uma técnica pedagógica pelo nome de usuário.")
     public ResponseEntity<String> deletePedagogicalTechniquePerUsername(@PathVariable String username) {
         String response = pedagogicalTechniqueService.deletePedagogicalTechniquePerUsername(username);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/find/{username}")
+    @Operation(summary = "Buscar técnica pedagógica por usuário", description = "Retorna uma técnica pedagógica baseada no nome de usuário.")
     public ResponseEntity<PedagogicalTechniqueResponseDTO> findPedagogicalTechniquePerUsername(@PathVariable String username) {
         PedagogicalTechniqueResponseDTO pedagogicalTechnique = pedagogicalTechniqueService.findPedagogicalTechniquePerUsername(username);
         return pedagogicalTechnique == null
@@ -50,85 +58,10 @@ public class PedagogicalTechniqueController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findAllPedagogicalTechniques(@RequestParam int page) {
+    @Operation(summary = "Listar todas as técnicas pedagógicas", description = "Retorna uma lista paginada de todas as técnicas pedagógicas.")
+    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findAllPedagogicalTechniques(
+            @RequestParam(defaultValue = "0") int page) {
         Page<PedagogicalTechniqueResponseDTO> pedagogicalTechniques = pedagogicalTechniqueService.findAllPedagogicalTechniques(page, 4);
         return ResponseEntity.ok(pedagogicalTechniques);
-    }
-
-    @GetMapping("/classes")
-    public ResponseEntity<Page<ClassResponseDTO>> findClasses(
-            @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) String course,
-            @RequestParam(required = false) String shift,
-            @RequestParam(required = false) String location,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ClassResponseDTO> classes = pedagogicalTechniqueService.findClasses(year, course, shift, location, pageable);
-        return ResponseEntity.ok(classes);
-    }
-
-    @GetMapping("/pedagogical-advisors")
-    public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findPedagogicalAdvisors(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalAdvisorResponseDTO> advisors = pedagogicalTechniqueService.findPedagogicalAdvisor(name, email, pageable);
-        return ResponseEntity.ok(advisors);
-    }
-
-    @GetMapping("/pedagogical-techniques")
-    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findPedagogicalTechniques(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalTechniqueResponseDTO> techniques = pedagogicalTechniqueService.findPedagogicalTechnique(name, email, pageable);
-        return ResponseEntity.ok(techniques);
-    }
-
-    @GetMapping("/teachers")
-    public ResponseEntity<Page<TeacherResponseDTO>> findTeachers(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String course,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<TeacherResponseDTO> teachers = pedagogicalTechniqueService.findTeachers(name, email, course, pageable);
-        return ResponseEntity.ok(teachers);
-    }
-
-    @GetMapping("/students")
-    public ResponseEntity<Page<StudentResponseDTO>> findStudents(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) UUID classUuid,
-            @RequestParam(required = false) String course,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<StudentResponseDTO> students = pedagogicalTechniqueService.findStudents(name, email, classUuid, course, pageable);
-        return ResponseEntity.ok(students);
-    }
-
-    @GetMapping("/courses")
-    public ResponseEntity<Page<CourseResponseDTO>> findCourses(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String shift,
-            @RequestParam(required = false) String type,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<CourseResponseDTO> courses = pedagogicalTechniqueService.findCourses(name, shift, type, pageable);
-        return ResponseEntity.ok(courses);
     }
 }

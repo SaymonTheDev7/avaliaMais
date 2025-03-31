@@ -1,9 +1,11 @@
 package net.weg.avaliaMais.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.response.*;
-import net.weg.avaliaMais.service.PedagogicalAdvisorService;
-import net.weg.avaliaMais.service.PedagogicalTechniqueService;
 import net.weg.avaliaMais.service.SupervisorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,48 +25,81 @@ public class SupervisorController {
 
     private final SupervisorService supervisorService;
 
+    @Operation(summary = "Find all Pedagogical Advisors", description = "Retrieve all pedagogical advisors with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of pedagogical advisors"),
+            @ApiResponse(responseCode = "400", description = "Invalid request parameters")
+    })
     @GetMapping("/find/all/advisors")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllPedagogicalAdvisors(@RequestParam int page) {
         Page<SupervisorResponseDTO> pedagogicalAdvisors = supervisorService.findAllPedagogicalAdvisors(page, 4);
         return ResponseEntity.ok(pedagogicalAdvisors);
     }
 
+    @Operation(summary = "Find all Pedagogical Techniques", description = "Retrieve all pedagogical techniques with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of pedagogical techniques")
+    })
     @GetMapping("/find/all/techniques")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllPedagogicalTechniques(@RequestParam int page) {
         Page<SupervisorResponseDTO> pedagogicalTechniques = supervisorService.findAllPedagogicalTechniques(page, 4);
         return ResponseEntity.ok(pedagogicalTechniques);
     }
 
+    @Operation(summary = "Find all Classes", description = "Retrieve all classes with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of classes")
+    })
     @GetMapping("/find/all/classes")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllClasses(@RequestParam int page) {
         Page<SupervisorResponseDTO> classes = supervisorService.findAllClasses(page, 4);
         return ResponseEntity.ok(classes);
     }
 
+    @Operation(summary = "Find all Courses", description = "Retrieve all courses with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of courses")
+    })
     @GetMapping("/find/all/courses")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllCourses(@RequestParam int page) {
         Page<SupervisorResponseDTO> courses = supervisorService.findAllCourses(page, 4);
         return ResponseEntity.ok(courses);
     }
 
+    @Operation(summary = "Find all Teachers", description = "Retrieve all teachers with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of teachers")
+    })
     @GetMapping("/find/all/teachers")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllTeachers(@RequestParam int page) {
         Page<SupervisorResponseDTO> teachers = supervisorService.findAllTeachers(page, 4);
         return ResponseEntity.ok(teachers);
     }
 
+    @Operation(summary = "Find all Students", description = "Retrieve all students with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of students")
+    })
     @GetMapping("/find/all/students")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllStudents(@RequestParam int page) {
         Page<SupervisorResponseDTO> students = supervisorService.findAllStudents(page, 4);
         return ResponseEntity.ok(students);
     }
 
+    @Operation(summary = "Find all Supervisors", description = "Retrieve all supervisors with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of supervisors")
+    })
     @GetMapping("/find/all/supervisors")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllSupervisors(@RequestParam int page) {
         Page<SupervisorResponseDTO> supervisors = supervisorService.findAllSupervisors(page, 4);
         return ResponseEntity.ok(supervisors);
     }
 
+    @Operation(summary = "Find Classes", description = "Retrieve classes based on optional filters (year, course, shift, location) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of classes")
+    })
     @GetMapping("/classes")
     public ResponseEntity<Page<ClassResponseDTO>> findClasses(
             @RequestParam(required = false) Integer year,
@@ -79,6 +114,10 @@ public class SupervisorController {
         return ResponseEntity.ok(classes);
     }
 
+    @Operation(summary = "Find Pedagogical Advisors", description = "Search for pedagogical advisors based on optional filters (name, email) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of pedagogical advisors")
+    })
     @GetMapping("/pedagogical-advisors")
     public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findPedagogicalAdvisors(
             @RequestParam(required = false) String name,
@@ -91,6 +130,10 @@ public class SupervisorController {
         return ResponseEntity.ok(advisors);
     }
 
+    @Operation(summary = "Find Pedagogical Techniques", description = "Search for pedagogical techniques based on optional filters (name, email) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of pedagogical techniques")
+    })
     @GetMapping("/pedagogical-techniques")
     public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findPedagogicalTechniques(
             @RequestParam(required = false) String name,
@@ -102,6 +145,10 @@ public class SupervisorController {
         return ResponseEntity.ok(techniques);
     }
 
+    @Operation(summary = "Find Teachers", description = "Search for teachers based on optional filters (name, email, course) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of teachers")
+    })
     @GetMapping("/teachers")
     public ResponseEntity<Page<TeacherResponseDTO>> findTeachers(
             @RequestParam(required = false) String name,
@@ -115,6 +162,10 @@ public class SupervisorController {
         return ResponseEntity.ok(teachers);
     }
 
+    @Operation(summary = "Find Students", description = "Search for students based on optional filters (name, email, classUuid, course) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of students")
+    })
     @GetMapping("/students")
     public ResponseEntity<Page<StudentResponseDTO>> findStudents(
             @RequestParam(required = false) String name,
@@ -129,6 +180,10 @@ public class SupervisorController {
         return ResponseEntity.ok(students);
     }
 
+    @Operation(summary = "Find Courses", description = "Search for courses based on optional filters (name, shift, type) with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the filtered list of courses")
+    })
     @GetMapping("/courses")
     public ResponseEntity<Page<CourseResponseDTO>> findCourses(
             @RequestParam(required = false) String name,
@@ -141,6 +196,4 @@ public class SupervisorController {
         Page<CourseResponseDTO> courses = supervisorService.findCourses(name, shift, type, pageable);
         return ResponseEntity.ok(courses);
     }
-
 }
-
