@@ -74,7 +74,7 @@ public class SupervisorService {
                 .map(SupervisorResponseDTO::new)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado com os dados: " + username + " " + email));
     }
-    
+
     public SupervisorResponseDTO findSupervisorPerUsernameOrEmail(String username, String email) {
         return supervisorRepository.findByUsernameOrEmail(username, email)
                 .map(SupervisorResponseDTO::new)
