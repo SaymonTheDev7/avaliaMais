@@ -1,6 +1,7 @@
 package net.weg.avaliaMais.repository;
 
 import net.weg.avaliaMais.model.ClassSchool;
+import net.weg.avaliaMais.model.Supervisor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +33,5 @@ public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSp
      * @return Um {@link Optional} contendo a classe encontrada, ou vazio se não encontrada.
      */
     Optional<ClassSchool> findByNameClass(String nameClass);
+
 }

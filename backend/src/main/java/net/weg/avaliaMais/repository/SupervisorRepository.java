@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.repository;
 
+import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Supervisor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
