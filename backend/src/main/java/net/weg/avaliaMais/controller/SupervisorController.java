@@ -25,11 +25,50 @@ public class SupervisorController {
 
     private final SupervisorService supervisorService;
 
+<<<<<<< HEAD
     @Operation(summary = "Find all Pedagogical Advisors", description = "Retrieve all pedagogical advisors with pagination")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of pedagogical advisors"),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters")
     })
+=======
+    @GetMapping("/find/advisor")
+    public ResponseEntity<SupervisorResponseDTO> findPedagogicalAdvisorPerUsernameOrEmail(
+            @RequestParam String username, @RequestParam String email) {
+        return ResponseEntity.ok(supervisorService.findPedagogicalAdvisorPerUsernameOrEmail(username, email));
+    }
+
+    @GetMapping("/find/technique")
+    public ResponseEntity<SupervisorResponseDTO> findPedagogicalTechniquePerUsernameOrEmail(
+            @RequestParam String username, @RequestParam String email) {
+        return ResponseEntity.ok(supervisorService.findPedagogicalTechniquePerUsernameOrEmail(username, email));
+    }
+
+    @GetMapping("/find/teacher")
+    public ResponseEntity<SupervisorResponseDTO> findTeacherPerUsernameOrEmail(
+            @RequestParam String username, @RequestParam String email) {
+        return ResponseEntity.ok(supervisorService.findTeacherPerUsernameOrEmail(username, email));
+    }
+
+    @GetMapping("/find/student")
+    public ResponseEntity<SupervisorResponseDTO> findStudentPerUsernameOrEmail(
+            @RequestParam String username, @RequestParam String email) {
+        return ResponseEntity.ok(supervisorService.findStudentPerUsernameOrEmail(username, email));
+    }
+
+    @GetMapping("/find/supervisor")
+    public ResponseEntity<SupervisorResponseDTO> findSupervisorPerUsernameOrEmail(
+            @RequestParam String username, @RequestParam String email) {
+        return ResponseEntity.ok(supervisorService.findSupervisorPerUsernameOrEmail(username, email));
+    }
+
+    @GetMapping("/find/class")
+    public ResponseEntity<SupervisorResponseDTO> findClassPerShift(@RequestParam String workShift) {
+        return ResponseEntity.ok(supervisorService.findClassPerShift(workShift));
+    }
+
+
+>>>>>>> 621fc38809b22b7904290100618ec88d5a60329c
     @GetMapping("/find/all/advisors")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllPedagogicalAdvisors(@RequestParam int page) {
         Page<SupervisorResponseDTO> pedagogicalAdvisors = supervisorService.findAllPedagogicalAdvisors(page, 4);
