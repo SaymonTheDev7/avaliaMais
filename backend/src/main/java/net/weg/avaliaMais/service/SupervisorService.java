@@ -74,8 +74,7 @@ public class SupervisorService {
                 .map(SupervisorResponseDTO::new)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado com os dados: " + username + " " + email));
     }
-
-
+    
     public SupervisorResponseDTO findSupervisorPerUsernameOrEmail(String username, String email) {
         return supervisorRepository.findByUsernameOrEmail(username, email)
                 .map(SupervisorResponseDTO::new)
@@ -88,10 +87,6 @@ public class SupervisorService {
         return supervisorPage.map(SupervisorResponseDTO::new);
     }
 
-
-
-
-
     public SupervisorResponseDTO findClassPerShift(String workShift) {
         return supervisorRepository.findByShift(workShift)
                 .map(SupervisorResponseDTO::new)
@@ -103,10 +98,6 @@ public class SupervisorService {
         Page<Supervisor> classPage = supervisorRepository.findAll(pageable);
         return classPage.map(SupervisorResponseDTO::new);
     }
-
-
-
-
 
     public Page<SupervisorResponseDTO> findAllCourses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
