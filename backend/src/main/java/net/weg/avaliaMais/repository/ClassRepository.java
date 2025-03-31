@@ -2,6 +2,7 @@ package net.weg.avaliaMais.repository;
 
 import io.micrometer.observation.ObservationFilter;
 import net.weg.avaliaMais.model.ClassSchool;
+import net.weg.avaliaMais.model.Supervisor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,6 @@ public interface ClassRepository extends JpaRepository<ClassSchool, UUID>, JpaSp
     void deleteByNameClass(String nameClass);
 
     Optional<ClassSchool> findByNameClass(String nameClass);
+
 }
 
