@@ -94,9 +94,9 @@ export default function ClassForm() {
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 flex justify-end gap-4 flex-wrap">
-          <Button variant="destructive" className="text-lg py-3 px-8 mb-2 md:mb-0" style={{ backgroundColor: '#F13F00' }}>Cancelar</Button>
-          <Button className="text-lg py-3 px-8" style={{ backgroundColor: '#319F43', color: 'white' }}>Confirmar</Button>
+        <div className="mt-8 flex justify-center md:justify-end gap-4">
+          <Button variant="destructive" className="text-lg py-3 px-6 md:px-8 whitespace-nowrap" style={{ backgroundColor: '#F13F00' }}>Cancelar</Button>
+          <Button className="text-lg py-3 px-6 md:px-8 whitespace-nowrap" style={{ backgroundColor: '#319F43', color: 'white' }}>Confirmar</Button>
         </div>
       </div>
     </div>
