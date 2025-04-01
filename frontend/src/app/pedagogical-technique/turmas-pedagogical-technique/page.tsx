@@ -1,22 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Importando o hook useRouter
 import Header from '@/components/header';
 import { Search, Filter, ChevronLeft } from 'lucide-react';
 
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid');
-  const router = useRouter(); // Inicializando o hook useRouter
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };
-
-  // Função para redirecionar para a página de adicionar turma
-  const handleAddClass = () => {
-    router.push('/pedagogical-technique/form-add-turma-pedagogical-technique'); // Redireciona para a página correta
   };
 
   return (
@@ -78,10 +71,7 @@ export default function VerTurmasPage() {
         {/* Class Cards */}
         <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'} gap-10 px-4 mt-8`}>
           {/* Add Class Card */}
-          <div 
-            className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]"
-            onClick={handleAddClass} // Chama a função de redirecionamento
-          >
+          <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]">
             <div className="rounded-full p-4 mb-2">
               <div className="text-4xl sm:text-5xl font-bold">+</div>
             </div>
