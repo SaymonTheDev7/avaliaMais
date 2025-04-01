@@ -5,26 +5,32 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export function NotificationSettings() {
   return (
-    <Card className="mb-4 bg-white"> {/* Card com fundo branco */}
+    <Card className="mb-4 bg-white">
       <CardHeader>
-        <CardTitle className="text-[#02335E] text-2xl font-semibold">Notificações</CardTitle> {/* Título azul, um pouco menor */}
-        <CardDescription className="text-[#02335E] text-base">Gerencie suas preferências de notificação.</CardDescription> {/* Descrição azul um pouco menor */}
+        <CardTitle className="text-[#02335E] text-2xl font-semibold">Notificações</CardTitle>
+        <CardDescription className="text-[#02335E] text-base">
+          Gerencie suas preferências de notificação.
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4"> {/* Menor espaçamento entre as opções */}
+        <div className="grid gap-4">
           <div className="flex items-center space-x-3 p-3 rounded-lg">
             <Checkbox 
               id="notificacoesEmail" 
-              className="border-2 border-[#02335E] bg-white rounded-sm focus:ring-[#02335E] checked:bg-[#02335E]"  // Borda azul e foco azul
+              className="checkbox border-2 border-[#02335E] bg-white rounded-sm focus:ring-[#02335E]"
             />
-            <Label htmlFor="notificacoesEmail" className="text-[#02335E] text-lg font-medium">Notificações por E-mail</Label> {/* Texto azul e tamanho ajustado */}
+            <Label htmlFor="notificacoesEmail" className="text-[#02335E] text-lg font-medium">
+              Notificações por E-mail
+            </Label>
           </div>
           <div className="flex items-center space-x-3 p-3 rounded-lg">
             <Checkbox 
               id="notificacoesPush" 
-              className="border-2 border-[#02335E] bg-white rounded-sm focus:ring-[#02335E] checked:bg-[#02335E]"  // Borda azul e foco azul
+              className="checkbox border-2 border-[#02335E] bg-white rounded-sm focus:ring-[#02335E]"
             />
-            <Label htmlFor="notificacoesPush" className="text-[#02335E] text-lg font-medium">Notificações Push</Label> {/* Texto azul e tamanho ajustado */}
+            <Label htmlFor="notificacoesPush" className="text-[#02335E] text-lg font-medium">
+              Notificações Push
+            </Label>
           </div>
         </div>
       </CardContent>

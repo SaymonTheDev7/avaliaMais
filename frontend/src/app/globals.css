@@ -96,12 +96,23 @@ body {
   font-weight: 700;
 }
 
-/* Estiliza o fundo azul quando ativado */
-[data-state="checked"] {
-  background-color: #3b82f6 !important; /* Azul padrão do Tailwind (blue-500) */
+
+/* Apenas o Switch */
+.switch[data-state="checked"] {
+  background-color: #3b82f6 !important;
 }
 
-/* Mantém a bolinha branca mesmo quando ativado */
-[data-state="checked"] > span {
+.switch[data-state="checked"] > span {
   background-color: white !important;
 }
+
+/* Apenas a Checkbox */
+.checkbox[data-state="checked"] {
+  background-color: #02335E !important; /* Azul escuro apenas para o Checkbox */
+  border-color: #02335E !important;
+}
+
+.checkbox[data-state="checked"] > svg {
+  color: white !important; /* Ícone '✔' branco */
+}
+

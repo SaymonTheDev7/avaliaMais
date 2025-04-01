@@ -14,7 +14,7 @@ export function AccessibilitySettings() {
         <div className="grid gap-4">
           <div className="flex items-center justify-between text-lg">
             <Label htmlFor="highContrast" className="text-[#02335E] text-lg">Alto Contraste</Label>
-            <Switch />
+            <Switch className="switch" />
           </div>
         </div>
       </CardContent>
