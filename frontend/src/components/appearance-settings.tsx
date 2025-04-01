@@ -7,21 +7,21 @@ export function AppearanceSettings() {
   return (
     <Card className="mb-4">
       <CardHeader>
-        <CardTitle className="text-[#02335E] text-xl">Aparência</CardTitle>
-        <CardDescription className="text-[#02335E] text-lg">Personalize a aparência e o estilo do aplicativo.</CardDescription>
+        <CardTitle className="text-[var(--foreground)] text-xl">Aparência</CardTitle>
+        <CardDescription className="text-[var(--foreground)] text-lg">Personalize a aparência e o estilo do aplicativo.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="flex items-center space-x-2 text-lg">
-            <Label htmlFor="theme" className="text-[#02335E] text-lg">Tema</Label>
+          <div className="flex items-center justify-between text-lg">
+            <Label htmlFor="theme" className="text-[var(--foreground)] text-lg">Tema</Label>
             <Select>
-              <SelectTrigger id="theme">
+              <SelectTrigger id="theme" className="w-32 select-trigger">
                 <SelectValue placeholder="Sistema" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="system">Sistema</SelectItem>
-                <SelectItem value="light">Claro</SelectItem>
-                <SelectItem value="dark">Escuro</SelectItem>
+                <SelectItem value="system" className="select-item">Sistema</SelectItem>
+                <SelectItem value="light" className="select-item">Claro</SelectItem>
+                <SelectItem value="dark" className="select-item">Escuro</SelectItem>
               </SelectContent>
             </Select>
           </div>

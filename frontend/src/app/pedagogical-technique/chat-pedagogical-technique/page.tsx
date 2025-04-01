@@ -30,25 +30,25 @@ export default function ChatInterface() {
     ];
 
     return (
-        <div className="flex flex-col h-screen bg-background">
+        <div className="flex flex-col h-screen bg-[var(--color-background)]">
             <Header />
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
-                <div className="w-72 border-r border-border bg-card overflow-y-auto">
+                <div className="w-72 border-r border-[var(--color-border)] bg-[var(--color-card)] overflow-y-auto">
                     <div className="p-3">
                         <div className="relative">
-                            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                            <Search className="absolute left-3 top-3 h-4 w-4 text-[var(--color-muted-foreground)]" />
                             <Input
                                 placeholder="Search"
-                                className="pl-9 bg-muted"
+                                className="pl-9 bg-[var(--color-muted)]"
                             />
                         </div>
                     </div>
-                    <div className="divide-y divide-border">
+                    <div className="divide-y divide-[var(--color-border)]">
                         {contacts.map(contact => (
                             <div
                                 key={contact.id}
-                                className={`flex items-center p-3 hover:bg-muted cursor-pointer ${contact.active ? 'bg-muted' : ''}`}
+                                className={`flex items-center p-3 hover:bg-[var(--color-muted)] cursor-pointer ${contact.active ? 'bg-[var(--color-muted)]' : ''}`}
                             >
                                 <Avatar className="h-10 w-10">
                                     <AvatarImage src={`https://tryeasel.dev/placeholder.svg?width=40&height=40`} alt={contact.name} />
@@ -63,7 +63,7 @@ export default function ChatInterface() {
                 {/* Chat Area */}
                 <div className="flex-1 flex flex-col">
                     {/* Chat Header */}
-                    <div className="p-4 border-b border-border flex items-center">
+                    <div className="p-4 border-b border-[var(--color-border)] flex items-center">
                         <Avatar className="h-10 w-10">
                             <AvatarImage src="https://tryeasel.dev/placeholder.svg?width=40&height=40" alt="André Felipe Witt" />
                             <AvatarFallback>AF</AvatarFallback>
@@ -82,7 +82,7 @@ export default function ChatInterface() {
                             >
                                 <div className={`p-3 rounded-lg ${message.sender === 'user'
                                     ? 'bg-[#002855] text-white rounded-tr-none'
-                                    : 'bg-muted rounded-tl-none'
+                                    : 'bg-[var(--color-muted)] rounded-tl-none'
                                     }`}
                                     style={{
                                         maxWidth: '70%',
@@ -108,7 +108,7 @@ export default function ChatInterface() {
                     </div>
 
                     {/* Message Input */}
-                    <div className="p-4 border-t border-border flex items-center">
+                    <div className="p-4 border-t border-[var(--color-border)] flex items-center">
                         <Button variant="ghost" size="icon">
                             <Paperclip className="h-5 w-5" />
                         </Button>

@@ -4,7 +4,7 @@ import LoginForm from '@/components/login-form'; // Importa se estiver separado
 export default function LoginPage() {
   return (
     <div className="relative flex h-screen">
-      <div className="absolute top-0 left-0 w-screen bg-[#003366] p-4 z-20">
+      <div className="absolute top-0 left-0 w-screen bg-[var(--background-foreground)] p-4 z-20">
         <div className="flex items-center">
           <Image
             className="ml-15"
@@ -28,15 +28,15 @@ export default function LoginPage() {
         </div>
 
         <div className="absolute inset-0 flex items-center z-10 p-16">
-          <div className="text-white text-4xl md:text-5xl font-bold select-none">
+          <div className="text-[var(--color-primary-foreground)] text-4xl md:text-5xl font-bold select-none">
             <p>O estudo é a</p>
-            <p className="text-[#FF5722]">BASE</p>
+            <p className="text-[var(--color-primary)]">BASE</p>
             <p>do sucesso!</p>
           </div>
         </div>
       </div>
 
-      <div className="w-1/3 flex items-center justify-center p-8 ">
+      <div className="w-1/3 flex items-center justify-center p-8">
         <LoginForm />
       </div>
     </div>

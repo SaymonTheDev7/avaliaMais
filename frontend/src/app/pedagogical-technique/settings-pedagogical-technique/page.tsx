@@ -12,7 +12,7 @@ const PaginaDeAjustes = () => {
         <>
             <Header />
             <div className="container mx-auto py-10">
-                <h1 className="text-4xl font-bold mb-6 text-[#02335E]">Ajustes</h1>
+                <h1 className="text-4xl font-bold mb-6 text-[var(--color-foreground)]">Ajustes</h1>
                 <div className="mb-6">
                     <AppearanceSettings />
                 </div>
@@ -22,7 +22,7 @@ const PaginaDeAjustes = () => {
                 <div className="mb-6">
                     <NotificationSettings />
                 </div>
-                <Button className=" bg-[#02335E] hover:bg-[#011E3D] text-white text-xl py-3 px-8 rounded-lg">
+                <Button className="bg-[var(--background-foreground)] hover:bg-[var(--foreground)] text-[var(--color-primary-foreground)] text-xl py-3 px-8 rounded-lg">
                     Salvar Ajustes
                 </Button>
             </div>
