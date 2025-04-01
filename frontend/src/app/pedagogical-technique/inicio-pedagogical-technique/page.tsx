@@ -1,7 +1,7 @@
 "use client";
 
-
 import React from 'react';
+import Link from 'next/link'; // Importando Link
 import Header from '@/components/header';
 import { Users, Book, Bus, GraduationCap, Home, Apple } from 'lucide-react';
 
@@ -25,9 +25,6 @@ export default function InicioPedagogicalTechnique() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      {/* Increased padding on the sides */}
-      <main className="container mx-auto py-8 px-12">
-
       <main className="container mx-auto py-8 px-12"> {/* Increased py and px */}
         <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
           <span className="font-bold">INÍCIO</span>
