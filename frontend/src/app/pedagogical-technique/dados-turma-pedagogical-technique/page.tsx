@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-muted">
       <Header />
-      <div className="flex items-center mb-6 px-4">
+      <div className="flex items-center mb-6 px-4 mt-14 ml-15">
           <a href="#" className="text-[#003366] mr-4">
             <ChevronLeft size={28} strokeWidth={2.5} />
           </a>
