@@ -51,20 +51,21 @@ export default function ClassForm() {
 
           {/* Nome da turma */}
           <div>
-            <label className="block text-lg font-medium mb-2">Nome da turma</label>
+          <label className="block text-lg font-medium mb-2">Quantidade de alunos</label>
             <Input
               className="bg-white text-xl text-[#003366] rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary py-4"
-              defaultValue="MI74"
+              defaultValue="0"
             />
           </div>
 
           {/* Quantidade de alunos */}
           <div>
-            <label className="block text-lg font-medium mb-2">Quantidade de alunos</label>
+          <label className="block text-lg font-medium mb-2">Nome da turma</label>
             <Input
               className="bg-white text-xl text-[#003366] rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary py-4"
-              defaultValue="0"
+              defaultValue="MI74"
             />
+            
           </div>
 
           {/* Alunos */}
