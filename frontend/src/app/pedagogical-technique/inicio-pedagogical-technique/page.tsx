@@ -1,7 +1,7 @@
 "use client";
 
+
 import React from 'react';
-import Link from 'next/link'; // Importando Link
 import Header from '@/components/header';
 import { Users, Book, Bus, GraduationCap, Home, Apple } from 'lucide-react';
 
@@ -25,6 +25,7 @@ export default function InicioPedagogicalTechnique() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
+      {/* Increased padding on the sides */}
       <main className="container mx-auto py-8 px-12"> {/* Increased py and px */}
         <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
           <span className="font-bold">INÍCIO</span>
@@ -36,21 +37,11 @@ export default function InicioPedagogicalTechnique() {
             icon={<Users style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#29ABE2]"
           />
-
-          <Link href="/pedagogical-technique/turmas-pedagogical-technique">
-            <DashboardCard
-              title="Ver turmas"
-              icon={<Book style={{ width: "32px", height: "32px", color: "white" }} />}
-              color="bg-[#808080]"
-            />
-          </Link>
-
           <DashboardCard
             title="Ver turmas"
             icon={<Book style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#808080]"
           />
-
           <DashboardCard
             title="Ver alunos"
             icon={<Bus style={{ width: "32px", height: "32px", color: "white" }} />}
