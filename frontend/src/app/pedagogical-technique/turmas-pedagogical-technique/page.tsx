@@ -35,8 +35,8 @@ export default function VerTurmasPage() {
             </div>
             <input
               type="text"
-              placeholder="Pesquise"
-              className="w-full pl-10 pr-10 py-3 bg-gray-200 rounded-md focus:outline-none"
+              placeholder="Pesquise algo"
+              className="w-full pl-10 pr-10 py-3 bg-gray-200 rounded-md focus:outline-none text-sm sm:text-base"
               value={searchTerm}
               onChange={handleSearchChange}
             />
