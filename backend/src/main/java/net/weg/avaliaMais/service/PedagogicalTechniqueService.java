@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -27,6 +28,7 @@ public class PedagogicalTechniqueService {
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
     private final SupervisorRepository supervisorRepository;
+    private final EventRepository eventRepository;
 
     public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
         PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueRepository.save(pedagogicalTechniquePostRequestDTO.converter());
@@ -128,5 +130,15 @@ public class PedagogicalTechniqueService {
         if (email != null) filtros = filtros.and(SupervisorSpecification.hasEmail(email));
 
         return supervisorRepository.findAll(filtros, pageable).map(SupervisorResponseDTO::new);
+    }
+
+    public Page<EventResponseDTO> findEvents(String name, LocalDate date, String status, String step, Pageable pageable) {
+        Specification<Event> filters = Specification.where(null);
+        if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));
+        if (date != null) filters = filters.and(EventSpecification.hasDate(date));
+        if (status != null && !status.trim().isEmpty()) filters = filters.and(EventSpecification.hasStatus(status));
+        if (step != null && !step.trim().isEmpty()) filters = filters.and(EventSpecification.hasStep(step));
+
+        return eventRepository.findAll(filters, pageable).map(EventResponseDTO::new);
     }
 }

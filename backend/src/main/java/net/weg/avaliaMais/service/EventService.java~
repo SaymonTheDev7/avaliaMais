@@ -82,7 +82,7 @@ public class EventService {
         eventRepository.delete(event);
         return "Evento deletado com sucesso";
     }
-
+    
     public Page<EventResponseDTO> findEvents(String name, LocalDate date, String status, String step, Pageable pageable) {
         Specification<Event> filters = Specification.where(null);
         if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));

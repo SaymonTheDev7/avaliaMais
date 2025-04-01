@@ -89,10 +89,4 @@ public class TeacherController {
         Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4); // Chama o serviço para retornar todos os professores
         return ResponseEntity.ok(teacherResponseDTOs); // Retorna 200 OK com os dados dos professores
     }
-
-    @GetMapping("/find-all/classes")
-    public ResponseEntity<Page<TeacherResponseDTO>> findAllClasses(@RequestParam int page) {
-        Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4);
-        return ResponseEntity.ok(teacherResponseDTOs);
-    }
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.EventPostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.EventResponseDTO;
 import net.weg.avaliaMais.service.EventService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,15 @@ public class EventController {
         return ResponseEntity.ok(eventResponseDTO);
     }
 
-    @GetMapping("all")
-    public ResponseEntity<List<EventResponseDTO>> getAllEvents() {
-        List<EventResponseDTO> events = eventService.getAllEvents();
+    @GetMapping("findAll"
+    )
+    public ResponseEntity<Page<EventResponseDTO>> findAllEvents(@RequestParam int page, @RequestParam int size) {
+        Page<EventResponseDTO> events = eventService.findAllEvents(page, size);
         return ResponseEntity.ok(events);
+    }
+
+    public ResponseEntity<String> deleteEvent(@PathVariable UUID uuid) {
+        String response = eventService.deleteByUUID(uuid);
+        return ResponseEntity.ok(response);
     }
 }

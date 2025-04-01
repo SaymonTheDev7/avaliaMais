@@ -69,9 +69,5 @@ public class TeacherService {
         Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
         return teacherPage.map(TeacherResponseDTO::new);
     }
-
-    public Page<ClassResponseDTO> findAllClasses(int page, int size) {
-        Page<ClassSchool> classPage = classRepository.findAll(PageRequest.of(page, size));
-        return classPage.map(ClassResponseDTO::new);
-    }
+    
 }
