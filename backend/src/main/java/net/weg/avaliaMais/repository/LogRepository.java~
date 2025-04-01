@@ -1,2 +1,0 @@
-package net.weg.avaliaMais.repository;public interface LogRepository {
-}
