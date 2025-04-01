@@ -69,5 +69,5 @@ public class TeacherService {
         Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
         return teacherPage.map(TeacherResponseDTO::new);
     }
-    
+
 }
