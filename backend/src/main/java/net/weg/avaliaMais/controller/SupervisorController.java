@@ -24,14 +24,7 @@ import java.util.UUID;
 public class SupervisorController {
 
     private final SupervisorService supervisorService;
-
-<<<<<<< HEAD
-    @Operation(summary = "Find all Pedagogical Advisors", description = "Retrieve all pedagogical advisors with pagination")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of pedagogical advisors"),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters")
-    })
-=======
+    
     @GetMapping("/find/advisor")
     public ResponseEntity<SupervisorResponseDTO> findPedagogicalAdvisorPerUsernameOrEmail(
             @RequestParam String username, @RequestParam String email) {
@@ -62,13 +55,6 @@ public class SupervisorController {
         return ResponseEntity.ok(supervisorService.findSupervisorPerUsernameOrEmail(username, email));
     }
 
-    @GetMapping("/find/class")
-    public ResponseEntity<SupervisorResponseDTO> findClassPerShift(@RequestParam String workShift) {
-        return ResponseEntity.ok(supervisorService.findClassPerShift(workShift));
-    }
-
-
->>>>>>> 621fc38809b22b7904290100618ec88d5a60329c
     @GetMapping("/find/all/advisors")
     public ResponseEntity<Page<SupervisorResponseDTO>> findAllPedagogicalAdvisors(@RequestParam int page) {
         Page<SupervisorResponseDTO> pedagogicalAdvisors = supervisorService.findAllPedagogicalAdvisors(page, 4);
@@ -235,4 +221,13 @@ public class SupervisorController {
         Page<CourseResponseDTO> courses = supervisorService.findCourses(name, shift, type, pageable);
         return ResponseEntity.ok(courses);
     }
+
+    public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findAdvisors(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(defaultValue = "0") int page) {
+                Pageable pageable = PageRequest.of(page, 10);
+                Page<PedagogicalAdvisorResponseDTO> advisors = supervisorService.findPedagogicalAdvisor(name, email, pageable);
+                return ResponseEntity.ok(advisors);
+            }
 }
