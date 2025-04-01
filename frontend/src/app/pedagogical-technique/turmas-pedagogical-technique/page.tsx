@@ -2,14 +2,39 @@
 
 import React, { useState } from 'react';
 import Header from '@/components/header';
-import { Search, Filter, ChevronLeft } from 'lucide-react';
+import { Search, Filter, User, X, ChevronLeft } from 'lucide-react';
+
+const classImages = [
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%234285F4&fg=%23FFD700',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%23FF5722&fg=%23FFFFFF',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%232196F3&fg=%23FFFFFF',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%23009688&fg=%23FFFFFF',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%233F51B5&fg=%23FFFFFF',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%2300BCD4&fg=%23FFFFFF',
+  'https://tryeasel.dev/placeholder.svg?width=400&height=96&text=&bg=%23607D8B&fg=%23FFFFFF',
+];
+
+const classData = [
+  { id: 1, name: 'WF-78 PSIN 2024/1', students: 21, time: '13:40-22:00', image: classImages[0] },
+  { id: 2, name: 'MQ-75 PSIN 2024/2', students: 21, time: '13:40-22:00', image: classImages[1] },
+  { id: 3, name: 'JB-76 PSIN 2023/2', students: 21, time: '13:40-22:00', image: classImages[2] },
+  { id: 4, name: 'MI-75 PSIN 2023/2', students: 21, time: '13:40-22:00', image: classImages[3] },
+  { id: 5, name: 'FG-75 PSIN 2023/2', students: 21, time: '13:40-22:00', image: classImages[4] },
+  { id: 6, name: 'TP-74 PSIN 2023/2', students: 21, time: '13:40-22:00', image: classImages[5] },
+  { id: 7, name: 'FA-73 PSIN 2023/2', students: 21, time: '13:40-22:00', image: classImages[6] },
+];
 
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [classList, setClassList] = useState(classData);
   const [viewMode, setViewMode] = useState('grid');
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleRemoveClass = (id: number) => {
+    setClassList(classList.filter(item => item.id !== id));
   };
 
   return (
@@ -78,7 +103,37 @@ export default function VerTurmasPage() {
             <div className="font-medium text-xl sm:text-2xl text-center">Adicionar turma</div>
           </div>
 
-          {/* No class data */}
+          {classList.map((item) => (
+            <div key={item.id} className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]">
+              {/* Class image header */}
+              <div className="h-15 relative overflow-hidden bg-gray-400">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Class info */}
+              <div className="p-4 mt-2">
+                <h3 className="text-xl sm:text-2xl font-bold truncate">{item.name}</h3>
+                <div className="flex items-center text-base mt-3">
+                  <User className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
+                  <span>{item.students}</span>
+                  <span className="mx-2">-</span>
+                  <span>{item.time}</span>
+                </div>
+
+                {/* Remove button */}
+                <button
+                  onClick={() => handleRemoveClass(item.id)}
+                  className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
+                >
+                  <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
