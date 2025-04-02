@@ -22,13 +22,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @RequiredArgsConstructor
 public class PedagogicalTechniqueService {
     private final PedagogicalTechniqueRepository pedagogicalTechniqueRepository;
-    private final PedagogicalAdvisorRepository pedagogicalAdvisorRepository;
-    private final TeacherRepository teacherRepository;
-    private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
-    private final ClassRepository classRepository;
-    private final SupervisorRepository supervisorRepository;
-    private final EventRepository eventRepository;
+
 
     public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO dto) {
         return pedagogicalTechniqueRepository.save(dto.converter()).toDto();
@@ -62,15 +56,11 @@ public class PedagogicalTechniqueService {
         return pedagogicalTechniqueRepository.findAll(PageRequest.of(page, size)).map(PedagogicalTechniqueResponseDTO::new);
     }
 
-    public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisors(int page, int size) {
-        return pedagogicalAdvisorRepository.findAll(PageRequest.of(page, size)).map(PedagogicalAdvisorResponseDTO::new);
-    }
-
     private <T> Specification<T> defaultSpecification() {
         return where(null);
     }
 
-    public Page<PedagogicalTechniqueResponseDTO> findPedagogicalTechnique(String name, String email, Pageable pageable) {
+    public Page<PedagogicalTechniqueResponseDTO> findAllPedagogicalTechniqueSpecification(String name, String email, Pageable pageable) {
         Specification<PedagogicalTechnique> filtros = where(null);
         if (name != null) filtros = filtros.and(PedagogicalTechniqueSpecification.hasName(name));
         if (email != null) filtros = filtros.and(PedagogicalTechniqueSpecification.hasEmail(email));

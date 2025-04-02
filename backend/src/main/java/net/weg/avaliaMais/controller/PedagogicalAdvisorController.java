@@ -88,35 +88,35 @@ public class PedagogicalAdvisorController {
             @RequestParam(required = false) String shift,
             @RequestParam(required = false) String location,
             Pageable pageable) {
-        return ResponseEntity.ok(classService.findClasses(year, course, shift, location, pageable));
+        return ResponseEntity.ok(classService.findAllClassesSpecification(year, course, shift, location, pageable));
     }
 
     @GetMapping("/pedagogical-advisors")
     @Operation(summary = "Buscar conselheiros pedagógicos", description = "Busca conselheiros pedagógicos por nome e email")
-    public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findPedagogicalAdvisors(
+    public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findAllPedagogicalAdvisorsSpecificatiom(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             Pageable pageable) {
-        return ResponseEntity.ok(pedagogicalAdvisorService.findPedagogicalAdvisor(name, email, pageable));
+        return ResponseEntity.ok(pedagogicalAdvisorService.findAllPedagogicalAdvisorSpecification(name, email, pageable));
     }
 
     @GetMapping("/pedagogical-techniques")
     @Operation(summary = "Buscar técnicas pedagógicas", description = "Busca técnicas pedagógicas por nome e email")
-    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findPedagogicalTechniques(
+    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findAllPedagogicalTechniquesSpecification(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             Pageable pageable) {
-        return ResponseEntity.ok(pedagogicalTechniqueService.findPedagogicalTechnique(name, email, pageable));
+        return ResponseEntity.ok(pedagogicalTechniqueService.findAllPedagogicalTechniqueSpecification(name, email, pageable));
     }
 
     @GetMapping("/teachers")
     @Operation(summary = "Buscar professores", description = "Busca professores por nome, email e curso")
-    public ResponseEntity<Page<TeacherResponseDTO>> findTeachers(
+    public ResponseEntity<Page<TeacherResponseDTO>> findAllTeachersSpecification(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String course,
             Pageable pageable) {
-        return ResponseEntity.ok(teacherService.findTeachers(name, email, course, pageable));
+        return ResponseEntity.ok(teacherService.findAllTeachersSpecification(name, email, course, pageable));
     }
 
     @GetMapping("/students")
@@ -127,7 +127,7 @@ public class PedagogicalAdvisorController {
             @RequestParam(required = false) UUID classUuid,
             @RequestParam(required = false) String course,
             Pageable pageable) {
-        return ResponseEntity.ok(studentService.findStudents(name, email, classUuid, course, pageable));
+        return ResponseEntity.ok(studentService.findAllStudentsSpecification(name, email, classUuid, course, pageable));
     }
 
     @GetMapping("/courses")
@@ -137,27 +137,27 @@ public class PedagogicalAdvisorController {
             @RequestParam(required = false) String shift,
             @RequestParam(required = false) String type,
             Pageable pageable) {
-        return ResponseEntity.ok(courseService.findCourses(name, shift, type, pageable));
+        return ResponseEntity.ok(courseService.findAllCoursesSpecification(name, shift, type, pageable));
     }
 
     @GetMapping("/supervisors")
     @Operation(summary = "Buscar supervisores", description = "Busca supervisores por nome e email")
-    public ResponseEntity<Page<SupervisorResponseDTO>> findSupervisors(
+    public ResponseEntity<Page<SupervisorResponseDTO>> findAllSupervisorsSpecificatin(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             Pageable pageable) {
-        return ResponseEntity.ok(supervisorService.findSupervisors(name, email, pageable));
+        return ResponseEntity.ok(supervisorService.findAllSupervisorsSpecification(name, email, pageable));
     }
 
     @GetMapping("/events")
     @Operation(summary = "Buscar eventos", description = "Busca eventos por nome, data, status e etapa")
-    public ResponseEntity<Page<EventResponseDTO>> findEvents(
+    public ResponseEntity<Page<EventResponseDTO>> findAllEventsSpecification(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) LocalDate date,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String step,
             Pageable pageable) {
-        return ResponseEntity.ok(eventService.findEvents(name, date, status, step, pageable));
+        return ResponseEntity.ok(eventService.findAllEventsSpecification(name, date, status, step, pageable));
     }
 
 }

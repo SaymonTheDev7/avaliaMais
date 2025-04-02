@@ -165,12 +165,20 @@ public class ClassController {
     @ApiResponse(responseCode = "204", description = "Nenhuma classe encontrada para os filtros informados")
     @ApiResponse(responseCode = "400", description = "Erro na requisição")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
-    public ResponseEntity<Page<ClassResponseDTO>> findByFiltros(
+    public ResponseEntity<Page<ClassResponseDTO>> findAllClassesSpecification(
             @RequestParam(required = false) @Parameter(description = "Ano da turma para filtro", required = false) Integer year,
             @RequestParam(required = false) @Parameter(description = "Localização da turma para filtro", required = false) String location,
             @RequestParam(required = false) @Parameter(description = "Curso da turma para filtro", required = false) String course,
             @RequestParam(required = false) @Parameter(description = "Turno da turma para filtro", required = false) String shift,
             Pageable pageable) {
-        return null;
+
+        Page<ClassResponseDTO> classes = classService.findAllClassesSpecification(year, course, shift, location, pageable);
+
+        if (classes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(classes);
     }
+
 }

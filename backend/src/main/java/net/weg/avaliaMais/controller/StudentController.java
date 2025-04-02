@@ -1,6 +1,9 @@
 package net.weg.avaliaMais.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -84,5 +87,24 @@ public class StudentController {
         Pageable pageable = PageRequest.of(page, size);
         Page<ClassResponseDTO> studentClasses = studentService.findStudentClasses(studentUuid, year, course, shift, location, pageable);
         return ResponseEntity.ok(studentClasses);
+    }
+
+    @GetMapping("/advanced-filtration/students")
+    @Operation(summary = "Filtragem avançada de alunos", description = "Filtra alunos com base nos parâmetros fornecidos.")
+    @Tag(name = "Students", description = "Operações relacionadas com a busca de alunos com filtragem avançada")
+    @ApiResponse(responseCode = "200", description = "Alunos filtrados retornados com sucesso", content = @Content(schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "204", description = "Nenhum aluno encontrado para os filtros informados")
+    @ApiResponse(responseCode = "400", description = "Erro na requisição")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    public ResponseEntity<Page<StudentResponseDTO>> findAllStudentsSpecification(
+            @RequestParam(required = false) @Parameter(description = "Nome do aluno para filtro", required = false) String name,
+            @RequestParam(required = false) @Parameter(description = "Email do aluno para filtro", required = false) String email,
+            @RequestParam(required = false) @Parameter(description = "UUID da turma para filtro", required = false) UUID classUuid,
+            @RequestParam(required = false) @Parameter(description = "Curso do aluno para filtro", required = false) String course,
+            Pageable pageable) {
+
+        Page<StudentResponseDTO> students = studentService.findAllStudentsSpecification(name, email, classUuid, course, pageable);
+
+        return students.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(students);
     }
 }

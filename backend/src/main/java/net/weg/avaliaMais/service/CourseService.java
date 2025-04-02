@@ -135,7 +135,7 @@ public class CourseService {
         return coursePage.map(CourseResponseDTO::new);
     }
 
-    public Page<CourseResponseDTO> findCourses(String name, String shift, String type, Pageable pageable) {
+    public Page<CourseResponseDTO> findAllCoursesSpecification(String name, String shift, String type, Pageable pageable) {
         Specification<Course> filtros = where(null);
         if (name != null) filtros = filtros.and(CourseSpecification.hasName(name));
         if (shift != null) filtros = filtros.and(CourseSpecification.hasShift(shift));

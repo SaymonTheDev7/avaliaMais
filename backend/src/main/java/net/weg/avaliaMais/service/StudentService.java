@@ -35,10 +35,10 @@ public class StudentService {
 
     public StudentResponseDTO addStudent(StudentPostRequestDTO studentPostRequestDTO) {
         List<ClassSchool> allClasses = classRepository.findAll();
-        List<Course> allCourses = courseRepository.findAll();  // Buscando todos os cursos
-        Student studentSave = studentPostRequestDTO.converter(allClasses, allCourses);  // Esperando 2 argumentos
-        studentSave = studentRepository.save(studentSave);  // Salvando o aluno
-        return studentSave.toDto();  // Retornando o DTO
+        List<Course> allCourses = courseRepository.findAll();
+        Student studentSave = studentPostRequestDTO.converter(allClasses, allCourses);
+        studentSave = studentRepository.save(studentSave);
+        return studentSave.toDto();
     }
 
 
@@ -107,7 +107,7 @@ public class StudentService {
         return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
     }
 
-    public Page<StudentResponseDTO> findStudents(String name, String email, UUID classUuid, String course, Pageable pageable) {
+    public Page<StudentResponseDTO> findAllStudentsSpecification(String name, String email, UUID classUuid, String course, Pageable pageable) {
         Specification<Student> filtros = where(null);
         if (name != null) filtros = filtros.and(StudentSpecification.hasName(name));
         if (email != null) filtros = filtros.and(StudentSpecification.hasEmail(email));

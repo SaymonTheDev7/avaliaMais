@@ -228,7 +228,7 @@ public class ClassService {
      * @throws RuntimeException Caso ocorra algum erro durante a execução da consulta.
      */
 
-    public Page<ClassResponseDTO> findClasses(Integer year, String course, String shift, String location, Pageable pageable) {
+    public Page<ClassResponseDTO> findAllClassesSpecification(Integer year, String course, String shift, String location, Pageable pageable) {
         Specification<ClassSchool> filtros = where(null);
         if (year != null) filtros = filtros.and(ClassSpecification.hasYear(year));
         if (course != null) filtros = filtros.and(ClassSpecification.hasCourse(course));

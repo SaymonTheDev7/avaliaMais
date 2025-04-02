@@ -1,10 +1,12 @@
 package net.weg.avaliaMais.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.CoursePostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.CourseResponseDTO;
 import net.weg.avaliaMais.service.CourseService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,11 +78,29 @@ public class CourseController {
                 : ResponseEntity.ok(course);
     }
 
-    @GetMapping("/findAll")
-    @Operation(summary = "Listar todos os cursos", description = "Retorna uma lista paginada de todos os cursos")
-    @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso", content = @Content(schema = @Schema(implementation = Page.class)))
-    public ResponseEntity<Page<CourseResponseDTO>> findAllCourses(@RequestParam int page, @RequestParam int size) {
-        Page<CourseResponseDTO> courses = courseService.findAllCourses(page, size);
+    @GetMapping("/advanced-filtration")
+    @Operation(summary = "Filtragem avançada de cursos", description = "Filtra cursos com base nos parâmetros de nome, turno e tipo")
+    @Tag(name = "Courses", description = "Operações relacionadas com a busca de cursos com filtragem avançada")
+    @ApiResponse(responseCode = "200", description = "Cursos filtrados retornados com sucesso", content = @Content(schema = @Schema(implementation = Page.class)))
+    @ApiResponse(responseCode = "204", description = "Nenhum curso encontrado para os filtros informados")
+    @ApiResponse(responseCode = "400", description = "Erro na requisição")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    public ResponseEntity<Page<CourseResponseDTO>> findAllCoursesSpecification(
+            @RequestParam(required = false) @Parameter(description = "Nome do curso para filtro", required = false) String name,
+            @RequestParam(required = false) @Parameter(description = "Turno do curso para filtro", required = false) String shift,
+            @RequestParam(required = false) @Parameter(description = "Tipo do curso para filtro", required = false) String type,
+            Pageable pageable) {
+
+        Page<CourseResponseDTO> courses = courseService.findAllCoursesSpecification(name, shift, type, pageable);
+
+        if (courses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.ok(courses);
     }
+
+
+
+
 }

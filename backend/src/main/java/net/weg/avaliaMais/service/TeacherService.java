@@ -73,7 +73,7 @@ public class TeacherService {
         return teacherPage.map(TeacherResponseDTO::new);
     }
 
-    public Page<TeacherResponseDTO> findTeachers(String name, String email, String course, Pageable pageable) {
+    public Page<TeacherResponseDTO> findAllTeachersSpecification(String name, String email, String course, Pageable pageable) {
         Specification<Teacher> filtros = where(null);
         if (name != null) filtros = filtros.and(TeacherSpecification.hasName(name));
         if (email != null) filtros = filtros.and(TeacherSpecification.hasEmail(email));

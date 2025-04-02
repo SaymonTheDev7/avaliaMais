@@ -52,7 +52,7 @@ public class PedagogicalAdvisorService {
                 .orElseThrow(() -> new RuntimeException("Orientador não encontrado"));
     }
 
-    public Page<PedagogicalAdvisorResponseDTO> findPedagogicalAdvisor(String name, String email, Pageable pageable) {
+    public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisorSpecification(String name, String email, Pageable pageable) {
         Specification<PedagogicalAdvisor> filtros = where(null);
         if (name != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasName(name));
         if (email != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasEmail(email));

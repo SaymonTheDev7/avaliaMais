@@ -21,7 +21,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    public EventResponseDTO createEvent(EventPostRequestDTO eventPostRequestDTO) {
+    public EventResponseDTO addEvent(EventPostRequestDTO eventPostRequestDTO) {
         Event event = new Event();
         event.setName(eventPostRequestDTO.name());  // Correção aqui
         event.setDescription(eventPostRequestDTO.description());  // Correção aqui
@@ -36,7 +36,7 @@ public class EventService {
         return new EventResponseDTO(event);
     }
 
-    public EventResponseDTO updateEvent(UUID uuid, EventPostRequestDTO eventPostRequestDTO) {
+    public EventResponseDTO updateEventPerUUID(UUID uuid, EventPostRequestDTO eventPostRequestDTO) {
         Event existingEvent = eventRepository.findByUuid(uuid);
 
         if (existingEvent == null) {
@@ -56,7 +56,7 @@ public class EventService {
         return new EventResponseDTO(existingEvent);
     }
 
-    public EventResponseDTO getEventByUUID(UUID uuid) {
+    public EventResponseDTO findEventPerUUID(UUID uuid) {
         Event event = eventRepository.findByUuid(uuid);
         if (event == null) {
             throw new RuntimeException("Evento não encontrado");
@@ -70,7 +70,7 @@ public class EventService {
         return eventPage.map(EventResponseDTO::new);
     }
 
-    public String deleteByUUID(UUID uuid) {
+    public String deleteEventPerUUID(UUID uuid) {
         Event event = eventRepository.findByUuid(uuid);
         if (event == null) {
             return "Evento não encontrado";
@@ -79,7 +79,7 @@ public class EventService {
         return "Evento deletado com sucesso";
     }
 
-    public Page<EventResponseDTO> findEvents(String name, LocalDate date, String status, String step, Pageable pageable) {
+    public Page<EventResponseDTO> findAllEventsSpecification(String name, LocalDate date, String status, String step, Pageable pageable) {
         Specification<Event> filters = Specification.where(null);
         if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));
         if (date != null) filters = filters.and(EventSpecification.hasDate(date));
