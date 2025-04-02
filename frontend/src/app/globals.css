@@ -97,9 +97,18 @@ a {
   text-decoration: none;
 }
 
+h1 {
+  font-weight: bold;
+}
+
+
 button, input, select, textarea {
   font-family: inherit;
   font-weight: inherit;
+}
+
+.chevron {
+  color: var(--foreground) !important;
 }
 
 .switch[data-state="checked"] {
