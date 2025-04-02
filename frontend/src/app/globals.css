@@ -17,7 +17,7 @@
   --secondary: #00bcd4;
   --secondary-foreground: #232323;
   --muted: #f5f5f5;
-  --muted-foreground: #757575;
+  --muted-foreground: #dbd8d8;
   --accent: #FF5722;
   --accent-foreground: #ffffff;
   --destructive: #d32f2f;
@@ -110,6 +110,10 @@ button, input, select, textarea {
   background-color: white !important;
 }
 
+.switch[data-state="unchecked"] > span {
+  background-color: var(--foreground) !important;
+}
+
 .select-item {
   background-color: var(--background) !important;
   color: var(--card-foreground) !important;
@@ -127,4 +131,11 @@ button, input, select, textarea {
 
 .select-trigger .select-icon {
   color: var(--primary-foreground) !important;
+}
+
+.select-trigger:focus, 
+.select-trigger:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--border) !important; /* Garante que a borda não fique laranja */
 }

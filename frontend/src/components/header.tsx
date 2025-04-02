@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Menu, Bell } from 'lucide-react';
+import { Menu, Bell, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
@@ -25,10 +25,10 @@ export default function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-white"
+            className="hover:bg-white/10 p-2 rounded-md"
             onClick={toggleSidebar}
           >
-            <Menu style={{ width: "32px", height: "32px" }} />
+            <Menu style={{ width: "32px", height: "32px", color: "white", strokeWidth: 2 }} />
           </Button>
           <div className="flex items-center">
             <Image
@@ -41,8 +41,12 @@ export default function Header() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="text-white">
-            <Bell style={{ width: "32px", height: "32px" }} />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="hover:bg-white/10 p-2 rounded-md"
+          >
+            <Bell style={{ width: "32px", height: "32px", color: "white", strokeWidth: 2 }} />
           </Button>
           <Avatar className="h-10 w-10 border-2 border-white">
             <AvatarImage
@@ -60,5 +64,3 @@ export default function Header() {
     </div>
   );
 }
-
-
