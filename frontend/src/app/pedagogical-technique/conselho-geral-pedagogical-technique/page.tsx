@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import { Search, Filter, User, X, ChevronLeft } from "lucide-react";
+import { CheckCircle, Clock } from "lucide-react";
 
 const classColors = [
   "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF", "#33FFF5", "#F5FF33", "#FF8C33", "#8C33FF", "#33FFA1",
@@ -41,18 +42,18 @@ const getRandomColor = () => {
 };
 
 const initialClassData = [
-  { id: 1, name: "WF-78 PSIN 2024/1", students: 21, time: "13:40-22:00" },
-  { id: 2, name: "MQ-75 PSIN 2024/2", students: 21, time: "13:40-22:00" },
-  { id: 3, name: "JB-76 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 4, name: "MI-75 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 5, name: "FG-75 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 6, name: "TP-74 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 7, name: "FA-73 PSIN 2023/2", students: 21, time: "13:40-22:00" },
+  { id: 1, name: "WF-78 PSIN 2024/1", students: 21, time: "13:40-22:00", status: 'active' },
+  { id: 2, name: "MQ-75 PSIN 2024/2", students: 21, time: "13:40-22:00", status: 'pending' },
+  { id: 3, name: "JB-76 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'pending' },
+  { id: 4, name: "MI-75 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'active' },
+  { id: 5, name: "FG-75 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'pending' },
+  { id: 6, name: "TP-74 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'active' },
+  { id: 7, name: "FA-73 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'pending' },
 ];
 
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [classList, setClassList] = useState<{ id: number; name: string; students: number; time: string; color: string }[]>([]);
+  const [classList, setClassList] = useState<{ id: number; name: string; students: number; time: string; color: string; status: string }[]>([]);
   const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
@@ -80,12 +81,17 @@ export default function VerTurmasPage() {
             <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
-            VER TURMAS
+            CONSELHO GERAL - <span className="text-2xl font-normal text-[#003366] uppercase"> Em Andamento</span>
           </h1>
+          <div className="ml-auto">
+            <button className="bg-[#003366] text-white px-4 py-2 rounded-md sm:text-xl">
+              Finalizar conselho
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
-        <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
+          <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
               <Search className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366]" />
             </div>
@@ -126,13 +132,6 @@ export default function VerTurmasPage() {
         </div>
 
         <div className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : "grid-cols-1"} gap-10 px-4 mt-8`}>
-          <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]">
-            <div className="rounded-full p-4 mb-2">
-              <div className="text-4xl sm:text-5xl font-bold">+</div>
-            </div>
-            <div className="font-medium text-xl sm:text-2xl text-center">Adicionar turma</div>
-          </div>
-
           {filteredClasses.map((item) => (
             <div key={item.id} className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]">
               <div className="h-20" style={{ backgroundColor: item.color }}></div>
@@ -144,14 +143,15 @@ export default function VerTurmasPage() {
                   <span className="mx-2">-</span>
                   <span>{item.time}</span>
                 </div>
-
-                <button
-                  onClick={() => handleRemoveClass(item.id)}
-                  className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
-                >
-                  <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
-                </button>
               </div>
+              <div className="absolute bottom-2 right-2">
+                {item.status === 'active' ? (
+                  <CheckCircle className="h-6 w-6 text-green-500" />
+                ) : (
+                  <Clock className="h-6 w-6 text-yellow-500" />
+                )}
+              </div>
+
             </div>
           ))}
         </div>
