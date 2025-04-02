@@ -1,11 +1,13 @@
 package net.weg.avaliaMais.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.TeacherPostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.TeacherResponseDTO;
 import net.weg.avaliaMais.service.TeacherService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +74,7 @@ public class TeacherController {
      */
     @GetMapping("/find/{username}")
     public ResponseEntity<TeacherResponseDTO> findTeacherPerUsername(@PathVariable String username) {
-        TeacherResponseDTO teacherResponseDTO = teacherService.findTeacherByUsername(username); // Chama o serviço para buscar o professor
+        TeacherResponseDTO teacherResponseDTO = teacherService.findTeacherByUsername(username);
         return teacherResponseDTO == null
                 ? ResponseEntity.notFound().build() // Retorna 404 se o professor não for encontrado
                 : ResponseEntity.ok(teacherResponseDTO); // Retorna 200 OK com os dados do professor
@@ -86,13 +88,23 @@ public class TeacherController {
      */
     @GetMapping("/find-all/teachers")
     public ResponseEntity<Page<TeacherResponseDTO>> findAllTeachers(@RequestParam int page) {
-        Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4); // Chama o serviço para retornar todos os professores
-        return ResponseEntity.ok(teacherResponseDTOs); // Retorna 200 OK com os dados dos professores
+        Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4);
+        return ResponseEntity.ok(teacherResponseDTOs);
     }
 
     @GetMapping("/find-all/classes")
     public ResponseEntity<Page<TeacherResponseDTO>> findAllClasses(@RequestParam int page) {
         Page<TeacherResponseDTO> teacherResponseDTOs = teacherService.findAllTeachers(page, 4);
         return ResponseEntity.ok(teacherResponseDTOs);
+    }
+
+    @GetMapping("/advanced-filtration")
+    @Operation(summary = "Buscar professores", description = "Busca professores por nome, email e curso")
+    public ResponseEntity<Page<TeacherResponseDTO>> findAllTeachersSpecification(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String course,
+            Pageable pageable) {
+        return ResponseEntity.ok(teacherService.findAllTeachersSpecification(name, email, course, pageable));
     }
 }

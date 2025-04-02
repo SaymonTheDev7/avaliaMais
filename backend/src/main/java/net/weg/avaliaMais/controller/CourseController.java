@@ -67,6 +67,16 @@ public class CourseController {
                 : ResponseEntity.ok(course);
     }
 
+    @GetMapping("/courses")
+    @Operation(summary = "Listar todos os cursos", description = "Retorna uma lista paginada de todos os cursos.")
+    public ResponseEntity<Page<CourseResponseDTO>> findAllCourses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<CourseResponseDTO> courses = courseService.findAllCourses(page, size);
+        return ResponseEntity.ok(courses);
+    }
+
+
     @GetMapping("/findByUuid/{uuid}")
     @Operation(summary = "Buscar curso pelo UUID", description = "Retorna um curso com base no UUID fornecido")
     @ApiResponse(responseCode = "200", description = "Curso encontrado com sucesso", content = @Content(schema = @Schema(implementation = CourseResponseDTO.class)))

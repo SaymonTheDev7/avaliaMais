@@ -26,7 +26,7 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, UUID>, J
      * @param email O e-mail do supervisor.
      * @return Um {@link Optional} contendo o {@link Supervisor} se encontrado, ou vazio se não.
      */
-    Optional<Supervisor> findByUsernameOrEmail(String username, String email);
+    Optional<Supervisor> findByUsername(String username);
 
     /**
      * Encontra todos os supervisores com paginação.

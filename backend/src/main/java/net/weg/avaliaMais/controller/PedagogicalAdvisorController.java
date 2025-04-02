@@ -25,15 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PedagogicalAdvisorController {
 
-    private final PedagogicalTechniqueService pedagogicalTechniqueService;
-    private final ClassService classService;
     private final PedagogicalAdvisorService pedagogicalAdvisorService;
-    private final TeacherService teacherService;
-    private final StudentService studentService;
-    private final CourseService courseService;
-    private final SupervisorService supervisorService;
-    private final EventService eventService;
-
 
     @Operation(summary = "Add a new pedagogical advisor")
     @ApiResponses(value = {
@@ -80,17 +72,6 @@ public class PedagogicalAdvisorController {
         return ResponseEntity.ok(pedagogicalAdvisors);
     }
 
-    @GetMapping("/classes")
-    @Operation(summary = "Buscar turmas", description = "Busca turmas com filtros opcionais")
-    public ResponseEntity<Page<ClassResponseDTO>> findClasses(
-            @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) String course,
-            @RequestParam(required = false) String shift,
-            @RequestParam(required = false) String location,
-            Pageable pageable) {
-        return ResponseEntity.ok(classService.findAllClassesSpecification(year, course, shift, location, pageable));
-    }
-
     @GetMapping("/pedagogical-advisors")
     @Operation(summary = "Buscar conselheiros pedagógicos", description = "Busca conselheiros pedagógicos por nome e email")
     public ResponseEntity<Page<PedagogicalAdvisorResponseDTO>> findAllPedagogicalAdvisorsSpecificatiom(
@@ -98,66 +79,6 @@ public class PedagogicalAdvisorController {
             @RequestParam(required = false) String email,
             Pageable pageable) {
         return ResponseEntity.ok(pedagogicalAdvisorService.findAllPedagogicalAdvisorSpecification(name, email, pageable));
-    }
-
-    @GetMapping("/pedagogical-techniques")
-    @Operation(summary = "Buscar técnicas pedagógicas", description = "Busca técnicas pedagógicas por nome e email")
-    public ResponseEntity<Page<PedagogicalTechniqueResponseDTO>> findAllPedagogicalTechniquesSpecification(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            Pageable pageable) {
-        return ResponseEntity.ok(pedagogicalTechniqueService.findAllPedagogicalTechniqueSpecification(name, email, pageable));
-    }
-
-    @GetMapping("/teachers")
-    @Operation(summary = "Buscar professores", description = "Busca professores por nome, email e curso")
-    public ResponseEntity<Page<TeacherResponseDTO>> findAllTeachersSpecification(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String course,
-            Pageable pageable) {
-        return ResponseEntity.ok(teacherService.findAllTeachersSpecification(name, email, course, pageable));
-    }
-
-    @GetMapping("/students")
-    @Operation(summary = "Buscar alunos", description = "Busca alunos por nome, email, turma e curso")
-    public ResponseEntity<Page<StudentResponseDTO>> findStudents(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) UUID classUuid,
-            @RequestParam(required = false) String course,
-            Pageable pageable) {
-        return ResponseEntity.ok(studentService.findAllStudentsSpecification(name, email, classUuid, course, pageable));
-    }
-
-    @GetMapping("/courses")
-    @Operation(summary = "Buscar cursos", description = "Busca cursos por nome, turno e tipo")
-    public ResponseEntity<Page<CourseResponseDTO>> findCourses(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String shift,
-            @RequestParam(required = false) String type,
-            Pageable pageable) {
-        return ResponseEntity.ok(courseService.findAllCoursesSpecification(name, shift, type, pageable));
-    }
-
-    @GetMapping("/supervisors")
-    @Operation(summary = "Buscar supervisores", description = "Busca supervisores por nome e email")
-    public ResponseEntity<Page<SupervisorResponseDTO>> findAllSupervisorsSpecificatin(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            Pageable pageable) {
-        return ResponseEntity.ok(supervisorService.findAllSupervisorsSpecification(name, email, pageable));
-    }
-
-    @GetMapping("/events")
-    @Operation(summary = "Buscar eventos", description = "Busca eventos por nome, data, status e etapa")
-    public ResponseEntity<Page<EventResponseDTO>> findAllEventsSpecification(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) LocalDate date,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String step,
-            Pageable pageable) {
-        return ResponseEntity.ok(eventService.findAllEventsSpecification(name, date, status, step, pageable));
     }
 
 }

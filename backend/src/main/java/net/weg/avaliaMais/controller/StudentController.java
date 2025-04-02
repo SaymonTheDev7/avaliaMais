@@ -89,7 +89,7 @@ public class StudentController {
         return ResponseEntity.ok(studentClasses);
     }
 
-    @GetMapping("/advanced-filtration/students")
+    @GetMapping("/advanced-filtration")
     @Operation(summary = "Filtragem avançada de alunos", description = "Filtra alunos com base nos parâmetros fornecidos.")
     @Tag(name = "Students", description = "Operações relacionadas com a busca de alunos com filtragem avançada")
     @ApiResponse(responseCode = "200", description = "Alunos filtrados retornados com sucesso", content = @Content(schema = @Schema(implementation = Page.class)))
