@@ -5,13 +5,17 @@ import net.weg.avaliaMais.model.Course;
 import net.weg.avaliaMais.model.dto.request.CoursePostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.CourseResponseDTO;
 import net.weg.avaliaMais.repository.CourseRepository;
+import net.weg.avaliaMais.repository.specification.CourseSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
@@ -129,5 +133,14 @@ public class CourseService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Course> coursePage = courseRepository.findAll(pageable);
         return coursePage.map(CourseResponseDTO::new);
+    }
+
+    public Page<CourseResponseDTO> findCourses(String name, String shift, String type, Pageable pageable) {
+        Specification<Course> filtros = where(null);
+        if (name != null) filtros = filtros.and(CourseSpecification.hasName(name));
+        if (shift != null) filtros = filtros.and(CourseSpecification.hasShift(shift));
+        if (type != null) filtros = filtros.and(CourseSpecification.hasType(type));
+
+        return courseRepository.findAll(filtros, pageable).map(CourseResponseDTO::new);
     }
 }

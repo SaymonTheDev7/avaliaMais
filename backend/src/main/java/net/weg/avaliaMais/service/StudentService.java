@@ -12,6 +12,7 @@ import net.weg.avaliaMais.repository.ClassRepository;
 import net.weg.avaliaMais.repository.CourseRepository;
 import net.weg.avaliaMais.repository.StudentRepository;
 import net.weg.avaliaMais.repository.specification.ClassSpecification;
+import net.weg.avaliaMais.repository.specification.StudentSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -104,6 +105,16 @@ public class StudentService {
         );
 
         return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
+    }
+
+    public Page<StudentResponseDTO> findStudents(String name, String email, UUID classUuid, String course, Pageable pageable) {
+        Specification<Student> filtros = where(null);
+        if (name != null) filtros = filtros.and(StudentSpecification.hasName(name));
+        if (email != null) filtros = filtros.and(StudentSpecification.hasEmail(email));
+        if (classUuid != null) filtros = filtros.and(StudentSpecification.hasClass(classUuid));
+        if (course != null) filtros = filtros.and(StudentSpecification.hasCourse(course));
+
+        return studentRepository.findAll(filtros, pageable).map(StudentResponseDTO::new);
     }
 
 }

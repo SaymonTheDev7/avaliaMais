@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.*;
 import net.weg.avaliaMais.model.dto.request.PedagogicalTechniquePostRequestDTO;
@@ -20,7 +21,6 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 @RequiredArgsConstructor
 public class PedagogicalTechniqueService {
-
     private final PedagogicalTechniqueRepository pedagogicalTechniqueRepository;
     private final PedagogicalAdvisorRepository pedagogicalAdvisorRepository;
     private final TeacherRepository teacherRepository;
@@ -30,62 +30,44 @@ public class PedagogicalTechniqueService {
     private final SupervisorRepository supervisorRepository;
     private final EventRepository eventRepository;
 
-    public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
-        PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueRepository.save(pedagogicalTechniquePostRequestDTO.converter());
-        return pedagogicalTechnique.toDto();
+    public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO dto) {
+        return pedagogicalTechniqueRepository.save(dto.converter()).toDto();
     }
 
-    public PedagogicalTechniqueResponseDTO updatePedagogicalTechnique(PedagogicalTechniquePostRequestDTO pedagogicalTechniquePostRequestDTO) {
-        PedagogicalTechnique existingPedagogicalTechnique = pedagogicalTechniqueRepository.findByUsername(pedagogicalTechniquePostRequestDTO.username()).orElseThrow(() -> new RuntimeException("Técnico pedagógico não encontrado"));
-        existingPedagogicalTechnique.setPassword(pedagogicalTechniquePostRequestDTO.password());
-        existingPedagogicalTechnique.setEmail(pedagogicalTechniquePostRequestDTO.email());
-        existingPedagogicalTechnique.setWorkShift(pedagogicalTechniquePostRequestDTO.workShift());
-        existingPedagogicalTechnique.setWorkloadWeek(pedagogicalTechniquePostRequestDTO.workloadWeek());
-        PedagogicalTechnique updatedPedagogicalTechnique = pedagogicalTechniqueRepository.save(existingPedagogicalTechnique);
-        return updatedPedagogicalTechnique.toDto();
+    public PedagogicalTechniqueResponseDTO updatePedagogicalTechnique(PedagogicalTechniquePostRequestDTO dto) {
+        PedagogicalTechnique technique = pedagogicalTechniqueRepository.findByUsername(dto.username())
+                .orElseThrow(() -> new EntityNotFoundException("Técnico pedagógico não encontrado"));
+
+        technique.setPassword(dto.password());
+        technique.setEmail(dto.email());
+        technique.setWorkShift(dto.workShift());
+        technique.setWorkloadWeek(dto.workloadWeek());
+        return pedagogicalTechniqueRepository.save(technique).toDto();
     }
 
     public String deletePedagogicalTechniquePerUsername(String username) {
-        if (pedagogicalTechniqueRepository.findByUsername(username).isPresent()) {
-            pedagogicalTechniqueRepository.delete(pedagogicalTechniqueRepository.findByUsername(username).get());
+        return pedagogicalTechniqueRepository.findByUsername(username).map(technique -> {
+            pedagogicalTechniqueRepository.delete(technique);
             return "Técnico Pedagógico deletado com sucesso";
-        }
-        return "Técnico Pedagógico não encontrado";
+        }).orElse("Técnico Pedagógico não encontrado");
     }
 
     public PedagogicalTechniqueResponseDTO findPedagogicalTechniquePerUsername(String username) {
-        PedagogicalTechnique pedagogicalTechnique = pedagogicalTechniqueRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Técnico Pedagógico nao encontrado: " + username));
-        return new PedagogicalTechniqueResponseDTO(pedagogicalTechnique);
+        return pedagogicalTechniqueRepository.findByUsername(username)
+                .map(PedagogicalTechnique::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Técnico Pedagógico não encontrado: " + username));
     }
 
     public Page<PedagogicalTechniqueResponseDTO> findAllPedagogicalTechniques(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalTechnique> pedagogicalTechniquePage = pedagogicalTechniqueRepository.findAll(pageable);
-        return pedagogicalTechniquePage.map(PedagogicalTechniqueResponseDTO::new);
+        return pedagogicalTechniqueRepository.findAll(PageRequest.of(page, size)).map(PedagogicalTechniqueResponseDTO::new);
     }
 
     public Page<PedagogicalAdvisorResponseDTO> findAllPedagogicalAdvisors(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PedagogicalAdvisor> pedagogicalAdvisorPage = pedagogicalAdvisorRepository.findAll(pageable);
-        return pedagogicalAdvisorPage.map(PedagogicalAdvisorResponseDTO::new);
+        return pedagogicalAdvisorRepository.findAll(PageRequest.of(page, size)).map(PedagogicalAdvisorResponseDTO::new);
     }
 
-    public Page<ClassResponseDTO> findClasses(Integer year, String course, String shift, String location, Pageable pageable) {
-        Specification<ClassSchool> filtros = where(null);
-        if (year != null) filtros = filtros.and(ClassSpecification.hasYear(year));
-        if (course != null) filtros = filtros.and(ClassSpecification.hasCourse(course));
-        if (shift != null) filtros = filtros.and(ClassSpecification.hasShift(shift));
-        if (location != null) filtros = filtros.and(ClassSpecification.hasLocation(location));
-
-        return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<PedagogicalAdvisorResponseDTO> findPedagogicalAdvisor(String name, String email, Pageable pageable) {
-        Specification<PedagogicalAdvisor> filtros = where(null);
-        if (name != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasEmail(email));
-
-        return pedagogicalAdvisorRepository.findAll(filtros, pageable).map(PedagogicalAdvisorResponseDTO::new);
+    private <T> Specification<T> defaultSpecification() {
+        return where(null);
     }
 
     public Page<PedagogicalTechniqueResponseDTO> findPedagogicalTechnique(String name, String email, Pageable pageable) {
@@ -96,49 +78,4 @@ public class PedagogicalTechniqueService {
         return pedagogicalTechniqueRepository.findAll(filtros, pageable).map(PedagogicalTechniqueResponseDTO::new);
     }
 
-    public Page<TeacherResponseDTO> findTeachers(String name, String email, String course, Pageable pageable) {
-        Specification<Teacher> filtros = where(null);
-        if (name != null) filtros = filtros.and(TeacherSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(TeacherSpecification.hasEmail(email));
-        if (course != null) filtros = filtros.and(TeacherSpecification.hasCourse(course));
-
-        return teacherRepository.findAll(filtros, pageable).map(TeacherResponseDTO::new);
-    }
-
-    public Page<StudentResponseDTO> findStudents(String name, String email, UUID classUuid, String course, Pageable pageable) {
-        Specification<Student> filtros = where(null);
-        if (name != null) filtros = filtros.and(StudentSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(StudentSpecification.hasEmail(email));
-        if (classUuid != null) filtros = filtros.and(StudentSpecification.hasClass(classUuid));
-        if (course != null) filtros = filtros.and(StudentSpecification.hasCourse(course));
-
-        return studentRepository.findAll(filtros, pageable).map(StudentResponseDTO::new);
-    }
-
-    public Page<CourseResponseDTO> findCourses(String name, String shift, String type, Pageable pageable) {
-        Specification<Course> filtros = where(null);
-        if (name != null) filtros = filtros.and(CourseSpecification.hasName(name));
-        if (shift != null) filtros = filtros.and(CourseSpecification.hasShift(shift));
-        if (type != null) filtros = filtros.and(CourseSpecification.hasType(type));
-
-        return courseRepository.findAll(filtros, pageable).map(CourseResponseDTO::new);
-    }
-
-    public Page<SupervisorResponseDTO> findSupervisors(String name, String email, Pageable pageable) {
-        Specification<Supervisor> filtros = where(null);
-        if (name != null) filtros = filtros.and(SupervisorSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(SupervisorSpecification.hasEmail(email));
-
-        return supervisorRepository.findAll(filtros, pageable).map(SupervisorResponseDTO::new);
-    }
-
-    public Page<EventResponseDTO> findEvents(String name, LocalDate date, String status, String step, Pageable pageable) {
-        Specification<Event> filters = Specification.where(null);
-        if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));
-        if (date != null) filters = filters.and(EventSpecification.hasDate(date));
-        if (status != null && !status.trim().isEmpty()) filters = filters.and(EventSpecification.hasStatus(status));
-        if (step != null && !step.trim().isEmpty()) filters = filters.and(EventSpecification.hasStep(step));
-
-        return eventRepository.findAll(filters, pageable).map(EventResponseDTO::new);
-    }
 }

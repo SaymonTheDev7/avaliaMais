@@ -9,14 +9,18 @@ import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.model.dto.response.TeacherResponseDTO;
 import net.weg.avaliaMais.repository.ClassRepository;
 import net.weg.avaliaMais.repository.TeacherRepository;
+import net.weg.avaliaMais.repository.specification.TeacherSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +55,6 @@ public class TeacherService {
         return updatedTeacher.toDto();
     }
 
-
     @Transactional
     public void deleteTeacherByUUID(UUID uuid) {
         if (!teacherRepository.existsByUuid(uuid)) {
@@ -68,6 +71,15 @@ public class TeacherService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
         return teacherPage.map(TeacherResponseDTO::new);
+    }
+
+    public Page<TeacherResponseDTO> findTeachers(String name, String email, String course, Pageable pageable) {
+        Specification<Teacher> filtros = where(null);
+        if (name != null) filtros = filtros.and(TeacherSpecification.hasName(name));
+        if (email != null) filtros = filtros.and(TeacherSpecification.hasEmail(email));
+        if (course != null) filtros = filtros.and(TeacherSpecification.hasCourse(course));
+
+        return teacherRepository.findAll(filtros, pageable).map(TeacherResponseDTO::new);
     }
 
 }

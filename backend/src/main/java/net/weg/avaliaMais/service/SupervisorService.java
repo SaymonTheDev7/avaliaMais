@@ -100,51 +100,6 @@ public class SupervisorService {
         return coursePage.map(SupervisorResponseDTO::new);
     }
 
-    public Page<ClassResponseDTO> findClasses(Integer year, String course, String shift, String location, Pageable pageable) {
-        Specification<ClassSchool> filtros = where(null);
-        if (year != null) filtros = filtros.and(ClassSpecification.hasYear(year));
-        if (course != null) filtros = filtros.and(ClassSpecification.hasCourse(course));
-        if (shift != null) filtros = filtros.and(ClassSpecification.hasShift(shift));
-        if (location != null) filtros = filtros.and(ClassSpecification.hasLocation(location));
-
-        return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
-    }
-
-    public Page<PedagogicalAdvisorResponseDTO> findPedagogicalAdvisor(String name, String email, Pageable pageable) {
-        Specification<PedagogicalAdvisor> filtros = where(null);
-        if (name != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(PedagogicalAdvisorSpecification.hasEmail(email));
-
-        return pedagogicalAdvisorRepository.findAll(filtros, pageable).map(PedagogicalAdvisorResponseDTO::new);
-    }
-
-    public Page<PedagogicalTechniqueResponseDTO> findPedagogicalTechnique(String name, String email, Pageable pageable) {
-        Specification<PedagogicalTechnique> filtros = where(null);
-        if (name != null) filtros = filtros.and(PedagogicalTechniqueSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(PedagogicalTechniqueSpecification.hasEmail(email));
-
-        return pedagogicalTechniqueRepository.findAll(filtros, pageable).map(PedagogicalTechniqueResponseDTO::new);
-    }
-
-    public Page<TeacherResponseDTO> findTeachers(String name, String email, String course, Pageable pageable) {
-        Specification<Teacher> filtros = where(null);
-        if (name != null) filtros = filtros.and(TeacherSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(TeacherSpecification.hasEmail(email));
-        if (course != null) filtros = filtros.and(TeacherSpecification.hasCourse(course));
-
-        return teacherRepository.findAll(filtros, pageable).map(TeacherResponseDTO::new);
-    }
-
-    public Page<StudentResponseDTO> findStudents(String name, String email, UUID classUuid, String course, Pageable pageable) {
-        Specification<Student> filtros = where(null);
-        if (name != null) filtros = filtros.and(StudentSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(StudentSpecification.hasEmail(email));
-        if (classUuid != null) filtros = filtros.and(StudentSpecification.hasClass(classUuid));
-        if (course != null) filtros = filtros.and(StudentSpecification.hasCourse(course));
-
-        return studentRepository.findAll(filtros, pageable).map(StudentResponseDTO::new);
-    }
-
     public Page<SupervisorResponseDTO> findSupervisors(String name, String email, Pageable pageable) {
         Specification<Supervisor> filtros = where(null);
         if (name != null) filtros = filtros.and(SupervisorSpecification.hasName(name));
@@ -153,22 +108,5 @@ public class SupervisorService {
         return supervisorRepository.findAll(filtros, pageable).map(SupervisorResponseDTO::new);
     }
 
-    public Page<CourseResponseDTO> findCourses(String name, String shift, String type, Pageable pageable) {
-        Specification<Course> filtros = where(null);
-        if (name != null && !name.trim().isEmpty()) filtros = filtros.and(CourseSpecification.hasName(name));
-        if (shift != null && !shift.trim().isEmpty()) filtros = filtros.and(CourseSpecification.hasShift(shift));
-        if (type != null && !type.trim().isEmpty()) filtros = filtros.and(CourseSpecification.hasType(type));
 
-        return courseRepository.findAll(filtros, pageable).map(CourseResponseDTO::new);
-    }
-
-    public Page<EventResponseDTO> findEvents(String name, LocalDate date, String status, String step, Pageable pageable) {
-        Specification<Event> filters = Specification.where(null);
-        if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));
-        if (date != null) filters = filters.and(EventSpecification.hasDate(date));
-        if (status != null && !status.trim().isEmpty()) filters = filters.and(EventSpecification.hasStatus(status));
-        if (step != null && !step.trim().isEmpty()) filters = filters.and(EventSpecification.hasStep(step));
-
-        return eventRepository.findAll(filters, pageable).map(EventResponseDTO::new);
-    }
 }

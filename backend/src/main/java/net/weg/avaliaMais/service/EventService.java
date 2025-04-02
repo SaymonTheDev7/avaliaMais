@@ -10,13 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,14 +43,14 @@ public class EventService {
             throw new RuntimeException("Evento não encontrado");
         }
 
-        existingEvent.setName(eventPostRequestDTO.name());  // Correção aqui
-        existingEvent.setDescription(eventPostRequestDTO.description());  // Correção aqui
-        existingEvent.setDate(eventPostRequestDTO.date());  // Correção aqui
-        existingEvent.setClasses(eventPostRequestDTO.classes());  // Correção aqui
-        existingEvent.setTeachers(eventPostRequestDTO.teachers());  // Correção aqui
-        existingEvent.setCourses(eventPostRequestDTO.courses());  // Correção aqui
-        existingEvent.setStatus(eventPostRequestDTO.status());  // Correção aqui
-        existingEvent.setStep(eventPostRequestDTO.step());  // Correção aqui
+        existingEvent.setName(eventPostRequestDTO.name());
+        existingEvent.setDescription(eventPostRequestDTO.description());
+        existingEvent.setDate(eventPostRequestDTO.date());
+        existingEvent.setClasses(eventPostRequestDTO.classes());
+        existingEvent.setTeachers(eventPostRequestDTO.teachers());
+        existingEvent.setCourses(eventPostRequestDTO.courses());
+        existingEvent.setStatus(eventPostRequestDTO.status());
+        existingEvent.setStep(eventPostRequestDTO.step());
 
         eventRepository.save(existingEvent);
         return new EventResponseDTO(existingEvent);

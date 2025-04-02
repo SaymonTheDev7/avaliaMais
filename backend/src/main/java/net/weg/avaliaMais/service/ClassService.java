@@ -227,21 +227,13 @@ public class ClassService {
      * @return Um objeto {@link Page} contendo uma lista paginada de {@link ClassResponseDTO}.
      * @throws RuntimeException Caso ocorra algum erro durante a execução da consulta.
      */
-    public Page<ClassResponseDTO> getByAdvancedFiltration(Integer year, String location, String course, String shift, Pageable pageable) {
-        Specification<ClassSchool> filtros = where(null);
 
-        if (year != null) {
-            filtros = filtros.and(ClassSpecification.hasYear(year));
-        }
-        if (location != null && !location.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasLocation(location));
-        }
-        if (course != null && !course.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasCourse(course));
-        }
-        if (shift != null && !shift.isEmpty()) {
-            filtros = filtros.and(ClassSpecification.hasShift(shift));
-        }
+    public Page<ClassResponseDTO> findClasses(Integer year, String course, String shift, String location, Pageable pageable) {
+        Specification<ClassSchool> filtros = where(null);
+        if (year != null) filtros = filtros.and(ClassSpecification.hasYear(year));
+        if (course != null) filtros = filtros.and(ClassSpecification.hasCourse(course));
+        if (shift != null) filtros = filtros.and(ClassSpecification.hasShift(shift));
+        if (location != null) filtros = filtros.and(ClassSpecification.hasLocation(location));
 
         return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
     }
