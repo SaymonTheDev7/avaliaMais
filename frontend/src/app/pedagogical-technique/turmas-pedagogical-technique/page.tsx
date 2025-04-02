@@ -5,35 +5,28 @@ import Header from "@/components/header";
 import { Search, Filter, User, X, ChevronLeft } from "lucide-react";
 
 const classColors = [
-  "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF", "#33FFF5", "#F5FF33", "#FF8C33", "#8C33FF", "#33FFA1",
-  "#FF3333", "#33FF8C", "#3333FF", "#FF33F5", "#F533FF", "#33FFD1", "#D1FF33", "#FF5E33", "#5E33FF", "#33FFD9",
-  "#FFBD33", "#BD33FF", "#33FFBD", "#FF336B", "#6B33FF", "#33FF6B", "#FF338C", "#8C33FF", "#33FF33", "#FF33D9",
-  "#D933FF", "#33FF5E", "#5EFF33", "#FF6B33", "#6BFF33", "#FF338C", "#8CFF33", "#FF33BD", "#BDFF33", "#FF33FF",
-  "#33FFFF", "#FFFFFF", "#CCCCCC", "#999999", "#666666", "#333333", "#000000", "#F0F8FF", "#FAEBD7", "#00FFFF",
-  "#7FFFD4", "#F0FFFF", "#F5F5DC", "#FFE4C4", "#0000FF", "#8A2BE2", "#A52A2A", "#DEB887", "#5F9EA0", "#7FFF00",
-  "#D2691E", "#FF7F50", "#6495ED", "#DC143C", "#00FFFF", "#00008B", "#008B8B", "#B8860B", "#A9A9A9", "#006400",
-  "#BDB76B", "#8B008B", "#556B2F", "#FF8C00", "#9932CC", "#8B0000", "#E9967A", "#8FBC8F", "#483D8B", "#2F4F4F",
-  "#00CED1", "#9400D3", "#FF1493", "#00BFFF", "#696969", "#1E90FF", "#B22222", "#FFFAF0", "#228B22", "#FF00FF",
-  "#DCDCDC", "#F8F8FF", "#FFD700", "#DAA520", "#808080", "#008000", "#ADFF2F", "#F0FFF0", "#FF69B4", "#CD5C5C",
-  "#4B0082", "#FFFFF0", "#F0E68C", "#E6E6FA", "#FFF0F5", "#7CFC00", "#FFFACD", "#ADD8E6", "#F08080", "#E0FFFF",
-  "#FAFAD2", "#90EE90", "#D3D3D3", "#FFB6C1", "#FFA07A", "#20B2AA", "#87CEFA", "#778899", "#B0C4DE", "#FFFFE0",
-  "#00FF00", "#32CD32", "#FAF0E6", "#FF00FF", "#800000", "#66CDAA", "#0000CD", "#BA55D3", "#9370DB", "#3CB371",
-  "#7B68EE", "#00FA9A", "#48D1CC", "#C71585", "#191970", "#FFE4E1", "#FFE4B5", "#FFDEAD", "#000080", "#FDF5E6",
-  "#808000", "#6B8E23", "#FFA500", "#FF4500", "#DA70D6", "#EEE8AA", "#98FB98", "#AFEEEE", "#DB7093", "#FFEFD5",
-  "#FFDAB9", "#CD853F", "#FFC0CB", "#DDA0DD", "#B0E0E6", "#800080", "#663399", "#FF0000", "#BC8F8F", "#4169E1",
-  "#8B4513", "#FA8072", "#FAA460", "#2E8B57", "#FFF5EE", "#A0522D", "#C0C0C0", "#87CEEB", "#6A5ACD", "#708090",
-  "#FFFAFA", "#00FF7F", "#4682B4", "#D2B48C", "#008080", "#D8BFD8", "#FF6347", "#40E0D0", "#EE82EE", "#F5DEB3",
-  "#FFFFFF", "#F5F5F5", "#FFFF00", "#9ACD32", "#FF6F61", "#6B4226", "#B7C0EE", "#BDFCC9", "#8C72CB", "#C3B091",
-  "#BCB88A", "#EAEAEA", "#FFFDD0", "#C0D6E4", "#FFDF00", "#F4A460", "#5F9EA0", "#7FFF00", "#D2691E", "#FF7F50",
-  "#6495ED", "#DC143C", "#00FFFF", "#00008B", "#008B8B", "#B8860B", "#A9A9A9", "#006400", "#BDB76B", "#8B008B",
-  "#556B2F", "#FF8C00", "#9932CC", "#8B0000", "#E9967A", "#8FBC8F", "#483D8B", "#2F4F4F", "#00CED1", "#9400D3",
-  "#FF1493", "#00BFFF", "#696969", "#1E90FF", "#B22222", "#FFFAF0", "#228B22", "#FF00FF", "#DCDCDC", "#F8F8FF",
-  "#FFD700", "#DAA520", "#808080", "#008000", "#ADFF2F", "#F0FFF0", "#FF69B4", "#CD5C5C", "#4B0082", "#FFFFF0",
-  "#F0E68C", "#E6E6FA", "#FFF0F5", "#7CFC00", "#FFFACD", "#ADD8E6", "#F08080", "#E0FFFF", "#FAFAD2", "#90EE90",
-  "#D3D3D3", "#FFB6C1", "#FFA07A", "#20B2AA", "#87CEFA", "#778899", "#B0C4DE", "#FFFFE0", "#00FF00", "#32CD32",
-  "#FAF0E6", "#FF00FF", "#800000", "#66CDAA", "#0000CD", "#BA55D3", "#9370DB", "#3CB371", "#7B68EE", "#00FA9A",
-  "#48D1CC", "#C71585", "#191970", "#FFE4E1", "#FFE4B5", "#FFDEAD", "#000080", "#FDF5E6", "#808000", "#6B8E23",
-  "#FFA500", "#FF4500", "#DA70D6", "#EEE8AA", "#98FB98", "#AFEEEE", "#DB7093", "#FFEFD5", "#FFDAB9", "#CD853F",
+  "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA", "#B5B681", "#BE7DDB",
+  "#907D78", "#B7A4D4", "#8FA76C", "#94C36B", "#C46694", "#7866AD", "#DCDA90", "#C1D3B4", "#9A9ED2", "#AFD8AB",
+  "#C8CDC4", "#CFBDDB", "#657BCF", "#99BDAF", "#CC78CF", "#D393A6", "#D675B6", "#A680CA", "#897DAB", "#767D88",
+  "#78CA8E", "#B985AA", "#6B80AD", "#A39790", "#856688", "#A8D46C", "#C4BA73", "#9BC7DB", "#DABDD6", "#748F97",
+  "#C8ABAC", "#CBAEC3", "#9D98BC", "#D0D08B", "#87CF75", "#6BBA7A", "#A7B890", "#A36CAE", "#65A1AC", "#BA9076",
+  "#CC839B", "#D2BFB2", "#7F8AA0", "#DCA4C4", "#81A3C6", "#99C471", "#80988A", "#C1AE6B", "#65767E", "#9176C8",
+  "#8AA7A7", "#64CB9E", "#666BAC", "#C4808A", "#DCB18F", "#9D79BD", "#9B7287", "#7FB970", "#A6987A", "#A097C9",
+  "#A69D96", "#918DD7", "#C286A4", "#C46AAB", "#AFA464", "#CBD2C6", "#8E87B0", "#94A3A4", "#CC90AE", "#B58981",
+  "#64C98A", "#88C6B7", "#BECFC2", "#657D86", "#D68687", "#CD8991", "#95A394", "#C4B9D7", "#CEA07F", "#CBD3C3",
+  "#64C2AF", "#DBC5D7", "#B28789", "#90B0C5", "#799A84", "#B793D8", "#CEB196", "#8592CF", "#B084D7", "#A271BF",
+  "#80D095", "#9B87D1", "#7F6C75", "#8F8DAA", "#B4DBD2", "#CFDBBA", "#D1D086", "#D7AB98", "#659664", "#D7CA68",
+  "#B36A80", "#926DD3", "#79787A", "#856990", "#D7ACAA", "#B6946D", "#B38174", "#B78769", "#CB74A0", "#AA8465",
+  "#89BAB3", "#768DA5", "#BAAAAF", "#A4BDB3", "#76DBCA", "#D29ACD", "#AEDAB0", "#7685A6", "#8BC1BC", "#69CC98",
+  "#83D76C", "#B1686F", "#989B92", "#AFC36F", "#AA987A", "#67A6C2", "#B781A8", "#A59DA6", "#97B668", "#B16CD9",
+  "#CBA8CF", "#898DC7", "#CD8A6E", "#BBAAAB", "#99C69D", "#D4C4DC", "#AE69C2", "#889A9D", "#A195AA", "#8BAF92",
+  "#64ABD5", "#7FB76A", "#C5D6C4", "#C880D9", "#CF94D8", "#AFCA65", "#D5BF9D", "#7BCFAE", "#B189C0", "#8BC082",
+  "#AB75B8", "#6877AA", "#C996A3", "#847EB8", "#8EAF8A", "#BD8A76", "#D494C0", "#D29A8E", "#9974B5", "#B47FBD",
+  "#BE7AC6", "#8CA7B0", "#B2A3BC", "#A2AF97", "#AEC39C", "#B369C4", "#7EB4BC", "#AAD983", "#80656C", "#B1C0A7",
+  "#C66ED6", "#96C97B", "#A773A8", "#999870", "#71D2B0", "#82D896", "#B4C4C6", "#A2CF7B", "#989E85", "#93DAAC",
+  "#D4CD7B", "#6DA9C4", "#CCB3B2", "#76DBB1", "#A8CAD1", "#9CBF82", "#D69DA6", "#9F77AF", "#BDAABB", "#7B846F",
+  "#3C74D4", "#5C63BA", "#756AB2", "#4365CA", "#3874BA", "#5B56B3", "#5868D1", "#538BA5", "#385EAF", "#5E8EC2",
+  "#4563A4", "#4C89CE", "#6368D1", "#5161C9", "#7671A5", "#5F7FB7", "#3A89D1", "#5963C6", "#557CA3", "#425DBB"
 ];
 
 const getRandomColor = () => {
@@ -48,6 +41,7 @@ const initialClassData = [
   { id: 5, name: "FG-75 PSIN 2023/2", students: 21, time: "13:40-22:00" },
   { id: 6, name: "TP-74 PSIN 2023/2", students: 21, time: "13:40-22:00" },
   { id: 7, name: "FA-73 PSIN 2023/2", students: 21, time: "13:40-22:00" },
+  { id: 8, name: "FA-78 PSIN 2023/2", students: 21, time: "13:40-22:00" },
 ];
 
 export default function VerTurmasPage() {
@@ -56,8 +50,21 @@ export default function VerTurmasPage() {
   const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
-    setClassList(initialClassData.map((item) => ({ ...item, color: getRandomColor() })));
+    const savedClasses = initialClassData.map((item) => {
+      const key = `classColor-${item.id}`;
+      const savedColor = localStorage.getItem(key);
+      const color = savedColor || getRandomColor();
+
+      if (!savedColor) {
+        localStorage.setItem(key, color);
+      }
+
+      return { ...item, color };
+    });
+
+    setClassList(savedClasses);
   }, []);
+
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -85,7 +92,7 @@ export default function VerTurmasPage() {
         </div>
 
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
-        <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
+          <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
               <Search className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366]" />
             </div>
