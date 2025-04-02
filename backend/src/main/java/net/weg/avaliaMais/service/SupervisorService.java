@@ -26,7 +26,9 @@ public class SupervisorService {
 
 
     public SupervisorResponseDTO addSupervisor(SupervisorPostRequestDTO dto) {
-        return supervisorRepository.save(dto.converter()).toDto();
+        Supervisor supervisor = dto.converter();
+        supervisor = supervisorRepository.save(supervisor);
+        return supervisor.toDto();
     }
 
     public SupervisorResponseDTO updateSupervisor(SupervisorPostRequestDTO dto) {
