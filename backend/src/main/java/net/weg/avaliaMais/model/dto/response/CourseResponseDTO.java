@@ -28,7 +28,9 @@ public record CourseResponseDTO(
          */
         String startAndEndLocation,
 
-        /**
+       
+
+/**
          * Tipo de curso.
          * O tipo de curso (ex: presencial, online).
          */
