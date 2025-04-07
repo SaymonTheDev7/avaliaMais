@@ -52,7 +52,6 @@ export default function VerTurmasPage() {
   const [classList, setClassList] = useState<ClassItem[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // fora do useEffect (no topo do componente)
 const fetchClasses = async () => {
   try {
     const res = await axios.get("http://localhost:9090/class/find/all?page=0");
@@ -82,12 +81,11 @@ const fetchClasses = async () => {
   }
 };
 
-// chama apenas uma vez ao montar a página
+
 useEffect(() => {
   fetchClasses();
 }, []);
 
-  
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
