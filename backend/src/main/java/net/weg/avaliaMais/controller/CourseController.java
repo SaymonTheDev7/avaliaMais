@@ -67,7 +67,7 @@ public class CourseController {
                 : ResponseEntity.ok(course);
     }
 
-    @GetMapping("/courses")
+    @GetMapping("/find/all")
     @Operation(summary = "Listar todos os cursos", description = "Retorna uma lista paginada de todos os cursos.")
     public ResponseEntity<Page<CourseResponseDTO>> findAllCourses(
             @RequestParam(defaultValue = "0") int page,
