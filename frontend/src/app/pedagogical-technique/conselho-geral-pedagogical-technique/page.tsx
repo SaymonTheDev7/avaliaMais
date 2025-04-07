@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import { Search, Filter, User, X, ChevronLeft } from "lucide-react";
 import { CheckCircle, Clock } from "lucide-react";
+import { SearchBar } from '@/components/search-bar';
+import { ViewModeToggle } from '@/components/view-mode-toggle';
 
 const classColors = [
   "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA", "#B5B681", "#BE7DDB",
@@ -45,10 +47,12 @@ const initialClassData = [
   { id: 8, name: "FA-78 PSIN 2023/2", students: 21, time: "13:40-22:00", status: 'pending' }
 ];
 
+type ViewMode = "grid" | "list";
+
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [classList, setClassList] = useState<{ id: number; name: string; students: number; time: string; color: string; status: string }[]>([]);
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   useEffect(() => {
     const savedClasses = initialClassData.map((item) => {
@@ -98,43 +102,16 @@ export default function VerTurmasPage() {
         </div>
 
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
-          <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <Search className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366]" />
-            </div>
-            <input
-              type="text"
-              placeholder="Pesquise algo"
-              className="w-full pl-10 pr-10 py-3 bg-gray-200 rounded-md focus:outline-none text-sm sm:text-base"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <Filter className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366] cursor-pointer" />
-            </div>
-          </div>
-
+          <SearchBar 
+            searchTerm={searchTerm} 
+            onSearchChange={handleSearchChange} 
+          />
+          
           <div className="flex gap-2">
-            <button
-              className={`text-[#003366] p-2 ${viewMode === "list" ? "opacity-100" : "opacity-50"}`}
-              onClick={() => setViewMode("list")}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 5H21M3 12H21M3 19H21" stroke="#003366" strokeWidth={2} strokeLinecap="round" />
-              </svg>
-            </button>
-
-            <button
-              className={`text-[#003366] p-2 ${viewMode === "grid" ? "opacity-100" : "opacity-50"}`}
-              onClick={() => setViewMode("grid")}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="14" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="3" y="14" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="14" y="14" width="7" height="7" stroke="#003366" strokeWidth={2} />
-              </svg>
-            </button>
+            <ViewModeToggle 
+              viewMode={viewMode} 
+              setViewMode={setViewMode} 
+            />
           </div>
         </div>
 

@@ -12,7 +12,7 @@
   --card-foreground: #232323;
   --popover: #ffffff;
   --popover-foreground: #232323;
-  --primary: #FF5722;
+  --primary: #036ec5;
   --primary-foreground: #ffffff;
   --secondary: #00bcd4;
   --secondary-foreground: #232323;
@@ -147,4 +147,10 @@ button, input, select, textarea {
   outline: none !important;
   box-shadow: none !important;
   border-color: var(--border) !important; /* Garante que a borda não fique laranja */
+}
+
+
+.login {
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
 }
