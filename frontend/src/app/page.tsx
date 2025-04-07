@@ -30,7 +30,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 flex items-center z-10 p-16">
           <div className="text-[var(--color-primary-foreground)] text-4xl md:text-5xl font-bold select-none">
             <p>O estudo é a</p>
-            <p className="text-[var(--color-primary)]">BASE</p>
+            <p className="text-[var(--color-accent)]">BASE</p>
             <p>do sucesso!</p>
           </div>
         </div>
