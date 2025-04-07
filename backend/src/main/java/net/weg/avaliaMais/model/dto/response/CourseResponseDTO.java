@@ -28,7 +28,7 @@ public record CourseResponseDTO(
          */
         String startAndEndLocation,
 
-       
+
 
 /**
          * Tipo de curso.
