@@ -72,6 +72,18 @@ const initialMainStudent = {
   image: 'https://tryeasel.dev/placeholder.svg?width=60&height=60',
 };
 
+const initialPedagogique = [
+  {
+    name: 'Juciene M. de O. Mota',
+    image: 'https://tryeasel.dev/placeholder.svg?width=40&height=40',
+  },
+  {
+    name: 'Michele',
+    image: 'https://tryeasel.dev/placeholder.svg?width=40&height=40',
+  },
+];
+
+
 export default function Page() {
   const [mainStudent, setMainStudent] = useState(initialMainStudent);
   const [students, setStudents] = useState(initialStudents);
@@ -83,7 +95,7 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-muted">
       <Header />
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-15">
         <StudentFormLayout
           students={students}
           mainStudent={mainStudent}
@@ -92,6 +104,7 @@ export default function Page() {
           suggestionsPlaceholder={suggestionsPlaceholder}
           setMainStudent={setMainStudent}
           teachers={initialTeachers}
+          pedagogiques={initialPedagogique}
         />
       </div>
     </div>
