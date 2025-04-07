@@ -61,4 +61,5 @@ export function ClassList({ classes, onRemoveClass }: ClassListProps) {
       ))}
     </div>
   );
+  
 }

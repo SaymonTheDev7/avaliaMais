@@ -134,4 +134,5 @@ export default function VerProfessoresPage() {
             </div>
         </div>
     );
+    
 }
