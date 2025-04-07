@@ -90,7 +90,7 @@ public class ClassSchool {
      * Não pode ser nulo.
      */
     @Column(nullable = false)
-    private Double time;
+    private String time;
 
     /**
      * Quantidade de estudantes matriculados na turma.

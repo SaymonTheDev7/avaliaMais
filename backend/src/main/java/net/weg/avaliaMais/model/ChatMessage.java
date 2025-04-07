@@ -55,15 +55,18 @@ public class ChatMessage {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-<<<<<<< HEAD
     /**
-     * Construtor padrão que inicializa o timestamp com o horário atual.
+     * Construtor padrão.
      */
     public ChatMessage() {
-=======
+    }
+
+    /**
+     * Método chamado antes de persistir a entidade.
+     * Define o timestamp com a hora atual.
+     */
     @PrePersist
     public void prePersist() {
->>>>>>> 621fc38809b22b7904290100618ec88d5a60329c
         this.timestamp = LocalDateTime.now();
     }
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import { Search, Filter, User, X, ChevronLeft } from "lucide-react";
+import axios from "axios";
 
 const classColors = [
   "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA", "#B5B681", "#BE7DDB",
@@ -33,50 +34,74 @@ const getRandomColor = () => {
   return classColors[Math.floor(Math.random() * classColors.length)];
 };
 
-const initialClassData = [
-  { id: 1, name: "WF-78 PSIN 2024/1", students: 21, time: "13:40-22:00" },
-  { id: 2, name: "MQ-75 PSIN 2024/2", students: 21, time: "13:40-22:00" },
-  { id: 3, name: "JB-76 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 4, name: "MI-75 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 5, name: "FG-75 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 6, name: "TP-74 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 7, name: "FA-73 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-  { id: 8, name: "FA-78 PSIN 2023/2", students: 21, time: "13:40-22:00" },
-];
+type ClassItem = {
+  id: number;
+  name: string;
+  students: number;
+  time: string;
+  color: string;
+};
+
+type ExtendedItem = Partial<ClassItem> & {
+  isAddButton: boolean;
+  id: number;
+};
 
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [classList, setClassList] = useState<{ id: number; name: string; students: number; time: string; color: string }[]>([]);
-  const [viewMode, setViewMode] = useState("grid");
+  const [classList, setClassList] = useState<ClassItem[]>([]);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  useEffect(() => {
-    const savedClasses = initialClassData.map((item) => {
-      const key = `classColor-${item.id}`;
-      const savedColor = localStorage.getItem(key);
-      const color = savedColor || getRandomColor();
+  // fora do useEffect (no topo do componente)
+const fetchClasses = async () => {
+  try {
+    const res = await axios.get("http://localhost:9090/class/find/all?page=0");
 
-      if (!savedColor) {
+    const updatedClasses = res.data.content.map((item: any) => {
+      const key = `classColor-${item.uuid}`;
+      let color = localStorage.getItem(key);
+
+      if (!color) {
+        color = getRandomColor();
         localStorage.setItem(key, color);
       }
 
-      return { ...item, color };
+      return {
+        id: item.uuid,
+        name: item.nameClass,
+        students: item.quantityStudents,
+        time: item.time,
+        color,
+      };
     });
 
-    setClassList(savedClasses);
-  }, []);
+    setClassList(updatedClasses);
+    console.log("Turmas carregadas:", updatedClasses);
+  } catch (err) {
+    console.error("Erro ao buscar turmas:", err);
+  }
+};
 
+// chama apenas uma vez ao montar a página
+useEffect(() => {
+  fetchClasses();
+}, []);
+
+  
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleRemoveClass = (id: number) => {
-    setClassList(classList.filter((item) => item.id !== id));
-  };
-
   const filteredClasses = classList.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+
+  const combinedList: ExtendedItem[] = [
+    { id: -1, isAddButton: true },
+    ...filteredClasses.map(item => ({ ...item, isAddButton: false }))
+  ];
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -90,7 +115,7 @@ export default function VerTurmasPage() {
             VER TURMAS
           </h1>
         </div>
-
+  
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
           <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -107,22 +132,22 @@ export default function VerTurmasPage() {
               <Filter className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366] cursor-pointer" />
             </div>
           </div>
-
+  
           <div className="flex gap-2">
             <button
               className={`text-[#003366] p-2 ${viewMode === "list" ? "opacity-100" : "opacity-50"}`}
               onClick={() => setViewMode("list")}
             >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                 <path d="M3 5H21M3 12H21M3 19H21" stroke="#003366" strokeWidth={2} strokeLinecap="round" />
               </svg>
             </button>
-
+  
             <button
               className={`text-[#003366] p-2 ${viewMode === "grid" ? "opacity-100" : "opacity-50"}`}
               onClick={() => setViewMode("grid")}
             >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                 <rect x="3" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
                 <rect x="14" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
                 <rect x="3" y="14" width="7" height="7" stroke="#003366" strokeWidth={2} />
@@ -131,38 +156,55 @@ export default function VerTurmasPage() {
             </button>
           </div>
         </div>
-
-        <div className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : "grid-cols-1"} gap-10 px-4 mt-8`}>
-          <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]">
-            <div className="rounded-full p-4 mb-2">
-              <div className="text-4xl sm:text-5xl font-bold">+</div>
-            </div>
-            <div className="font-medium text-xl sm:text-2xl text-center">Adicionar turma</div>
-          </div>
-
-          {filteredClasses.map((item) => (
-            <div key={item.id} className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]">
-              <div className="h-20" style={{ backgroundColor: item.color }}></div>
-              <div className="p-4 mt-2">
-                <h3 className="text-xl sm:text-2xl font-bold truncate">{item.name}</h3>
-                <div className="flex items-center text-base mt-3">
-                  <User className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
-                  <span>{item.students}</span>
-                  <span className="mx-2">-</span>
-                  <span>{item.time}</span>
-                </div>
-
-                <button
-                  onClick={() => handleRemoveClass(item.id)}
-                  className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
+  
+        <div
+          className={`grid ${
+            viewMode === "grid"
+              ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              : "grid-cols-1"
+          } gap-10 px-4 mt-8`}
+        >
+          {combinedList.map((item) => {
+            if (item.isAddButton) {
+              return (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]"
                 >
-                  <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
-                </button>
+                  <div className="rounded-full p-4 mb-2">
+                    <div className="text-4xl sm:text-5xl font-bold">+</div>
+                  </div>
+                  <div className="font-medium text-xl sm:text-2xl text-center">Adicionar turma</div>
+                </div>
+              );
+            }
+  
+            return (
+              <div
+                key={item.id}
+                className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]"
+              >
+                <div className="h-20" style={{ backgroundColor: item.color }}></div>
+                <div className="p-4 mt-2">
+                  <h3 className="text-xl sm:text-2xl font-bold truncate">{item.name}</h3>
+                  <div className="flex items-center text-base mt-3">
+                    <User className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
+                    <span>{item.students}</span>
+                    <span className="mx-2">-</span>
+                    <span>Horário da turma: {item.time}</span>
+                  </div>
+  
+                  <button
+                    className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
+                  >
+                    <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
-}
+};    

@@ -1,10 +1,8 @@
 package net.weg.avaliaMais.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Course;
 import net.weg.avaliaMais.model.Student;
@@ -24,12 +22,10 @@ public record ClassPostRequestDTO(
         @NotNull(message = "O UUID do curso não pode ser nulo")
         UUID courseUuid,
 
-        @NotEmpty(message = "A lista de alunos não pode estar vazia")
-        @Size(min = 1, message = "Deve haver pelo menos um aluno")
+        @NotNull(message = "A lista de alunos não pode ser nula")
         List<UUID> studentIds,
 
-        @NotEmpty(message = "A lista de professores não pode estar vazia")
-        @Size(min = 1, message = "Deve haver pelo menos um professor")
+        @NotNull(message = "A lista de professores não pode ser nula")
         List<UUID> teacherIds,
 
         @NotBlank(message = "O nome da turma não pode estar em branco")
@@ -45,9 +41,7 @@ public record ClassPostRequestDTO(
         @Positive(message = "A carga horária deve ser positiva")
         Double workloadClass,
 
-        @NotNull(message = "O tempo não pode ser nulo")
-        @Positive(message = "O tempo deve ser positivo")
-        Double time,
+        String time,
 
         @NotNull(message = "A quantidade de alunos não pode ser nula")
         @Positive(message = "A quantidade de alunos deve ser positiva")
@@ -68,25 +62,25 @@ public record ClassPostRequestDTO(
      * @throws RuntimeException Se o curso especificado não for encontrado.
      */
     public ClassSchool converter(List<Course> allCourses, List<Student> allStudents, List<Teacher> allTeachers) {
-        // Busca o curso pelo UUID informado
         Course course = allCourses.stream()
                 .filter(c -> c.getUuid().equals(courseUuid))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        // Filtra os alunos a partir dos IDs informados
-        List<Student> studentsList = studentIds == null ? List.of() :
-                allStudents.stream()
-                        .filter(student -> studentIds.contains(student.getUuid()))
-                        .toList();
+        List<Student> studentsList = studentIds.stream()
+                .map(id -> allStudents.stream()
+                        .filter(s -> s.getUuid().equals(id))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + id)))
+                .toList();
 
-        // Filtra os professores a partir dos IDs informados
-        List<Teacher> teachersList = teacherIds == null ? List.of() :
-                allTeachers.stream()
-                        .filter(teacher -> teacherIds.contains(teacher.getUuid()))
-                        .toList();
+        List<Teacher> teachersList = teacherIds.stream()
+                .map(id -> allTeachers.stream()
+                        .filter(t -> t.getUuid().equals(id))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Professor não encontrado: " + id)))
+                .toList();
 
-        // Retorna um objeto ClassSchool preenchido com os dados processados
         return ClassSchool.builder()
                 .course(course)
                 .students(studentsList)
@@ -95,7 +89,7 @@ public record ClassPostRequestDTO(
                 .year(year)
                 .location(location)
                 .workloadClass(workloadClass)
-                .time(time)
+                .time(String.valueOf(time))
                 .quantityStudents(quantityStudents)
                 .shift(shift)
                 .build();

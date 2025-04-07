@@ -7,7 +7,6 @@ import net.weg.avaliaMais.model.Teacher;
 
 import java.util.List;
 
-@Data
 public record EventPostRequestDTO(
         String name,
         String description,

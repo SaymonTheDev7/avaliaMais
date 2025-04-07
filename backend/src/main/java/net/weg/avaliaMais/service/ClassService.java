@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -47,26 +48,26 @@ public class ClassService {
         List<Teacher> allTeachers = teacherRepository.findAll();
 
         // Verificar se o curso existe
-        Course course = allCourses.stream()
+        allCourses.stream()
                 .filter(c -> c.getUuid().equals(classPostRequestDTO.courseUuid()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        // Verificar se os alunos existem
-        List<Student> studentsList = classPostRequestDTO.studentIds().stream()
-                .map(studentId -> allStudents.stream()
-                        .filter(s -> s.getUuid().equals(studentId))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + studentId)))
-                .toList();
+        // Validar alunos apenas se a lista não estiver vazia
+        if (classPostRequestDTO.studentIds() != null) {
+            for (UUID studentId : classPostRequestDTO.studentIds()) {
+                boolean exists = allStudents.stream().anyMatch(s -> s.getUuid().equals(studentId));
+                if (!exists) throw new RuntimeException("Aluno não encontrado: " + studentId);
+            }
+        }
 
-        // Verificar se os professores existem
-        List<Teacher> teachersList = classPostRequestDTO.teacherIds().stream()
-                .map(teacherId -> allTeachers.stream()
-                        .filter(t -> t.getUuid().equals(teacherId))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Professor não encontrado: " + teacherId)))
-                .toList();
+        // Validar professores apenas se a lista não estiver vazia
+        if (classPostRequestDTO.teacherIds() != null) {
+            for (UUID teacherId : classPostRequestDTO.teacherIds()) {
+                boolean exists = allTeachers.stream().anyMatch(t -> t.getUuid().equals(teacherId));
+                if (!exists) throw new RuntimeException("Professor não encontrado: " + teacherId);
+            }
+        }
 
         // Converte e salva a classe
         ClassSchool classSchoolSave = classPostRequestDTO.converter(allCourses, allStudents, allTeachers);
@@ -74,6 +75,7 @@ public class ClassService {
 
         return classSchoolSave.toDto();
     }
+
 
 
     /**
@@ -91,7 +93,7 @@ public class ClassService {
         // Atualiza os dados da turma
         classSchoolToUpdate.setNameClass(classUpdateRequestDTO.nameClass());
         classSchoolToUpdate.setWorkloadClass(classUpdateRequestDTO.workloadClass());
-        classSchoolToUpdate.setTime(classUpdateRequestDTO.time());
+        classSchoolToUpdate.setTime(String.valueOf(classUpdateRequestDTO.time()));
         classSchoolToUpdate.setQuantityStudents(classUpdateRequestDTO.quantityStudents());
         classSchoolToUpdate.setShift(classUpdateRequestDTO.shift());
 

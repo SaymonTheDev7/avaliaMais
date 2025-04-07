@@ -1,9 +1,7 @@
 package net.weg.avaliaMais.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
@@ -17,21 +15,14 @@ import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
 public class PedagogicalAdvisor extends User {
 
-<<<<<<< HEAD
     /**
      * Converte a instância atual de {@link PedagogicalAdvisor} para um objeto do tipo {@link PedagogicalAdvisorResponseDTO}.
      * Este método é utilizado para retornar os dados do assessor pedagógico em um formato adequado para resposta de API.
      *
      * @return um {@link PedagogicalAdvisorResponseDTO} contendo os dados do assessor pedagógico.
      */
-=======
-
-
-
->>>>>>> 621fc38809b22b7904290100618ec88d5a60329c
     public PedagogicalAdvisorResponseDTO toDto() {
         return new PedagogicalAdvisorResponseDTO(
                 this.getUuid(),

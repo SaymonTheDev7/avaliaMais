@@ -47,7 +47,7 @@ public record ClassResponseDTO(
          * Tempo de duração das aulas da turma.
          * O tempo individual de duração de cada aula.
          */
-        Double time,
+        String time,
 
         /**
          * Quantidade de estudantes na turma.
