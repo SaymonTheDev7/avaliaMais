@@ -61,7 +61,7 @@ const turmas: Turma[] = [
       { nome: "Aluno A7", visualizou: 1 },
       { nome: "Aluno A8", visualizou: 1 },
       { nome: "Aluno A9", visualizou: 1 },
-      { nome: "Aluno A10", visualizou: 1 },
+      { nome: "Aluno A10", visualizou: 0 },
     ],
   },
   {
@@ -99,12 +99,12 @@ const turmas: Turma[] = [
       { nome: "Aluno D2", visualizou: 1 },
       { nome: "Aluno D3", visualizou: 1 },
       { nome: "Aluno D4", visualizou: 1 },
-      { nome: "Aluno D5", visualizou: 0 },
+      { nome: "Aluno D5", visualizou: 1 },
       { nome: "Aluno D6", visualizou: 0 },
       { nome: "Aluno D7", visualizou: 0 },
       { nome: "Aluno D8", visualizou: 0 },
       { nome: "Aluno D9", visualizou: 0 },
-      { nome: "Aluno D10", visualizou: 0 },
+      { nome: "Aluno D10", visualizou: 1 },
     ],
   },
 ]
@@ -222,6 +222,7 @@ export default function DashboardPage() {
           turmasInfo={turmasInfo}
           pedagogicosVisualizaram={pedagogicosVisualizaram}
           pedagogicosNaoVisualizaram={pedagogicosNaoVisualizaram}
+          turmas={turmas}
         />
       </div>
     </div>

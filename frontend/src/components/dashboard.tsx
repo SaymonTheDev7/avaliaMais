@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
-import { X } from "lucide-react"
+import { X, ChevronLeft } from "lucide-react"
 
 // Definição de interfaces
 interface Pessoa {
@@ -15,6 +15,16 @@ interface TurmaInfo {
   visualizaram: number
   naoVisualizaram: number
   total: number
+}
+
+interface Aluno {
+  nome: string
+  visualizou: number
+}
+
+interface Turma {
+  nome: string
+  alunos: Aluno[]
 }
 
 interface DadoGrafico {
@@ -32,6 +42,7 @@ interface DashboardProps {
   turmasInfo?: TurmaInfo[]
   pedagogicosVisualizaram?: Pessoa[]
   pedagogicosNaoVisualizaram?: Pessoa[]
+  turmas?: Turma[]
 }
 
 const COLORS = ["#02335E", "#D4D4D4"]
@@ -104,6 +115,7 @@ export function Dashboard({
   turmasInfo = [],
   pedagogicosVisualizaram = [],
   pedagogicosNaoVisualizaram = [],
+  turmas = [],
 }: DashboardProps) {
   const [selectedConselho, setSelectedConselho] = useState(conselhosData[0]?.name || "")
   const [showProfessorPopup, setShowProfessorPopup] = useState(false)
@@ -111,12 +123,18 @@ export function Dashboard({
   const [showPedagogicaPopup, setShowPedagogicaPopup] = useState(false)
   const [popupType, setPopupType] = useState<"visualizaram" | "nao-visualizaram">("nao-visualizaram")
 
+  // Estados para o detalhe da turma
+  const [selectedTurma, setSelectedTurma] = useState<string | null>(null)
+  const [showTurmaDetails, setShowTurmaDetails] = useState(false)
+
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setShowProfessorPopup(false)
         setShowAlunosPopup(false)
         setShowPedagogicaPopup(false)
+        setShowTurmaDetails(false)
+        setSelectedTurma(null)
       }
     }
 
@@ -136,6 +154,8 @@ export function Dashboard({
     setShowProfessorPopup(false)
     setShowAlunosPopup(false)
     setShowPedagogicaPopup(false)
+    setShowTurmaDetails(false)
+    setSelectedTurma(null)
 
     // Pequeno timeout para garantir que o popup anterior seja fechado antes de abrir o novo
     setTimeout(() => {
@@ -147,6 +167,16 @@ export function Dashboard({
         setShowPedagogicaPopup(true)
       }
     }, 10)
+  }
+
+  const handleTurmaClick = (turmaNome: string) => {
+    setSelectedTurma(turmaNome)
+    setShowTurmaDetails(true)
+  }
+
+  const handleBackToTurmas = () => {
+    setShowTurmaDetails(false)
+    setSelectedTurma(null)
   }
 
   return (
@@ -295,38 +325,102 @@ export function Dashboard({
       {showAlunosPopup && alunosData.length > 0 && (
         <Popup
           title={
-            popupType === "visualizaram"
-              ? "Alunos que visualizaram o feedback"
-              : "Alunos que não visualizaram o feedback"
+            showTurmaDetails && selectedTurma
+              ? popupType === "visualizaram"
+                ? `Alunos da ${selectedTurma} que visualizaram o feedback`
+                : `Alunos da ${selectedTurma} que não visualizaram o feedback`
+              : popupType === "visualizaram"
+                ? "Alunos que visualizaram o feedback"
+                : "Alunos que não visualizaram o feedback"
           }
           content={
             <div>
-              <p className="mb-4">
-                {popupType === "visualizaram"
-                  ? `${alunosData[0].value}% dos alunos já visualizaram o feedback para o concelho ${selectedConselho}.`
-                  : `${alunosData[1].value}% dos alunos ainda não visualizaram o feedback para o concelho ${selectedConselho}.`}
-              </p>
-              <div className="bg-gray-100 p-4 rounded-md">
-                <h4 className="font-semibold mb-2 text-[#02335E]">Distribuição por turmas:</h4>
-                <ul className="list-disc pl-5 space-y-2">
-                  {turmasInfo.map((turma, index) => (
-                    <li key={index}>
-                      <span className="font-medium">{turma.nome}:</span>{" "}
+              {!showTurmaDetails ? (
+                // Vista de turmas
+                <>
+                  <p className="mb-4">
+                    {popupType === "visualizaram"
+                      ? `${alunosData[0].value}% dos alunos já visualizaram o feedback para o concelho ${selectedConselho}.`
+                      : `${alunosData[1].value}% dos alunos ainda não visualizaram o feedback para o concelho ${selectedConselho}.`}
+                  </p>
+                  <div className="bg-gray-100 p-4 rounded-md">
+                    <h4 className="font-semibold mb-2 text-[#02335E]">Distribuição por turmas:</h4>
+                    <ul className="list-disc pl-5 space-y-2">
+                      {turmasInfo.map((turma, index) => (
+                        <li key={index}>
+                          <button
+                            onClick={() => handleTurmaClick(turma.nome)}
+                            className="font-medium text-[#02335E] hover:underline focus:outline-none flex items-center"
+                          >
+                            <span>{turma.nome}:</span>{" "}
+                            {popupType === "visualizaram"
+                              ? `${turma.visualizaram} alunos (${Math.round((turma.visualizaram / turma.total) * 100)}%)`
+                              : `${turma.naoVisualizaram} alunos (${Math.round((turma.naoVisualizaram / turma.total) * 100)}%)`}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <p className="mt-4 text-sm text-gray-600 italic">
+                    {popupType === "visualizaram"
+                      ? "Estes dados representam os alunos que já acessaram o sistema para visualizar o feedback."
+                      : "É importante incentivar os alunos a visualizarem o feedback para melhorar seu desempenho."}
+                  </p>
+                  <p className="mt-2 text-sm text-[#02335E]">Clique em uma turma para ver a lista de alunos.</p>
+                </>
+              ) : (
+                // Vista detalhada de uma turma - mostra apenas os alunos relevantes ao contexto
+                <>
+                  <button
+                    onClick={handleBackToTurmas}
+                    className="mb-4 flex items-center text-[#02335E] hover:underline"
+                  >
+                    <ChevronLeft size={16} />
+                    <span>Voltar para lista de turmas</span>
+                  </button>
+
+                  <div className="bg-gray-100 p-4 rounded-md">
+                    <h4 className="font-semibold mb-3 text-[#02335E]">
                       {popupType === "visualizaram"
-                        ? `${turma.visualizaram} alunos (${Math.round((turma.visualizaram / turma.total) * 100)}%)`
-                        : `${turma.naoVisualizaram} alunos (${Math.round((turma.naoVisualizaram / turma.total) * 100)}%)`}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="mt-4 text-sm text-gray-600 italic">
-                {popupType === "visualizaram"
-                  ? "Estes dados representam os alunos que já acessaram o sistema para visualizar o feedback."
-                  : "É importante incentivar os alunos a visualizarem o feedback para melhorar seu desempenho."}
-              </p>
+                        ? "Alunos que visualizaram o feedback:"
+                        : "Alunos que não visualizaram o feedback:"}
+                    </h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {turmas
+                        .find((t) => t.nome === selectedTurma)
+                        ?.alunos.filter((a) => (popupType === "visualizaram" ? a.visualizou === 1 : a.visualizou === 0))
+                        .map((aluno, index) => (
+                          <li key={index} className={popupType === "visualizaram" ? "text-green-700" : "text-red-700"}>
+                            {aluno.nome} {popupType === "visualizaram" && "✓"}
+                          </li>
+                        ))}
+                      {(turmas
+                        .find((t) => t.nome === selectedTurma)
+                        ?.alunos.filter((a) => (popupType === "visualizaram" ? a.visualizou === 1 : a.visualizou === 0))
+                        .length || 0) === 0 && (
+                        <li className="italic text-gray-500">
+                          {popupType === "visualizaram"
+                            ? "Nenhum aluno visualizou o feedback nesta turma"
+                            : "Todos os alunos visualizaram o feedback nesta turma"}
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+
+                  <p className="mt-4 text-sm text-gray-600">
+                    {popupType === "visualizaram"
+                      ? `${turmas.find((t) => t.nome === selectedTurma)?.alunos.filter((a) => a.visualizou === 1).length || 0} de ${turmas.find((t) => t.nome === selectedTurma)?.alunos.length || 0} alunos visualizaram o feedback`
+                      : `${turmas.find((t) => t.nome === selectedTurma)?.alunos.filter((a) => a.visualizou === 0).length || 0} de ${turmas.find((t) => t.nome === selectedTurma)?.alunos.length || 0} alunos não visualizaram o feedback`}
+                  </p>
+                </>
+              )}
             </div>
           }
-          onClose={() => setShowAlunosPopup(false)}
+          onClose={() => {
+            setShowAlunosPopup(false)
+            setShowTurmaDetails(false)
+            setSelectedTurma(null)
+          }}
         />
       )}
 
