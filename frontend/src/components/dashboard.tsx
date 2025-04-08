@@ -68,21 +68,22 @@ export function Dashboard({ professorData, alunosData, pedagogicaData, conselhos
   const [showProfessorPopup, setShowProfessorPopup] = useState(false);
   const [showAlunosPopup, setShowAlunosPopup] = useState(false);
   const [showPedagogicaPopup, setShowPedagogicaPopup] = useState(false);
+  const [popupType, setPopupType] = useState<'visualizaram' | 'nao-visualizaram'>('nao-visualizaram');
 
   const handleConselhoChange = (event: any) => {
     setSelectedConselho(event.target.value);
   };
 
   const handlePieClick = (data: any, index: number, chartType: 'professor' | 'alunos' | 'pedagogica') => {
-    // Apenas mostrar popup quando clicar na parte cinza (índice 1)
-    if (index === 1) {
-      if (chartType === 'professor') {
-        setShowProfessorPopup(true);
-      } else if (chartType === 'alunos') {
-        setShowAlunosPopup(true);
-      } else if (chartType === 'pedagogica') {
-        setShowPedagogicaPopup(true);
-      }
+    // Definir o tipo de popup com base no índice clicado
+    setPopupType(index === 0 ? 'visualizaram' : 'nao-visualizaram');
+    
+    if (chartType === 'professor') {
+      setShowProfessorPopup(true);
+    } else if (chartType === 'alunos') {
+      setShowAlunosPopup(true);
+    } else if (chartType === 'pedagogica') {
+      setShowPedagogicaPopup(true);
     }
   };
 
@@ -200,20 +201,35 @@ export function Dashboard({ professorData, alunosData, pedagogicaData, conselhos
       {/* Popups */}
       {showProfessorPopup && (
         <Popup
-          title="Professores que não visualizaram o feedback"
+          title={popupType === 'visualizaram' ? "Professores que visualizaram o feedback" : "Professores que não visualizaram o feedback"}
           content={
             <div>
               <p className="mb-4">
-                {professorData[1].value}% dos professores ainda não visualizaram o feedback para o concelho {selectedConselho}.
+                {popupType === 'visualizaram' 
+                  ? `${professorData[0].value}% dos professores já visualizaram o feedback para o concelho ${selectedConselho}.`
+                  : `${professorData[1].value}% dos professores ainda não visualizaram o feedback para o concelho ${selectedConselho}.`
+                }
               </p>
               <div className="bg-gray-100 p-3 rounded">
                 <h4 className="font-semibold mb-2">Lista de professores:</h4>
                 <ul className="list-disc pl-5">
-                  <li>João Silva</li>
-                  <li>Maria Oliveira</li>
-                  <li>Pedro Santos</li>
-                  <li>Ana Pereira</li>
-                  <li>Carlos Ferreira</li>
+                  {popupType === 'visualizaram' ? (
+                    <>
+                      <li>Roberto Almeida</li>
+                      <li>Fernanda Costa</li>
+                      <li>Luiz Mendes</li>
+                      <li>Cristina Rodrigues</li>
+                      <li>Eduardo Martins</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>João Silva</li>
+                      <li>Maria Oliveira</li>
+                      <li>Pedro Santos</li>
+                      <li>Ana Pereira</li>
+                      <li>Carlos Ferreira</li>
+                    </>
+                  )}
                 </ul>
               </div>
             </div>
@@ -224,19 +240,33 @@ export function Dashboard({ professorData, alunosData, pedagogicaData, conselhos
 
       {showAlunosPopup && (
         <Popup
-          title="Alunos que não visualizaram o feedback"
+          title={popupType === 'visualizaram' ? "Alunos que visualizaram o feedback" : "Alunos que não visualizaram o feedback"}
           content={
             <div>
               <p className="mb-4">
-                {alunosData[1].value}% dos alunos ainda não visualizaram o feedback para o concelho {selectedConselho}.
+                {popupType === 'visualizaram' 
+                  ? `${alunosData[0].value}% dos alunos já visualizaram o feedback para o concelho ${selectedConselho}.`
+                  : `${alunosData[1].value}% dos alunos ainda não visualizaram o feedback para o concelho ${selectedConselho}.`
+                }
               </p>
               <div className="bg-gray-100 p-3 rounded">
                 <h4 className="font-semibold mb-2">Distribuição por turmas:</h4>
                 <ul className="list-disc pl-5">
-                  <li>Turma A: 12 alunos</li>
-                  <li>Turma B: 8 alunos</li>
-                  <li>Turma C: 15 alunos</li>
-                  <li>Turma D: 10 alunos</li>
+                  {popupType === 'visualizaram' ? (
+                    <>
+                      <li>Turma A: 28 alunos</li>
+                      <li>Turma B: 22 alunos</li>
+                      <li>Turma C: 25 alunos</li>
+                      <li>Turma D: 30 alunos</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Turma A: 12 alunos</li>
+                      <li>Turma B: 8 alunos</li>
+                      <li>Turma C: 15 alunos</li>
+                      <li>Turma D: 10 alunos</li>
+                    </>
+                  )}
                 </ul>
               </div>
             </div>
@@ -247,22 +277,39 @@ export function Dashboard({ professorData, alunosData, pedagogicaData, conselhos
 
       {showPedagogicaPopup && (
         <Popup
-          title="Equipe pedagógica que não visualizou o feedback"
+          title={popupType === 'visualizaram' ? "Equipe pedagógica que visualizou o feedback" : "Equipe pedagógica que não visualizou o feedback"}
           content={
             <div>
               <p className="mb-4">
-                {pedagogicaData[1].value}% da equipe pedagógica ainda não visualizou o feedback para o concelho {selectedConselho}.
+                {popupType === 'visualizaram' 
+                  ? `${pedagogicaData[0].value}% da equipe pedagógica já visualizou o feedback para o concelho ${selectedConselho}.`
+                  : `${pedagogicaData[1].value}% da equipe pedagógica ainda não visualizou o feedback para o concelho ${selectedConselho}.`
+                }
               </p>
               <div className="bg-gray-100 p-3 rounded">
                 <h4 className="font-semibold mb-2">Membros da equipe:</h4>
                 <ul className="list-disc pl-5">
-                  <li>Coordenador de Ensino</li>
-                  <li>Psicólogo Escolar</li>
-                  <li>Orientador Educacional</li>
+                  {popupType === 'visualizaram' ? (
+                    <>
+                      <li>Diretor Escolar</li>
+                      <li>Supervisor Pedagógico</li>
+                      <li>Coordenador de Disciplina</li>
+                      <li>Assistente Social</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Coordenador de Ensino</li>
+                      <li>Psicólogo Escolar</li>
+                      <li>Orientador Educacional</li>
+                    </>
+                  )}
                 </ul>
               </div>
               <p className="mt-4 text-sm text-gray-600">
-                É importante que toda a equipe pedagógica visualize os feedbacks para garantir um acompanhamento adequado dos alunos.
+                {popupType === 'visualizaram' 
+                  ? "A visualização dos feedbacks pela equipe pedagógica é essencial para o acompanhamento do desenvolvimento dos alunos."
+                  : "É importante que toda a equipe pedagógica visualize os feedbacks para garantir um acompanhamento adequado dos alunos."
+                }
               </p>
             </div>
           }
