@@ -1,9 +1,8 @@
 package net.weg.avaliaMais.model.dto.request;
 
-import lombok.Data;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Course;
-import net.weg.avaliaMais.model.Teacher;
+import net.weg.avaliaMais.model.user.Teacher;
 
 import java.util.List;
 

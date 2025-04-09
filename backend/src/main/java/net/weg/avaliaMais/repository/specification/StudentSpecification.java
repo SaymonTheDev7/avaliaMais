@@ -1,6 +1,6 @@
 package net.weg.avaliaMais.repository.specification;
 
-import net.weg.avaliaMais.model.Student;
+import net.weg.avaliaMais.model.user.Student;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.UUID;
