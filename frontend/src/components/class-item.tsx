@@ -1,19 +1,21 @@
-import React from "react";
-import { User, X } from "lucide-react";
+"use client"
+import { User, X } from "lucide-react"
 
 type ClassItemProps = {
-  id: number;
-  name: string;
-  students: number;
-  time: string;
-  color: string;
-};
+  id: number
+  name: string
+  students: number
+  time: string
+  color: string
+  onClick?: () => void
+}
 
-export function ClassItem({ id, name, students, time, color }: ClassItemProps) {
+export function ClassItem({ id, name, students, time, color, onClick }: ClassItemProps) {
   return (
     <div
       key={id}
-      className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]"
+      className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px] cursor-pointer"
+      onClick={onClick}
     >
       <div className="h-20" style={{ backgroundColor: color }}></div>
       <div className="p-4 mt-2">
@@ -27,10 +29,14 @@ export function ClassItem({ id, name, students, time, color }: ClassItemProps) {
 
         <button
           className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
+          onClick={(e) => {
+            e.stopPropagation()
+            // Adicione aqui a lógica para excluir a turma
+          }}
         >
           <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
         </button>
       </div>
     </div>
-  );
+  )
 }
