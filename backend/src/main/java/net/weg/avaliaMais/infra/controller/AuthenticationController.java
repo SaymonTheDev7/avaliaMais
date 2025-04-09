@@ -2,11 +2,11 @@ package net.weg.avaliaMais.infra.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.weg.avaliaMais.infra.dto.request.AuthenticationRequestDTO;
-import net.weg.avaliaMais.infra.dto.response.LoginResponseDTO;
-import net.weg.avaliaMais.infra.dto.request.RegisterResponseDTO;
+import net.weg.avaliaMais.infra.model.dto.request.AuthenticationRequestDTO;
+import net.weg.avaliaMais.infra.model.dto.response.LoginResponseDTO;
+import net.weg.avaliaMais.infra.model.dto.request.RegisterResponseDTO;
 import net.weg.avaliaMais.infra.security.TokenService;
-import net.weg.avaliaMais.model.user.AuthUser;
+import net.weg.avaliaMais.infra.model.AuthUser;
 import net.weg.avaliaMais.infra.repository.AuthUserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

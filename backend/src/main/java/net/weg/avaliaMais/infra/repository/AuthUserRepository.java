@@ -1,6 +1,6 @@
 package net.weg.avaliaMais.infra.repository;
 
-import net.weg.avaliaMais.model.user.AuthUser;
+import net.weg.avaliaMais.infra.model.AuthUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

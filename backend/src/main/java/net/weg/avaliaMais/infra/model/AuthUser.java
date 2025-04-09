@@ -1,4 +1,4 @@
-package net.weg.avaliaMais.model.user;
+package net.weg.avaliaMais.infra.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
