@@ -141,7 +141,7 @@ export default function PreConselho() {
 
           <Button className="bg-[#003366] text-white hover:bg-[#002244] transition-all px-6 py-2 h-auto rounded-full shadow-md group">
             Próximo
-            <ChevronRight className="h-6 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </motion.div>
       </main>
