@@ -1376,3 +1376,53 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2025-04-09T20:29:00.514-03:00  INFO 16992 --- [avaliaMais] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-04-09T20:29:00.515-03:00  INFO 16992 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-09T20:29:00.519-03:00  INFO 16992 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-10T19:21:07.514-03:00  INFO 4792 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Starting AvaliaMaisApplication using Java 21.0.6 with PID 4792 (C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes started by saymon_castro in C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend)
+2025-04-10T19:21:07.516-03:00 DEBUG 4792 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
+2025-04-10T19:21:07.517-03:00  INFO 4792 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-04-10T19:21:08.881-03:00  INFO 4792 --- [avaliaMais] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-10T19:21:08.951-03:00  INFO 4792 --- [avaliaMais] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 62 ms. Found 11 JPA repository interfaces.
+2025-04-10T19:21:09.271-03:00  INFO 4792 --- [avaliaMais] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 9090 (http)
+2025-04-10T19:21:09.282-03:00  INFO 4792 --- [avaliaMais] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-10T19:21:09.282-03:00  INFO 4792 --- [avaliaMais] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2025-04-10T19:21:09.323-03:00  INFO 4792 --- [avaliaMais] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-10T19:21:09.323-03:00  INFO 4792 --- [avaliaMais] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1764 ms
+2025-04-10T19:21:09.400-03:00  INFO 4792 --- [avaliaMais] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-10T19:21:09.440-03:00  INFO 4792 --- [avaliaMais] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-04-10T19:21:09.460-03:00  INFO 4792 --- [avaliaMais] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-10T19:21:09.629-03:00  INFO 4792 --- [avaliaMais] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-10T19:21:09.646-03:00  INFO 4792 --- [avaliaMais] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-10T19:21:10.039-03:00  INFO 4792 --- [avaliaMais] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@644947ee
+2025-04-10T19:21:10.041-03:00  INFO 4792 --- [avaliaMais] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-10T19:21:10.055-03:00  WARN 4792 --- [avaliaMais] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-04-10T19:21:10.056-03:00  WARN 4792 --- [avaliaMais] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-04-10T19:21:10.067-03:00  INFO 4792 --- [avaliaMais] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-10T19:21:10.834-03:00  INFO 4792 --- [avaliaMais] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-10T19:21:11.385-03:00  INFO 4792 --- [avaliaMais] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-10T19:21:11.529-03:00  INFO 4792 --- [avaliaMais] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-04-10T19:21:11.795-03:00 DEBUG 4792 --- [avaliaMais] [main] n.w.a.infra.security.SecurityFilter      : Filter 'securityFilter' configured for use
+2025-04-10T19:21:11.942-03:00  INFO 4792 --- [avaliaMais] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name authorizationService
+2025-04-10T19:21:11.995-03:00  WARN 4792 --- [avaliaMais] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-10T19:21:12.382-03:00  INFO 4792 --- [avaliaMais] [main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-04-10T19:21:12.382-03:00  INFO 4792 --- [avaliaMais] [main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@20bd4fd2]]
+2025-04-10T19:21:12.383-03:00  INFO 4792 --- [avaliaMais] [main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-04-10T19:21:12.393-03:00  INFO 4792 --- [avaliaMais] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 9090 (http) with context path '/'
+2025-04-10T19:21:12.397-03:00  INFO 4792 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Started AvaliaMaisApplication in 5.409 seconds (process running for 5.919)
+2025-04-10T19:22:12.394-03:00  INFO 4792 --- [avaliaMais] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-04-10T19:25:04.644-03:00  INFO 4792 --- [avaliaMais] [http-nio-9090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-10T19:25:04.644-03:00  INFO 4792 --- [avaliaMais] [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-10T19:25:04.646-03:00  INFO 4792 --- [avaliaMais] [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-04-10T19:28:07.066-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-10T19:28:07.070-03:00  INFO 4792 --- [avaliaMais] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-10T19:28:07.072-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-04-10T19:28:07.072-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@20bd4fd2]]
+2025-04-10T19:28:07.072-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-04-10T19:28:07.075-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-10T19:28:07.076-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-10T19:28:07.081-03:00  INFO 4792 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
