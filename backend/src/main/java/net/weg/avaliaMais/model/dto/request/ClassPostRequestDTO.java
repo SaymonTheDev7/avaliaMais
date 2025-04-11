@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import net.weg.avaliaMais.model.ClassSchool;
 import net.weg.avaliaMais.model.Course;
-import net.weg.avaliaMais.model.Student;
-import net.weg.avaliaMais.model.Teacher;
+import net.weg.avaliaMais.model.user.Student;
+import net.weg.avaliaMais.model.user.Teacher;
 
 import java.util.List;
 import java.util.UUID;

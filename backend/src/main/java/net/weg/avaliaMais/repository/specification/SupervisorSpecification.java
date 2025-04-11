@@ -1,6 +1,6 @@
 package net.weg.avaliaMais.repository.specification;
 
-import net.weg.avaliaMais.model.Supervisor;
+import net.weg.avaliaMais.model.user.Supervisor;
 import org.springframework.data.jpa.domain.Specification;
 
 /**

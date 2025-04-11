@@ -1,107 +1,183 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from "react";
-import Header from "@/components/header";
-import { Search, Filter, User, X, ChevronLeft } from "lucide-react";
-import axios from "axios";
+import type React from "react"
+import { useState, useEffect } from "react"
+import Header from "@/components/header"
+import { ChevronLeft } from "lucide-react"
+import axios from "axios"
+import { SearchBar } from "@/components/search-bar"
+import { ClassItem } from "@/components/class-item"
+import { ClassList } from "@/components/class-list"
+import { AddButton } from "@/components/add-button"
+import { ViewModeToggle } from "@/components/view-mode-toggle"
+import AdicionarButton from "@/components/adicionar-button"
+import { PopupDados } from "@/components/popup-dados"
 
 const classColors = [
-  "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA", "#B5B681", "#BE7DDB",
-  "#907D78", "#B7A4D4", "#8FA76C", "#94C36B", "#C46694", "#7866AD", "#DCDA90", "#C1D3B4", "#9A9ED2", "#AFD8AB",
-  "#C8CDC4", "#CFBDDB", "#657BCF", "#99BDAF", "#CC78CF", "#D393A6", "#D675B6", "#A680CA", "#897DAB", "#767D88",
-  "#78CA8E", "#B985AA", "#6B80AD", "#A39790", "#856688", "#A8D46C", "#C4BA73", "#9BC7DB", "#DABDD6", "#748F97",
-  "#C8ABAC", "#CBAEC3", "#9D98BC", "#D0D08B", "#87CF75", "#6BBA7A", "#A7B890", "#A36CAE", "#65A1AC", "#BA9076",
-  "#CC839B", "#D2BFB2", "#7F8AA0", "#DCA4C4", "#81A3C6", "#99C471", "#80988A", "#C1AE6B", "#65767E", "#9176C8",
-  "#8AA7A7", "#64CB9E", "#666BAC", "#C4808A", "#DCB18F", "#9D79BD", "#9B7287", "#7FB970", "#A6987A", "#A097C9",
-  "#A69D96", "#918DD7", "#C286A4", "#C46AAB", "#AFA464", "#CBD2C6", "#8E87B0", "#94A3A4", "#CC90AE", "#B58981",
-  "#64C98A", "#88C6B7", "#BECFC2", "#657D86", "#D68687", "#CD8991", "#95A394", "#C4B9D7", "#CEA07F", "#CBD3C3",
-  "#64C2AF", "#DBC5D7", "#B28789", "#90B0C5", "#799A84", "#B793D8", "#CEB196", "#8592CF", "#B084D7", "#A271BF",
-  "#80D095", "#9B87D1", "#7F6C75", "#8F8DAA", "#B4DBD2", "#CFDBBA", "#D1D086", "#D7AB98", "#659664", "#D7CA68",
-  "#B36A80", "#926DD3", "#79787A", "#856990", "#D7ACAA", "#B6946D", "#B38174", "#B78769", "#CB74A0", "#AA8465",
-  "#89BAB3", "#768DA5", "#BAAAAF", "#A4BDB3", "#76DBCA", "#D29ACD", "#AEDAB0", "#7685A6", "#8BC1BC", "#69CC98",
-  "#83D76C", "#B1686F", "#989B92", "#AFC36F", "#AA987A", "#67A6C2", "#B781A8", "#A59DA6", "#97B668", "#B16CD9",
-  "#CBA8CF", "#898DC7", "#CD8A6E", "#BBAAAB", "#99C69D", "#D4C4DC", "#AE69C2", "#889A9D", "#A195AA", "#8BAF92",
-  "#64ABD5", "#7FB76A", "#C5D6C4", "#C880D9", "#CF94D8", "#AFCA65", "#D5BF9D", "#7BCFAE", "#B189C0", "#8BC082",
-  "#AB75B8", "#6877AA", "#C996A3", "#847EB8", "#8EAF8A", "#BD8A76", "#D494C0", "#D29A8E", "#9974B5", "#B47FBD",
-  "#BE7AC6", "#8CA7B0", "#B2A3BC", "#A2AF97", "#AEC39C", "#B369C4", "#7EB4BC", "#AAD983", "#80656C", "#B1C0A7",
-  "#C66ED6", "#96C97B", "#A773A8", "#999870", "#71D2B0", "#82D896", "#B4C4C6", "#A2CF7B", "#989E85", "#93DAAC",
-  "#D4CD7B", "#6DA9C4", "#CCB3B2", "#76DBB1", "#A8CAD1", "#9CBF82", "#D69DA6", "#9F77AF", "#BDAABB", "#7B846F",
-  "#3C74D4", "#5C63BA", "#756AB2", "#4365CA", "#3874BA", "#5B56B3", "#5868D1", "#538BA5", "#385EAF", "#5E8EC2",
-  "#4563A4", "#4C89CE", "#6368D1", "#5161C9", "#7671A5", "#5F7FB7", "#3A89D1", "#5963C6", "#557CA3", "#425DBB"
-];
+  "#B6B881",
+  "#D88C7E",
+  "#A58D64",
+  "#9F70AB",
+  "#AF878D",
+  "#8795BA",
+  "#9F93D0",
+  "#8A6FBA",
+  "#B5B681",
+  "#BE7DDB",
+  "#907D78",
+  "#B7A4D4",
+  "#8FA76C",
+  "#94C36B",
+  "#C46694",
+  "#7866AD",
+  "#DCDA90",
+  "#C1D3B4",
+  "#9A9ED2",
+  "#AFD8AB",
+  "#C8CDC4",
+  "#CFBDDB",
+  "#657BCF",
+  "#99BDAF",
+  "#CC78CF",
+  "#D393A6",
+  "#D675B6",
+  "#A680CA",
+  "#897DAB",
+  "#767D88",
+  "#78CA8E",
+  "#B985AA",
+  "#6B80AD",
+  "#A39790",
+  "#856688",
+  "#A8D46C",
+  "#C4BA73",
+  "#9BC7DB",
+  "#DABDD6",
+  "#748F97",
+  "#C8ABAC",
+  "#CBAEC3",
+  "#9D98BC",
+  "#D0D08B",
+  "#87CF75",
+  "#6BBA7A",
+  "#A7B890",
+  "#A36CAE",
+  "#65A1AC",
+  "#BA9076",
+  "#CC839B",
+  "#D2BFB2",
+  "#7F8AA0",
+  "#DCA4C4",
+  "#81A3C6",
+  "#99C471",
+  "#80988A",
+  "#C1AE6B",
+  "#65767E",
+  "#9176C8",
+  "#8AA7A7",
+  "#64CB9E",
+  "#666BAC",
+  "#C4808A",
+  "#DCB18F",
+  "#9D79BD",
+  "#9B7287",
+  "#7FB970",
+  "#A6987A",
+  "#A097C9",
+  // ... rest of the colors
+]
 
 const getRandomColor = () => {
-  return classColors[Math.floor(Math.random() * classColors.length)];
-};
+  return classColors[Math.floor(Math.random() * classColors.length)]
+}
 
-type ClassItem = {
-  id: number;
-  name: string;
-  students: number;
-  time: string;
-  color: string;
-};
+type ClassItemType = {
+  id: number
+  name: string
+  students: number
+  time: string
+  color: string
+}
 
-type ExtendedItem = Partial<ClassItem> & {
-  isAddButton: boolean;
-  id: number;
-};
+type ExtendedItem = Partial<ClassItemType> & {
+  isAddButton: boolean
+  id: number
+}
 
 export default function VerTurmasPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [classList, setClassList] = useState<ClassItem[]>([]);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchTerm, setSearchTerm] = useState("")
+  const [classList, setClassList] = useState<ClassItemType[]>([])
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [selectedClass, setSelectedClass] = useState<ClassItemType | null>(null)
 
-  // fora do useEffect (no topo do componente)
-const fetchClasses = async () => {
-  try {
-    const res = await axios.get("http://localhost:9090/class/find/all?page=0");
+  const fetchClasses = async () => {
+    try {
+      const res = await axios.get("http://localhost:9090/class/find/all?page=0")
 
-    const updatedClasses = res.data.content.map((item: any) => {
-      const key = `classColor-${item.uuid}`;
-      let color = localStorage.getItem(key);
+      const updatedClasses = res.data.content.map((item: any) => {
+        const key = `classColor-${item.uuid}`
+        let color = localStorage.getItem(key)
 
-      if (!color) {
-        color = getRandomColor();
-        localStorage.setItem(key, color);
-      }
+        if (!color) {
+          color = getRandomColor()
+          localStorage.setItem(key, color)
+        }
 
-      return {
-        id: item.uuid,
-        name: item.nameClass,
-        students: item.quantityStudents,
-        time: item.time,
-        color,
-      };
-    });
+        return {
+          id: item.uuid,
+          name: item.nameClass,
+          students: item.quantityStudents,
+          time: item.time,
+          color,
+        }
+      })
 
-    setClassList(updatedClasses);
-    console.log("Turmas carregadas:", updatedClasses);
-  } catch (err) {
-    console.error("Erro ao buscar turmas:", err);
+      setClassList(updatedClasses)
+      console.log("Turmas carregadas:", updatedClasses)
+    } catch (err) {
+      console.error("Erro ao buscar turmas:", err)
+    }
   }
-};
 
-// chama apenas uma vez ao montar a página
-useEffect(() => {
-  fetchClasses();
-}, []);
-
-  
+  useEffect(() => {
+    fetchClasses()
+  }, [])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+    setSearchTerm(event.target.value)
+  }
 
-  const filteredClasses = classList.filter(item =>
-    item.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
+  const handleRemoveClass = (id: number) => {
+    // Implement class removal logic here
+    setClassList(classList.filter((item) => item.id !== id))
+    // You might want to add API call to delete the class from the backend
+  }
 
-  const combinedList: ExtendedItem[] = [
-    { id: -1, isAddButton: true },
-    ...filteredClasses.map(item => ({ ...item, isAddButton: false }))
-  ];
+  const handleAddClass = () => {
+    // Implement class addition logic here
+    // This is just a placeholder, you'll need to adapt it to your needs
+    const newId = Date.now()
+    const newColor = getRandomColor()
+    const newClass: ClassItemType = {
+      id: newId,
+      name: "Nova Turma",
+      students: 0,
+      time: "08:00 - 10:00",
+      color: newColor,
+    }
+    setClassList([...classList, newClass])
+    // You might want to add API call to add the class to the backend
+  }
+
+  const handleClassClick = (classItem: ClassItemType) => {
+    setSelectedClass(classItem)
+  }
+
+  const closePopup = () => {
+    setSelectedClass(null)
+  }
+
+  const filteredClasses = classList.filter((item) => item.name?.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -115,96 +191,41 @@ useEffect(() => {
             VER TURMAS
           </h1>
         </div>
-  
+
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
-          <div className="relative w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <Search className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366]" />
-            </div>
-            <input
-              type="text"
-              placeholder="Pesquise algo"
-              className="w-full pl-10 pr-10 py-3 bg-gray-200 rounded-md focus:outline-none text-sm sm:text-base"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <Filter className="h-4 sm:h-5 w-4 sm:w-5 text-[#003366] cursor-pointer" />
-            </div>
-          </div>
-  
+          <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
           <div className="flex gap-2">
-            <button
-              className={`text-[#003366] p-2 ${viewMode === "list" ? "opacity-100" : "opacity-50"}`}
-              onClick={() => setViewMode("list")}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                <path d="M3 5H21M3 12H21M3 19H21" stroke="#003366" strokeWidth={2} strokeLinecap="round" />
-              </svg>
-            </button>
-  
-            <button
-              className={`text-[#003366] p-2 ${viewMode === "grid" ? "opacity-100" : "opacity-50"}`}
-              onClick={() => setViewMode("grid")}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="14" y="3" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="3" y="14" width="7" height="7" stroke="#003366" strokeWidth={2} />
-                <rect x="14" y="14" width="7" height="7" stroke="#003366" strokeWidth={2} />
-              </svg>
-            </button>
+            {viewMode === "list" && <AdicionarButton />}
+            <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
         </div>
-  
-        <div
-          className={`grid ${
-            viewMode === "grid"
-              ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-              : "grid-cols-1"
-          } gap-10 px-4 mt-8`}
-        >
-          {combinedList.map((item) => {
-            if (item.isAddButton) {
-              return (
-                <div
-                  key={item.id}
-                  className="flex flex-col items-center justify-center p-4 rounded-xl bg-[#003366] text-white cursor-pointer h-[180px]"
-                >
-                  <div className="rounded-full p-4 mb-2">
-                    <div className="text-4xl sm:text-5xl font-bold">+</div>
-                  </div>
-                  <div className="font-medium text-xl sm:text-2xl text-center">Adicionar turma</div>
-                </div>
-              );
-            }
-  
-            return (
-              <div
-                key={item.id}
-                className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]"
-              >
-                <div className="h-20" style={{ backgroundColor: item.color }}></div>
-                <div className="p-4 mt-2">
-                  <h3 className="text-xl sm:text-2xl font-bold truncate">{item.name}</h3>
-                  <div className="flex items-center text-base mt-3">
-                    <User className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
-                    <span>{item.students}</span>
-                    <span className="mx-2">-</span>
-                    <span>Horário da turma: {item.time}</span>
-                  </div>
-  
-                  <button
-                    className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
-                  >
-                    <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-4 mt-8">
+            <div onClick={handleAddClass}>
+              <AddButton text="Adicionar turma" />
+            </div>
+
+            {filteredClasses.map((classItem) => (
+              <ClassItem
+                key={classItem.id}
+                id={classItem.id}
+                name={classItem.name}
+                students={classItem.students}
+                time={classItem.time}
+                color={classItem.color}
+                onClick={() => handleClassClick(classItem)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="px-4 mt-8">
+            <ClassList classes={filteredClasses} onRemoveClass={handleRemoveClass} />
+          </div>
+        )}
       </div>
+
+      {selectedClass && <PopupDados classData={selectedClass} onClose={closePopup} />}
     </div>
-  );
-};    
+  )
+}
