@@ -25,7 +25,6 @@ export function ConselhoClassList({ classes }: ConselhoClassListProps) {
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      {/* Header row - hidden on small screens */}
       <div className="hidden md:grid grid-cols-12 bg-gray-100 py-4 font-semibold text-[#003366]">
         <div className="col-span-1"></div>
         <div className="col-span-4 px-4">Nome da turma</div>
