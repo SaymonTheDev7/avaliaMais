@@ -34,10 +34,7 @@ public record StudentPostRequestDTO(
         List<UUID> classIds,
 
         @NotNull(message = "O ID do curso atual não pode ser nulo")
-        UUID currentCourseId,
-
-        @NotNull
-        UserRole role
+        UUID currentCourseId
 ) {
     public Student converter(List<ClassSchool> allClasses, List<Course> allCourses) {
 

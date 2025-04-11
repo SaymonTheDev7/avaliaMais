@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.repository.user;
 
+import net.weg.avaliaMais.model.user.Student;
 import net.weg.avaliaMais.model.user.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -26,6 +27,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, UUID>, JpaSpec
      * @return {@code true} se o professor existir, {@code false} caso contrário.
      */
     boolean existsByUuid(UUID uuid);
+
+    Optional<Teacher> findByAuthUserUuid(UUID uuid);
 
     /**
      * Exclui um professor baseado no UUID fornecido.

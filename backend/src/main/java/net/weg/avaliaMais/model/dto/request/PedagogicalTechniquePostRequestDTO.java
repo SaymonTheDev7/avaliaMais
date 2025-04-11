@@ -4,14 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import net.weg.avaliaMais.infra.model.AuthUser;
 import net.weg.avaliaMais.model.user.PedagogicalTechnique;
+import net.weg.avaliaMais.infra.repository.AuthUserRepository;
+
+import java.util.UUID;
 
 public record PedagogicalTechniquePostRequestDTO(
-        @NotBlank(message = "O nome de usuário não pode estar em branco")
-        String username,
-
-        @NotBlank(message = "A senha não pode estar em branco")
-        String password,
 
         @NotBlank(message = "O email não pode estar em branco")
         @Email(message = "O email deve ser válido")
@@ -22,13 +21,20 @@ public record PedagogicalTechniquePostRequestDTO(
 
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
-        Double workloadWeek
+        Double workloadWeek,
+
+        UUID authUserUuid
 ) {
-    public PedagogicalTechnique converter() {
+    public PedagogicalTechnique converter(AuthUserRepository authUserRepository) {
+
+        AuthUser authUser = authUserRepository.findById(authUserUuid)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
         return PedagogicalTechnique.builder()
                 .email(email)
                 .workShift(workShift)
                 .workloadWeek(workloadWeek)
+                .authUser(authUser)
                 .build();
     }
 }

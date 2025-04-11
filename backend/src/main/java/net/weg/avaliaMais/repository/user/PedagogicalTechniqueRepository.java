@@ -1,6 +1,7 @@
 package net.weg.avaliaMais.repository.user;
 
 import net.weg.avaliaMais.model.user.PedagogicalTechnique;
+import net.weg.avaliaMais.model.user.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,12 +19,6 @@ import java.util.UUID;
 @Repository
 public interface PedagogicalTechniqueRepository extends JpaRepository<PedagogicalTechnique, UUID>, JpaSpecificationExecutor<PedagogicalTechnique> {
 
-    /**
-     * Encontra um PedagogicalTechnique pelo nome de usuário.
-     *
-     * @param username O nome de usuário a ser procurado.
-     * @return Um {@link Optional} contendo o PedagogicalTechnique se encontrado, ou vazio se não.
-     */
-
+    Optional<PedagogicalTechnique>findByAuthUserUuid(UUID uuid);
 
 }

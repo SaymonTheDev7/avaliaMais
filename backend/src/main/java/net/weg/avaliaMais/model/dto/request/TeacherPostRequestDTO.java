@@ -37,10 +37,8 @@ public record TeacherPostRequestDTO(
         List<UUID> classIds,
 
         @NotBlank(message = "A área profissional não pode estar em branco")
-        String professionalArea,
+        String professionalArea
 
-        @NotNull
-        UserRole role
 ) {
 
     public Teacher converter(List<ClassSchool> allClasses) {

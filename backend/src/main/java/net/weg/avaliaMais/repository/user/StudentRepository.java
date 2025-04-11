@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.repository.user;
 
+import net.weg.avaliaMais.infra.model.AuthUser;
 import net.weg.avaliaMais.model.user.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -25,6 +26,8 @@ public interface StudentRepository extends JpaRepository<Student, UUID>, JpaSpec
      * @return {@code true} se um estudante com o e-mail já existir, caso contrário {@code false}.
      */
     boolean existsByEmail(String email);
+
+    Optional<Student> findByAuthUserUuid(UUID uuid);
 
     /**
      * Deleta um estudante pelo UUID.

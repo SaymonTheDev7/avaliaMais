@@ -29,8 +29,7 @@ public class Teacher extends User {
                 this.getWorkShift(),
                 this.getWorkloadWeek(),
                 this.classIds.stream().map(ClassSchool::getUuid).toList(),
-                this.professionalArea,
-                this.getAuthUser().getRole()
+                this.professionalArea
         );
     }
 }

@@ -33,9 +33,19 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest httpServletRequest) {
-        var authHeader = httpServletRequest.getHeader("Authorization");
-        if ( authHeader == null ) return null;
-        return authHeader.replace("Bearer ","");
+    private String recoverToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
+        }
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if (cookie.getName().equals("token")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
+
 }

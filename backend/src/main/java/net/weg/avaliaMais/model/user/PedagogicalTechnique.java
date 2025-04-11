@@ -20,7 +20,7 @@ public class PedagogicalTechnique extends User {
                 this.getEmail(),
                 this.getWorkShift(),
                 this.getWorkloadWeek(),
-                this.getAuthUser().getRole()
+                this.getAuthUser().getUuid()
         );
     }
 }

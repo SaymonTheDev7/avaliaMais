@@ -1,5 +1,6 @@
 package net.weg.avaliaMais.repository.user;
 
+import net.weg.avaliaMais.model.user.Student;
 import net.weg.avaliaMais.model.user.Supervisor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,9 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, UUID>, J
      * @param pageable O objeto {@link Pageable} contendo informações de paginação.
      * @return Uma página de supervisores.
      */
+
+    Optional<Supervisor> findByAuthUserUuid(UUID uuid);
+
     Page<Supervisor> findAll(Pageable pageable);
 
 }

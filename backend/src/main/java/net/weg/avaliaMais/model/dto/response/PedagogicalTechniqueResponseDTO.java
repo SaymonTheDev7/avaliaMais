@@ -12,7 +12,7 @@ public record PedagogicalTechniqueResponseDTO(
         String email,
         String workShift,
         Double workloadWeek,
-        UserRole role
+        UUID authUserUuid
 ) {
     public PedagogicalTechniqueResponseDTO(PedagogicalTechnique actualTechnique) {
         this(
@@ -22,7 +22,7 @@ public record PedagogicalTechniqueResponseDTO(
                 actualTechnique.getEmail(),
                 actualTechnique.getWorkShift(),
                 actualTechnique.getWorkloadWeek(),
-                actualTechnique.getAuthUser().getRole()
+                actualTechnique.getAuthUser().getUuid()
         );
     }
 }

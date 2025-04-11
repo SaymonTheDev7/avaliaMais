@@ -1,6 +1,7 @@
 package net.weg.avaliaMais.repository.user;
 
 import net.weg.avaliaMais.model.user.PedagogicalAdvisor;
+import net.weg.avaliaMais.model.user.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,6 +38,6 @@ public interface PedagogicalAdvisorRepository extends JpaRepository<PedagogicalA
      */
     Page<PedagogicalAdvisor> findAll(Pageable pageable);
 
-
+    Optional<PedagogicalAdvisor> findByAuthUserUuid(UUID uuid);
 
 }

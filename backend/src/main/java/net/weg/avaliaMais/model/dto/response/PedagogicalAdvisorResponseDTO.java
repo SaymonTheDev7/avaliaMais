@@ -11,8 +11,8 @@ public record PedagogicalAdvisorResponseDTO(
         String password,
         String email,
         String workShift,
-        Double workloadWeek,
-        UserRole role
+        Double workloadWeek
+
 ) {
     public PedagogicalAdvisorResponseDTO(PedagogicalAdvisor advisor) {
         this(
@@ -21,8 +21,7 @@ public record PedagogicalAdvisorResponseDTO(
                 advisor.getAuthUser().getPassword(),
                 advisor.getEmail(),
                 advisor.getWorkShift(),
-                advisor.getWorkloadWeek(),
-                advisor.getAuthUser().getRole()
+                advisor.getWorkloadWeek()
         );
     }
 }

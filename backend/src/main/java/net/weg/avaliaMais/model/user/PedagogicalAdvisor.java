@@ -21,8 +21,7 @@ public class PedagogicalAdvisor extends User {
                 this.getAuthUser().getPassword(),
                 this.getEmail(),
                 this.getWorkShift(),
-                this.getWorkloadWeek(),
-                this.getAuthUser().getRole()
+                this.getWorkloadWeek()
         );
     }
 }

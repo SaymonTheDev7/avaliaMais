@@ -31,8 +31,7 @@ public class Student extends User {
                 this.getWorkShift(),
                 this.getWorkloadWeek(),
                 this.getClassIds(),
-                this.currentCourse != null ? this.currentCourse.getUuid() : null,
-                this.getAuthUser().getRole()
+                this.currentCourse != null ? this.currentCourse.getUuid() : null
         );
     }
 }

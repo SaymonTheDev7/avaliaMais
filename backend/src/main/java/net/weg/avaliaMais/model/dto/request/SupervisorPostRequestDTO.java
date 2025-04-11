@@ -24,10 +24,7 @@ public record SupervisorPostRequestDTO(
 
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
-        Double workloadWeek,
-
-        @NotNull
-        UserRole role
+        Double workloadWeek
 ) {
 
     public Supervisor converter() {

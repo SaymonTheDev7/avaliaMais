@@ -1,6 +1,7 @@
 package net.weg.avaliaMais.service.user;
 
 import lombok.RequiredArgsConstructor;
+import net.weg.avaliaMais.infra.repository.AuthUserRepository;
 import net.weg.avaliaMais.model.dto.request.PedagogicalTechniquePostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.*;
 import net.weg.avaliaMais.model.user.PedagogicalTechnique;
@@ -17,12 +18,17 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 @RequiredArgsConstructor
 public class PedagogicalTechniqueService {
+
     private final PedagogicalTechniqueRepository pedagogicalTechniqueRepository;
+    private final AuthUserRepository authUserRepository;
 
 
     public PedagogicalTechniqueResponseDTO addPedagogicalTechnique(PedagogicalTechniquePostRequestDTO dto) {
-        return pedagogicalTechniqueRepository.save(dto.converter()).toDto();
+        PedagogicalTechnique pedagogicalTechnique = dto.converter(authUserRepository);
+        PedagogicalTechnique savedPedagogicalTechnique = pedagogicalTechniqueRepository.save(pedagogicalTechnique);
+        return savedPedagogicalTechnique.toDto();
     }
+
 
 
 

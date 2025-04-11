@@ -14,8 +14,8 @@ public record TeacherResponseDTO(
         String workShift,
         Double workloadWeek,
         List<UUID> classIds,
-        String professionalArea,
-        UserRole role
+        String professionalArea
+
 ) {
     public TeacherResponseDTO(Teacher actualTeacher) {
         this(
@@ -25,8 +25,7 @@ public record TeacherResponseDTO(
                 actualTeacher.getWorkShift(),
                 actualTeacher.getWorkloadWeek(),
                 actualTeacher.getClassIds().stream().map(ClassSchool::getUuid).toList(),
-                actualTeacher.getProfessionalArea(),
-                actualTeacher.getAuthUser().getRole()
+                actualTeacher.getProfessionalArea()
         );
     }
 }

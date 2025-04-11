@@ -22,14 +22,26 @@ public class SecurityConfigurations {
     private final SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfiguration.addAllowedOrigin("http://localhost:3000"); // URL do seu frontend
+                    corsConfiguration.addAllowedMethod("GET");
+                    corsConfiguration.addAllowedMethod("POST");
+                    corsConfiguration.addAllowedMethod("PUT");
+                    corsConfiguration.addAllowedMethod("DELETE");
+                    corsConfiguration.addAllowedHeader("*");
+                    corsConfiguration.setAllowCredentials(true);
+                    return corsConfiguration;
+                })) // Permite CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/course").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/auth/getAll").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/pedagogical-techniques/add").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -37,12 +49,12 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder () {
-        return new BCryptPasswordEncoder()  ;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

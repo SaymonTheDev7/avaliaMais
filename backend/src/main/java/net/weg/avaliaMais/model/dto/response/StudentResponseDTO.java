@@ -14,8 +14,7 @@ public record StudentResponseDTO(
         String workShift,
         Double workloadWeek,
         List<ClassSchool> classIds,
-        UUID currentCourseId,
-        UserRole role
+        UUID currentCourseId
 ) {
     public StudentResponseDTO(Student actualStudent) {
         this(
@@ -25,8 +24,7 @@ public record StudentResponseDTO(
                 actualStudent.getWorkShift(),
                 actualStudent.getWorkloadWeek(),
                 actualStudent.getClassIds(),
-                actualStudent.getCurrentCourse() != null ? actualStudent.getCurrentCourse().getUuid() : null,
-                actualStudent.getAuthUser().getRole()
+                actualStudent.getCurrentCourse() != null ? actualStudent.getCurrentCourse().getUuid() : null
         );
     }
 }
