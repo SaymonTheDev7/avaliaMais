@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Positive;
 import net.weg.avaliaMais.model.user.Supervisor;
 import net.weg.avaliaMais.model.role.UserRole;
 
+import java.util.UUID;
+
 public record SupervisorPostRequestDTO(
 
         @NotBlank(message = "O nome de usuário não pode estar em branco")
@@ -24,7 +26,16 @@ public record SupervisorPostRequestDTO(
 
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
+<<<<<<< Updated upstream
         Double workloadWeek
+=======
+        Double workloadWeek,
+
+        @NotNull
+        UserRole role
+
+
+>>>>>>> Stashed changes
 ) {
 
     public Supervisor converter() {

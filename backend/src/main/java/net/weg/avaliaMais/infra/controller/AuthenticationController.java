@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.infra.model.dto.request.AuthenticationRequestDTO;
 import net.weg.avaliaMais.infra.model.dto.response.LoginResponseDTO;
-import net.weg.avaliaMais.infra.model.dto.request.RegisterResponseDTO;
+import net.weg.avaliaMais.infra.model.dto.response.RegisterResponseDTO;
 import net.weg.avaliaMais.infra.security.TokenService;
 import net.weg.avaliaMais.infra.model.AuthUser;
 import net.weg.avaliaMais.infra.repository.AuthUserRepository;
