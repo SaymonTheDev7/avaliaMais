@@ -34,11 +34,21 @@ export function PedagogicalList({ pedagogicals, onRemovePedagogical }: Pedagogic
               className="w-10 h-10 rounded-full flex items-center justify-center"
               style={{ backgroundColor: pedagogical.color }}
             >
-              <img
-                src={pedagogical.photoUrl || "/placeholder.svg?height=40&width=40"}
-                alt={pedagogical.name}
-                className="w-10 h-10 rounded-full object-cover"
-              />
+              {pedagogical.photoUrl ? (
+                <img
+                  src={pedagogical.photoUrl || "/placeholder.svg"}
+                  alt={pedagogical.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="text-white font-bold">
+                  {pedagogical.name
+                    .split(" ")
+                    .map((name) => name[0])
+                    .join("")
+                    .substring(0, 2)}
+                </div>
+              )}
             </div>
           </div>
           <div className="col-span-4 px-4 font-medium">{pedagogical.name}</div>
