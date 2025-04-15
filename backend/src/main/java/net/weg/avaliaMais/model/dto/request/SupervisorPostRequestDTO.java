@@ -26,16 +26,12 @@ public record SupervisorPostRequestDTO(
 
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
-<<<<<<< Updated upstream
-        Double workloadWeek
-=======
         Double workloadWeek,
 
         @NotNull
         UserRole role
 
 
->>>>>>> Stashed changes
 ) {
 
     public Supervisor converter() {
