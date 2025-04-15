@@ -24,14 +24,29 @@ import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
+/**
+ * Serviço responsável pela lógica de negócios relacionada à entidade {@link Student}.
+ * Realiza operações de cadastro, remoção, listagem e filtragem de estudantes.
+ */
 @Service
 @RequiredArgsConstructor
 public class StudentService {
 
+    /** Repositório de estudantes. */
     private final StudentRepository studentRepository;
+
+    /** Repositório de turmas. */
     private final ClassRepository classRepository;
+
+    /** Repositório de cursos. */
     private final CourseRepository courseRepository;
 
+    /**
+     * Adiciona um novo estudante ao sistema.
+     *
+     * @param studentPostRequestDTO objeto com os dados do estudante a ser cadastrado.
+     * @return {@link StudentResponseDTO} com os dados do estudante salvo.
+     */
     public StudentResponseDTO addStudent(StudentPostRequestDTO studentPostRequestDTO) {
         List<ClassSchool> allClasses = classRepository.findAll();
         List<Course> allCourses = courseRepository.findAll();
@@ -40,8 +55,12 @@ public class StudentService {
         return studentSave.toDto();
     }
 
-
-
+    /**
+     * Remove um estudante com base no UUID informado.
+     *
+     * @param uuid identificador único do estudante.
+     * @throws RuntimeException se o estudante não for encontrado.
+     */
     @Transactional
     public void deleteStudentByUUID(UUID uuid) {
         if (!studentRepository.existsByUuid(uuid)) {
@@ -50,6 +69,13 @@ public class StudentService {
         studentRepository.deleteByUuid(uuid);
     }
 
+    /**
+     * Lista todos os estudantes de forma paginada.
+     *
+     * @param page número da página (começa em 0).
+     * @param size quantidade de elementos por página (máximo de 50).
+     * @return página de {@link StudentResponseDTO}.
+     */
     public Page<StudentResponseDTO> findAllStudents(int page, int size) {
         if (page < 0) {
             page = 0;
@@ -62,7 +88,17 @@ public class StudentService {
         return studentPage.map(StudentResponseDTO::new);
     }
 
-
+    /**
+     * Lista as turmas de um estudante com filtros opcionais (ano, curso, turno, local).
+     *
+     * @param studentUuid UUID do estudante.
+     * @param year        filtro opcional por ano.
+     * @param course      filtro opcional por curso.
+     * @param shift       filtro opcional por turno.
+     * @param location    filtro opcional por local.
+     * @param pageable    paginação.
+     * @return página de {@link ClassResponseDTO}.
+     */
     public Page<ClassResponseDTO> findStudentClasses(UUID studentUuid, Integer year, String course, String shift, String location, Pageable pageable) {
         Specification<ClassSchool> filtros = where(null);
 
@@ -86,6 +122,16 @@ public class StudentService {
         return classRepository.findAll(filtros, pageable).map(ClassResponseDTO::new);
     }
 
+    /**
+     * Lista todos os estudantes com filtros opcionais (nome, e-mail, turma, curso).
+     *
+     * @param name      filtro por nome.
+     * @param email     filtro por e-mail.
+     * @param classUuid filtro por UUID da turma.
+     * @param course    filtro por curso.
+     * @param pageable  paginação.
+     * @return página de {@link StudentResponseDTO} filtrada.
+     */
     public Page<StudentResponseDTO> findAllStudentsSpecification(String name, String email, UUID classUuid, String course, Pageable pageable) {
         Specification<Student> filtros = where(null);
         if (name != null) filtros = filtros.and(StudentSpecification.hasName(name));
@@ -95,5 +141,4 @@ public class StudentService {
 
         return studentRepository.findAll(filtros, pageable).map(StudentResponseDTO::new);
     }
-
 }

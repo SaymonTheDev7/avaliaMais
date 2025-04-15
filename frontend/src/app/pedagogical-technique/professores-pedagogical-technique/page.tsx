@@ -9,6 +9,7 @@ import { ProfessorItem } from '@/components/professor-item';
 import { ProfessorList } from '@/components/professor-list';
 import { AddButton } from '@/components/add-button';
 import AdicionarButton from "@/components/adicionar-button";
+import Link from "next/link"; // IMPORTANTE pra usar o Link do Next.js
 
 const professorColors = [
     "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA",
@@ -42,7 +43,6 @@ export default function VerProfessoresPage() {
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
     useEffect(() => {
-        // Load professors from local storage on initial load
         const storedProfessors = localStorage.getItem('professors');
         if (storedProfessors) {
             setProfessorList(JSON.parse(storedProfessors));
@@ -50,7 +50,6 @@ export default function VerProfessoresPage() {
     }, []);
 
     useEffect(() => {
-        // Save professors to local storage whenever the list changes
         localStorage.setItem('professors', JSON.stringify(professorList));
     }, [professorList]);
 
@@ -63,7 +62,7 @@ export default function VerProfessoresPage() {
     };
 
     const handleAddProfessor = () => {
-        const newId = Date.now(); // Generate a unique ID
+        const newId = Date.now();
         const newColor = getRandomColor();
         const newProfessor: Professor = {
             id: newId,
@@ -85,9 +84,9 @@ export default function VerProfessoresPage() {
             <Header />
             <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
                 <div className="flex items-center mb-6 px-4">
-                    <a href="#" className="text-[#003366] mr-4">
+                    <Link href="/pedagogical-technique/inicio-pedagogical-technique" className="text-[#003366] mr-4">
                         <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
-                    </a>
+                    </Link>
                     <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
                         VER PROFESSORES
                     </h1>
@@ -103,13 +102,11 @@ export default function VerProfessoresPage() {
                     </div>
                 </div>
 
-
                 {viewMode === "grid" ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-4 mt-8">
                         <div onClick={handleAddProfessor}>
                             <AddButton text="Adicionar professor" />
                         </div>
-
                         {filteredProfessors.map((professor) => (
                             <ProfessorItem
                                 key={professor.id}
@@ -134,5 +131,4 @@ export default function VerProfessoresPage() {
             </div>
         </div>
     );
-    
 }

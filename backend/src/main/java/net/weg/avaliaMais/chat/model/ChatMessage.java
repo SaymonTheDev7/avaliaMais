@@ -14,7 +14,8 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "chat_messages")
-public class ChatMessage {
+public class
+ChatMessage {
 
     /**
      * Identificador único da mensagem.

@@ -6,70 +6,45 @@ import java.util.UUID;
 
 /**
  * DTO de resposta para um curso.
- * Contém os dados de um curso específico a serem retornados para o cliente.
+ * <p>
+ * Esse DTO é utilizado para retornar os dados de um curso específico ao cliente.
+ * Ele encapsula informações como nome, tipo, turno, carga horária e tempo de aula.
+ *
+ * @param uuid               Identificador único do curso.
+ * @param nameCourse         Nome do curso.
+ * @param startAndEndLocation Localização de início e fim do curso.
+ * @param typeCourse         Tipo do curso (ex: presencial, online).
+ * @param shift              Turno em que o curso é oferecido (ex: manhã, tarde, noite).
+ * @param workloadCourse     Carga horária total do curso.
+ * @param time               Tempo de duração de cada aula do curso.
  */
 public record CourseResponseDTO(
-
-        /**
-         * UUID do curso.
-         * Identificador único para o curso.
-         */
         UUID uuid,
-
-        /**
-         * Nome do curso.
-         * O nome do curso oferecido.
-         */
         String nameCourse,
-
-        /**
-         * Localização de início e fim do curso.
-         * O local onde o curso começa e termina.
-         */
         String startAndEndLocation,
-
-
-
-/**
-         * Tipo de curso.
-         * O tipo de curso (ex: presencial, online).
-         */
         String typeCourse,
-
-        /**
-         * Turno do curso.
-         * O turno em que o curso é oferecido (ex: manhã, tarde, noite).
-         */
         String shift,
-
-        /**
-         * Carga horária total do curso.
-         * A carga horária total dedicada ao curso.
-         */
         Double workloadCourse,
-
-        /**
-         * Tempo de duração das aulas do curso.
-         * O tempo individual de duração de cada aula do curso.
-         */
         Double time
-
 ) {
 
     /**
-     * Construtor que converte uma entidade {@link Course} em um DTO de resposta {@link CourseResponseDTO}.
+     * Construtor que converte uma entidade {@link Course} para um {@link CourseResponseDTO}.
+     * <p>
+     * Este construtor extrai os dados da entidade {@link Course} e os adapta
+     * para o formato de resposta que será enviado ao cliente.
      *
-     * @param ActualCourse O curso {@link Course} que será convertido para o DTO.
+     * @param actualCourse Instância da entidade {@link Course} a ser convertida.
      */
-    public CourseResponseDTO(Course ActualCourse) {
+    public CourseResponseDTO(Course actualCourse) {
         this(
-                ActualCourse.getUuid(),
-                ActualCourse.getNameCourse(),
-                ActualCourse.getStartAndEndLocation(),
-                ActualCourse.getTypeCourse(),
-                ActualCourse.getShift(),
-                ActualCourse.getWorkloadCourse(),
-                ActualCourse.getTime()
+                actualCourse.getUuid(),
+                actualCourse.getNameCourse(),
+                actualCourse.getStartAndEndLocation(),
+                actualCourse.getTypeCourse(),
+                actualCourse.getShift(),
+                actualCourse.getWorkloadCourse(),
+                actualCourse.getTime()
         );
     }
 }

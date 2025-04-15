@@ -15,20 +15,31 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Serviço responsável pelas operações de negócio relacionadas à entidade {@link Event}.
+ * Oferece funcionalidades de criação, atualização, exclusão e consulta de eventos.
+ */
 @Service
 @RequiredArgsConstructor
 public class EventService {
 
+    /** Repositório de eventos para operações no banco de dados. */
     private final EventRepository eventRepository;
 
+    /**
+     * Adiciona um novo evento ao sistema com base nos dados fornecidos.
+     *
+     * @param eventPostRequestDTO DTO contendo as informações do evento.
+     * @return {@link EventResponseDTO} com os dados do evento salvo.
+     */
     public EventResponseDTO addEvent(EventPostRequestDTO eventPostRequestDTO) {
         Event event = new Event();
-        event.setName(eventPostRequestDTO.name());  // Correção aqui
-        event.setDescription(eventPostRequestDTO.description());  // Correção aqui
-        event.setDate(eventPostRequestDTO.date());  // Correção aqui
-        event.setClasses(eventPostRequestDTO.classes());  // Correção aqui
-        event.setTeachers(eventPostRequestDTO.teachers());  // Correção aqui
-        event.setCourses(eventPostRequestDTO.courses());  // Correção aqui
+        event.setName(eventPostRequestDTO.name());
+        event.setDescription(eventPostRequestDTO.description());
+        event.setDate(eventPostRequestDTO.date());
+        event.setClasses(eventPostRequestDTO.classes());
+        event.setTeachers(eventPostRequestDTO.teachers());
+        event.setCourses(eventPostRequestDTO.courses());
         event.setStatus("Pendente");
         event.setStep("Pré-conselho da Turma"); // Exemplo de etapa inicial
 
@@ -36,6 +47,14 @@ public class EventService {
         return new EventResponseDTO(event);
     }
 
+    /**
+     * Atualiza os dados de um evento existente no sistema com base no UUID fornecido.
+     *
+     * @param uuid identificador único do evento.
+     * @param eventPostRequestDTO DTO com os novos dados do evento.
+     * @return {@link EventResponseDTO} com os dados do evento atualizado.
+     * @throws RuntimeException caso o evento não seja encontrado.
+     */
     public EventResponseDTO updateEventPerUUID(UUID uuid, EventPostRequestDTO eventPostRequestDTO) {
         Event existingEvent = eventRepository.findByUuid(uuid);
 
@@ -56,6 +75,13 @@ public class EventService {
         return new EventResponseDTO(existingEvent);
     }
 
+    /**
+     * Retorna um evento específico com base no UUID fornecido.
+     *
+     * @param uuid identificador único do evento.
+     * @return {@link EventResponseDTO} com os dados do evento.
+     * @throws RuntimeException caso o evento não seja encontrado.
+     */
     public EventResponseDTO findEventPerUUID(UUID uuid) {
         Event event = eventRepository.findByUuid(uuid);
         if (event == null) {
@@ -64,12 +90,25 @@ public class EventService {
         return new EventResponseDTO(event);
     }
 
+    /**
+     * Retorna todos os eventos cadastrados, com suporte à paginação.
+     *
+     * @param page número da página.
+     * @param size quantidade de elementos por página.
+     * @return página de {@link EventResponseDTO} contendo os eventos.
+     */
     public Page<EventResponseDTO> findAllEvents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Event> eventPage = eventRepository.findAll(pageable);
         return eventPage.map(EventResponseDTO::new);
     }
 
+    /**
+     * Exclui um evento do sistema com base no UUID fornecido.
+     *
+     * @param uuid identificador único do evento.
+     * @return mensagem indicando o resultado da operação.
+     */
     public String deleteEventPerUUID(UUID uuid) {
         Event event = eventRepository.findByUuid(uuid);
         if (event == null) {
@@ -79,6 +118,16 @@ public class EventService {
         return "Evento deletado com sucesso";
     }
 
+    /**
+     * Retorna eventos filtrados por nome, data, status e etapa, com suporte à paginação.
+     *
+     * @param name   filtro por nome do evento (opcional).
+     * @param date   filtro por data do evento (opcional).
+     * @param status filtro por status do evento (opcional).
+     * @param step   filtro por etapa do evento (opcional).
+     * @param pageable objeto de paginação.
+     * @return página de {@link EventResponseDTO} contendo os eventos filtrados.
+     */
     public Page<EventResponseDTO> findAllEventsSpecification(String name, LocalDate date, String status, String step, Pageable pageable) {
         Specification<Event> filters = Specification.where(null);
         if (name != null && !name.trim().isEmpty()) filters = filters.and(EventSpecification.hasName(name));
