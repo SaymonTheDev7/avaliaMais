@@ -47,16 +47,6 @@ export function ClassList({ classes, onRemoveClass }: ClassListProps) {
             <Users className="mr-2 h-4 w-4 text-[#003366]" />
             <span>{classItem.students} alunos</span>
           </div>
-          <div className="col-span-1 flex justify-center">
-            {onRemoveClass && (
-              <button
-                onClick={() => onRemoveClass(classItem.id)}
-                className="bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-              >
-                <X className="h-4 w-4 cursor-pointer" />
-              </button>
-            )}
-          </div>
         </div>
       ))}
     </div>

@@ -27,15 +27,7 @@ export function ClassItem({ id, name, students, time, color, onClick }: ClassIte
           <span>Horário da turma: {time}</span>
         </div>
 
-        <button
-          className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
-          onClick={(e) => {
-            e.stopPropagation()
-            // Adicione aqui a lógica para excluir a turma
-          }}
-        >
-          <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
-        </button>
+        
       </div>
     </div>
   )
