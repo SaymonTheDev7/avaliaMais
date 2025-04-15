@@ -60,7 +60,7 @@ public class ChatMessage {
      * Construtor padrão.
      */
     public ChatMessage() {
-        // Pode ser deixado vazio para frameworks como JPA
+
     }
 
     /**

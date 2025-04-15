@@ -62,6 +62,11 @@ public record SupervisorPostRequestDTO(
          */
         @NotNull(message = "O papel do supervisor não pode ser nulo")
         UserRole role
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e2627cd0123988173ffffbdd4cfaf015b7da1e69
 ) {
 
     /**
