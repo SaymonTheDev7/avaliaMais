@@ -15,7 +15,10 @@ import java.util.UUID;
  * DTO para representar os dados necessários para criar uma turma (classe).
  * <p>
  * Esta classe é usada para receber as informações da requisição e validá-las
- * antes de criar uma entidade {@link ClassSchool}.
+ * antes de criar uma entidade {@link ClassSchool}. Ela contém informações como
+ * o curso, alunos, professores, nome da turma, ano, localização, carga horária,
+ * entre outros dados necessários para a criação de uma turma no sistema.
+ * </p>
  */
 public record ClassPostRequestDTO(
 
@@ -54,19 +57,26 @@ public record ClassPostRequestDTO(
 
     /**
      * Converte o DTO em uma entidade {@link ClassSchool}, associando os cursos, alunos e professores correspondentes.
+     * <p>
+     * Este método converte os dados contidos no DTO para criar uma instância de {@link ClassSchool}.
+     * Ele busca os objetos correspondentes a partir dos IDs fornecidos (curso, alunos, professores),
+     * realizando a validação para garantir que todas as informações estejam corretas.
+     * </p>
      *
      * @param allCourses  Lista de cursos disponíveis no sistema.
      * @param allStudents Lista de alunos disponíveis no sistema.
      * @param allTeachers Lista de professores disponíveis no sistema.
      * @return Uma instância de {@link ClassSchool} contendo os dados validados e processados.
-     * @throws RuntimeException Se o curso especificado não for encontrado.
+     * @throws RuntimeException Se o curso, aluno ou professor especificado não for encontrado.
      */
     public ClassSchool converter(List<Course> allCourses, List<Student> allStudents, List<Teacher> allTeachers) {
+        // Busca o curso correspondente ao UUID fornecido
         Course course = allCourses.stream()
                 .filter(c -> c.getUuid().equals(courseUuid))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
+        // Busca os alunos correspondentes aos IDs fornecidos
         List<Student> studentsList = studentIds.stream()
                 .map(id -> allStudents.stream()
                         .filter(s -> s.getUuid().equals(id))
@@ -74,6 +84,7 @@ public record ClassPostRequestDTO(
                         .orElseThrow(() -> new RuntimeException("Aluno não encontrado: " + id)))
                 .toList();
 
+        // Busca os professores correspondentes aos IDs fornecidos
         List<Teacher> teachersList = teacherIds.stream()
                 .map(id -> allTeachers.stream()
                         .filter(t -> t.getUuid().equals(id))
@@ -81,6 +92,7 @@ public record ClassPostRequestDTO(
                         .orElseThrow(() -> new RuntimeException("Professor não encontrado: " + id)))
                 .toList();
 
+        // Cria e retorna uma instância de ClassSchool com os dados fornecidos
         return ClassSchool.builder()
                 .course(course)
                 .students(studentsList)

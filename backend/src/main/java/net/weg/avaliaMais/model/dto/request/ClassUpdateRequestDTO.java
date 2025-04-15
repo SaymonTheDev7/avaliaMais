@@ -8,6 +8,8 @@ import java.util.UUID;
  * DTO para representar os dados necessários para a atualização de uma turma.
  * <p>
  * Esta classe é usada para receber as informações da requisição e validá-las antes de atualizar uma turma existente.
+ * Ela garante que todos os campos necessários sejam fornecidos corretamente para a atualização da turma no sistema.
+ * </p>
  */
 public record ClassUpdateRequestDTO(
 
@@ -36,4 +38,6 @@ public record ClassUpdateRequestDTO(
         @NotBlank(message = "O turno não pode estar em branco")
         String shift
 
-) {}
+) {
+
+}

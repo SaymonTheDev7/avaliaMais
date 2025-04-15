@@ -9,6 +9,8 @@ import net.weg.avaliaMais.model.Course;
  * DTO para representar os dados necessários para a criação de um curso.
  * <p>
  * Esta classe é usada para receber e validar as informações antes de persistir um novo curso no sistema.
+ * A classe garante que todos os campos necessários sejam fornecidos corretamente antes de criar um curso.
+ * </p>
  */
 public record CoursePostRequestDTO(
 
@@ -36,6 +38,9 @@ public record CoursePostRequestDTO(
 
     /**
      * Converte o DTO para uma entidade {@link Course}.
+     * <p>
+     * Este método cria uma nova instância de {@link Course} com os dados fornecidos no DTO.
+     * </p>
      *
      * @return Um objeto {@link Course} baseado nos dados fornecidos.
      */

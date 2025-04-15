@@ -48,7 +48,7 @@ export default function InicioPedagogicalTechnique() {
             color="bg-[#29ABE2]"
           />
           <DashboardCard
-            title="Conselho Geral"
+            title="Ver cursos"
             icon={<GraduationCap style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#F05050]"
           />
