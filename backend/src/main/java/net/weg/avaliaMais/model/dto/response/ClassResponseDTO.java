@@ -9,88 +9,46 @@ import java.util.stream.Collectors;
 
 /**
  * DTO de resposta para uma turma.
- * Contém os dados de uma turma específica a serem retornados para o cliente.
+ * <p>
+ * Este DTO é utilizado para retornar informações detalhadas de uma turma
+ * ao cliente, como parte de uma resposta da API.
+ * Ele encapsula os dados relevantes de uma instância de {@link ClassSchool}.
+ *
+ * @param uuid             Identificador único da turma.
+ * @param nameClass        Nome da turma.
+ * @param year             Ano letivo da turma.
+ * @param workloadClass    Carga horária total da turma.
+ * @param location         Local onde a turma realiza suas aulas.
+ * @param time             Duração das aulas da turma.
+ * @param quantityStudents Quantidade de estudantes na turma.
+ * @param shift            Turno (ex: manhã, tarde ou noite) da turma.
+ * @param courseUuid       Identificador único do curso associado à turma.
+ * @param courseName       Nome do curso ao qual a turma está vinculada.
+ * @param studentIds       Lista de UUIDs dos estudantes matriculados na turma.
+ * @param teacherIds       Lista de UUIDs dos professores da turma.
  */
 public record ClassResponseDTO(
-
-        /**
-         * UUID da turma.
-         * Identificador único para a turma.
-         */
         UUID uuid,
-
-        /**
-         * Nome da turma.
-         * Nome descritivo da turma.
-         */
         String nameClass,
-
-        /**
-         * Ano da turma.
-         * O ano em que a turma foi criada ou a qual pertence.
-         */
         Integer year,
-
-        /**
-         * Carga horária total da turma.
-         * A carga horária total dedicada a esta turma.
-         */
         Double workloadClass,
-
-        /**
-         * Localização da turma.
-         * O local onde as aulas da turma ocorrem.
-         */
         String location,
-
-        /**
-         * Tempo de duração das aulas da turma.
-         * O tempo individual de duração de cada aula.
-         */
         String time,
-
-        /**
-         * Quantidade de estudantes na turma.
-         * O número total de estudantes matriculados na turma.
-         */
         Integer quantityStudents,
-
-        /**
-         * Turno da turma.
-         * O turno em que a turma acontece (ex: manhã, tarde, noite).
-         */
         String shift,
-
-        /**
-         * UUID do curso associado à turma.
-         * Identificador único do curso associado à turma.
-         */
         UUID courseUuid,
-
-        /**
-         * Nome do curso associado à turma.
-         * O nome do curso que a turma pertence.
-         */
         String courseName,
-
-        /**
-         * Lista de UUIDs dos estudantes na turma.
-         * Identificadores únicos dos estudantes matriculados na turma.
-         */
         List<UUID> studentIds,
-
-        /**
-         * Lista de UUIDs dos professores na turma.
-         * Identificadores únicos dos professores que ministram aulas na turma.
-         */
         List<UUID> teacherIds
-
 ) {
 
     /**
-     * Construtor que converte uma entidade {@link ClassSchool} em um DTO de resposta {@link ClassResponseDTO}.
+     * Construtor que converte uma entidade {@link ClassSchool} para um {@link ClassResponseDTO}.
+     * <p>
+     * Esse construtor extrai e transforma os dados da entidade {@link ClassSchool}
+     * para preencher os campos deste DTO de forma adequada.
      *
-     * @param actualClassSchool A turma {@link ClassSchool} que será convertida para o DTO.
+     * @param actualClassSchool Instância de {@link ClassSchool} que será convertida.
      */
     public ClassResponseDTO(ClassSchool actualClassSchool) {
         this(
@@ -104,9 +62,14 @@ public record ClassResponseDTO(
                 actualClassSchool.getShift(),
                 actualClassSchool.getCourse().getUuid(),
                 actualClassSchool.getCourse().getNameCourse(),
-                actualClassSchool.getStudents().stream().map(student -> student.getUuid()).collect(Collectors.toList()),
-                actualClassSchool.getTeachers().stream().map(teacher -> teacher.getUuid()).collect(Collectors.toList())
+                actualClassSchool.getStudents()
+                        .stream()
+                        .map(student -> student.getUuid())
+                        .collect(Collectors.toList()),
+                actualClassSchool.getTeachers()
+                        .stream()
+                        .map(teacher -> teacher.getUuid())
+                        .collect(Collectors.toList())
         );
     }
-
 }
