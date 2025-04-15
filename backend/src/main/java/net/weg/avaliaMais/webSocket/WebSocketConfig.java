@@ -6,19 +6,46 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * Configuração para WebSocket com STOMP.
+ *
+ * Esta classe configura o WebSocket no aplicativo, permitindo a comunicação em tempo real entre o servidor e os clientes.
+ * Ela habilita o uso de STOMP (Simple Text Oriented Messaging Protocol) para o envio de mensagens.
+ *
+ * <p>O WebSocket é utilizado para comunicação bidirecional em tempo real entre o servidor e o cliente.</p>
+ *
+ * <p>A configuração define dois principais aspectos:</p>
+ * <ul>
+ *     <li><b>Stomp Endpoints</b>: Os pontos finais onde os clientes podem se conectar ao servidor WebSocket.</li>
+ *     <li><b>Message Broker</b>: O broker que gerencia o envio de mensagens aos clientes.</li>
+ * </ul>
+ */
 @Configuration
 @EnableWebSocketMessageBroker
-public class
-WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    /**
+     * Registra os pontos finais STOMP onde os clientes podem se conectar ao WebSocket.
+     *
+     * @param registry o registrador de endpoints STOMP.
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-chat").setAllowedOrigins("*");
+        // O cliente se conecta a este endpoint para iniciar a comunicação WebSocket
+        registry.addEndpoint("/ws-chat").setAllowedOrigins("*"); // Permite conexões de qualquer origem
     }
 
+    /**
+     * Configura o broker de mensagens para o WebSocket.
+     *
+     * @param registry o registrador do broker de mensagens.
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); // Para envio a todos os assinantes
-        registry.setApplicationDestinationPrefixes("/app"); // Prefixo para mensagens enviadas ao servidor
+        // Habilita o broker simples para destinos que começam com "/topic" para enviar mensagens a todos os assinantes
+        registry.enableSimpleBroker("/topic");
+
+        // Define o prefixo para os destinos das mensagens enviadas pelo cliente ao servidor
+        registry.setApplicationDestinationPrefixes("/app");
     }
 }
