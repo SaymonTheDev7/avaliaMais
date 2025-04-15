@@ -1,8 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
-import { X, Pencil, ExternalLink, AlertCircle, Info } from "lucide-react"
+import { useState, useEffect } from "react"
+import { X, Pencil, ExternalLink, AlertCircle, Info, XCircle } from "lucide-react"
 
 // Tipo para os dados da turma
 type ClassData = {
@@ -27,23 +27,82 @@ type FieldConfig = {
   } | null
 }
 
+// Tipo para os cursos disponíveis
+type CourseOption = {
+  name: string
+  hoursLoad: string
+}
+
+// Tipo para o alerta
+type AlertProps = {
+  message: string
+  onClose: () => void
+}
+
+// Componente de alerta
+const Alert = ({ message, onClose }: AlertProps) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-[100]">
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative z-10 mx-4">
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+          <XCircle className="h-5 w-5" />
+        </button>
+        <div className="flex items-center gap-3 mb-4">
+          <AlertCircle className="h-6 w-6 text-red-500 flex-shrink-0" />
+          <h3 className="text-lg font-semibold text-gray-900">Atenção</h3>
+        </div>
+        <p className="text-gray-700 mb-6">{message}</p>
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-[#003366] text-white rounded-md hover:bg-opacity-90 transition-colors"
+          >
+            Entendi
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Lista de cursos disponíveis com suas cargas horárias
+const availableCourses: CourseOption[] = [
+  { name: "Desenvolvimento Web", hoursLoad: "120h" },
+  { name: "Programação em Java", hoursLoad: "80h" },
+  { name: "Banco de Dados", hoursLoad: "60h" },
+  { name: "Design UX/UI", hoursLoad: "90h" },
+  { name: "Marketing Digital", hoursLoad: "70h" },
+  { name: "Gestão de Projetos", hoursLoad: "100h" },
+  { name: "Inglês Técnico", hoursLoad: "60h" },
+  { name: "Redes de Computadores", hoursLoad: "80h" },
+  { name: "Inteligência Artificial", hoursLoad: "120h" },
+  { name: "Segurança da Informação", hoursLoad: "90h" },
+]
+
 type PopupDadosProps = {
-  classData: ClassData
+  classData?: ClassData
   onClose: () => void
   fieldConfig?: Record<string, FieldConfig>
   onUpdate?: (updatedData: ClassData) => void
+  onCreate?: (newData: ClassData) => void
+  isCreating?: boolean
 }
 
-export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupDadosProps) {
+export function PopupDados({
+  classData,
+  onClose,
+  fieldConfig,
+  onUpdate,
+  onCreate,
+  isCreating = false,
+}: PopupDadosProps) {
   // Configuração padrão dos campos
   const defaultFieldConfig: Record<string, FieldConfig> = {
     course: {
       label: "Curso",
-      editable: false,
-      tooltip: {
-        text: "Esse campo não pode ser alterado",
-        icon: "red",
-      },
+      editable: isCreating, // Only editable when creating, not when editing
+      tooltip: null,
     },
     hoursLoad: {
       label: "Carga horária",
@@ -55,15 +114,15 @@ export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupD
     },
     name: {
       label: "Nome da turma",
-      editable: false,
+      editable: true,
       tooltip: {
-        text: "Esse campo não pode ser alterado",
+        text: isCreating ? "Atenção, esse campo não poderá ser alterado" : "Esse campo não pode ser alterado",
         icon: "red",
       },
     },
     students: {
       label: "Quantidade de alunos",
-      editable: false,
+      editable: true,
       tooltip: null,
     },
     shift: {
@@ -81,12 +140,40 @@ export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupD
   // Usar a configuração fornecida ou a padrão
   const config = fieldConfig || defaultFieldConfig
 
-  const [isEditing, setIsEditing] = useState(false)
+  // Default values for creating a new class
+  const defaultClassData: ClassData = {
+    id: Date.now(),
+    name: "",
+    students: 0,
+    time: "",
+    color: "",
+    shift: "Vespertino",
+    fullTime: "",
+    course: "",
+    hoursLoad: "",
+  }
+
+  const [isEditing, setIsEditing] = useState(isCreating)
   const [formData, setFormData] = useState({
-    ...classData,
-    shift: classData.shift || "Vespertino",
-    fullTime: classData.fullTime || classData.time,
+    ...(classData || defaultClassData),
+    shift: classData?.shift || defaultClassData.shift || "Vespertino",
+    fullTime: classData?.fullTime || classData?.time || "",
   })
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
+
+  // Atualiza a carga horária quando o curso é alterado
+  useEffect(() => {
+    if (formData.course) {
+      const selectedCourse = availableCourses.find((course) => course.name === formData.course)
+      if (selectedCourse) {
+        setFormData((prev) => ({
+          ...prev,
+          hoursLoad: selectedCourse.hoursLoad,
+        }))
+      }
+    }
+  }, [formData.course])
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing)
@@ -100,9 +187,51 @@ export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupD
     })
   }
 
+  const validateForm = () => {
+    // Verificar campos obrigatórios
+    if (!formData.name.trim()) {
+      setAlertMessage("Por favor, preencha o nome da turma.")
+      setShowAlert(true)
+      return false
+    }
+
+    if (!formData.course) {
+      setAlertMessage("Por favor, selecione um curso.")
+      setShowAlert(true)
+      return false
+    }
+
+    if (!formData.fullTime.trim()) {
+      setAlertMessage("Por favor, preencha o horário da turma.")
+      setShowAlert(true)
+      return false
+    }
+
+    if (formData.students <= 0) {
+      setAlertMessage("Por favor, informe uma quantidade válida de alunos.")
+      setShowAlert(true)
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = () => {
-    if (onUpdate) {
-      onUpdate(formData)
+    // Validar o formulário antes de enviar
+    if (isCreating && !validateForm()) {
+      return
+    }
+
+    // Update the time field with the fullTime value to ensure it's passed back to the parent component
+    const updatedData = {
+      ...formData,
+      time: formData.fullTime || formData.time,
+    }
+
+    if (isCreating && onCreate) {
+      onCreate(updatedData)
+    } else if (onUpdate) {
+      onUpdate(updatedData)
     }
     onClose()
   }
@@ -119,8 +248,11 @@ export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupD
   }
 
   // Função para renderizar o ícone do tooltip baseado na configuração
-  const renderTooltipIcon = (config?: { text: string; icon: "red" | "white" | null } | null) => {
-    if (!config || !isEditing) return null
+  const renderTooltipIcon = (config?: { text: string; icon: "red" | "white" | null } | null, fieldName?: string) => {
+    if (!config) return null
+    if (config.icon === "red" && !isEditing) return null
+    if (isEditing && fieldName === "name") return null
+    if (fieldName === "course") return null // Never show tooltip for course field
 
     return (
       <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
@@ -136,170 +268,231 @@ export function PopupDados({ classData, onClose, fieldConfig, onUpdate }: PopupD
   }
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
-      <div
-        className="bg-white rounded-xl w-full max-w-2xl shadow-xl overflow-hidden border border-gray-200"
-        style={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
-      >
-        <div className="bg-[#003366] text-white p-6 relative">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center">{formData.name}</h2>
+    <>
+      <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+        <div
+          className="bg-white rounded-xl w-full max-w-2xl shadow-xl overflow-hidden border border-gray-200"
+          style={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
+        >
+          <div className="bg-[#003366] text-white p-6 relative">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center">{isCreating ? "Nova Turma" : formData.name}</h2>
 
-          <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors">
-            <X className="h-6 w-6" />
-          </button>
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
 
-          <button
-            onClick={handleEditToggle}
-            className="absolute top-4 right-14 text-white hover:text-gray-300 transition-colors"
-          >
-            <Pencil className="h-6 w-6" />
-          </button>
-        </div>
-
-        <div className="p-6 bg-white text-gray-800">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Campo Curso */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{config.course?.label || "Curso"}</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="course"
-                  value={formData.course || ""}
-                  readOnly={true}
-                  onChange={handleInputChange}
-                  className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none pr-8"
-                />
-                {renderTooltipIcon(config.course?.tooltip)}
-              </div>
-            </div>
-
-            {/* Campo Carga Horária */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {config.hoursLoad?.label || "Carga horária"}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="hoursLoad"
-                  value={formData.hoursLoad || ""}
-                  readOnly={true}
-                  onChange={handleInputChange}
-                  className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none pr-8"
-                />
-                {renderTooltipIcon(config.hoursLoad?.tooltip)}
-              </div>
-            </div>
-
-            {/* Campo Nome da Turma */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {config.name?.label || "Nome da turma"}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  readOnly={true}
-                  onChange={handleInputChange}
-                  className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none pr-8"
-                />
-                {renderTooltipIcon(config.name?.tooltip)}
-              </div>
-            </div>
-
-            {/* Campo Alunos */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Alunos</label>
-              <div className="flex items-center">
-                <div className="w-full p-3 rounded-md border border-gray-300 bg-gray-50 text-center text-gray-500">
-                  Os alunos aparecerão aqui :)
-                </div>
-                <button className="ml-2 bg-[#003366] p-2 rounded-md text-white hover:bg-[#004488] transition-colors">
-                  <ExternalLink className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Campo Turno/Horário */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {config.shift?.label || "Turno/Horário"}
-              </label>
-              <div className="flex gap-2">
-                <select
-                  name="shift"
-                  value={formData.shift || "Vespertino"}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={`p-2 rounded-md border border-gray-300 ${
-                    isEditing ? "bg-white" : "bg-gray-50"
-                  } focus:outline-none w-full`}
-                >
-                  <option value="Vespertino">Vespertino</option>
-                  <option value="Matutino">Matutino</option>
-                  <option value="Noturno">Noturno</option>
-                  <option value="Horário Normal">Horário Normal</option>
-                  <option value="Segundo Turno">Segundo Turno</option>
-                </select>
-                <input
-                  type="text"
-                  name="fullTime"
-                  value={formData.fullTime || ""}
-                  onChange={handleInputChange}
-                  readOnly={!isEditing}
-                  className={`w-full p-2 rounded-md border border-gray-300 ${
-                    isEditing ? "bg-white" : "bg-gray-50"
-                  } focus:outline-none`}
-                />
-              </div>
-            </div>
-
-            {/* Campo Quantidade de Alunos */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {config.students?.label || "Quantidade de alunos"}
-              </label>
-              <input
-                type="number"
-                name="students"
-                value={formData.students}
-                readOnly={true}
-                onChange={handleInputChange}
-                className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-4 mt-8">
-            {isEditing ? (
-              <>
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                >
-                  Confirmar
-                </button>
-              </>
-            ) : (
+            {!isCreating && (
               <button
-                onClick={onClose}
-                className="px-6 py-2 bg-[#02335E] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                onClick={handleEditToggle}
+                className="absolute top-4 right-14 text-white hover:text-gray-300 transition-colors"
               >
-                Concluído
+                <Pencil className="h-6 w-6" />
               </button>
             )}
           </div>
+
+          <div className="p-6 bg-white text-gray-800">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Campo Curso */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.course?.label || "Curso"}
+                  {isCreating && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                <div className="relative">
+                  {isCreating ? (
+                    // Dropdown select for creating mode
+                    <select
+                      name="course"
+                      value={formData.course || ""}
+                      onChange={handleInputChange}
+                      className={`w-full p-2 rounded-md border ${
+                        isCreating && !formData.course ? "border-red-300" : "border-gray-300"
+                      } bg-white focus:outline-none appearance-auto`}
+                    >
+                      <option value="">Selecione um curso</option>
+                      {availableCourses.map((course, index) => (
+                        <option key={index} value={course.name}>
+                          {course.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    // Input field for view/edit mode (not editable in edit mode)
+                    <input
+                      type="text"
+                      name="course"
+                      value={formData.course || ""}
+                      readOnly={true}
+                      className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none appearance-none"
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Campo Carga Horária */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.hoursLoad?.label || "Carga horária"}
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="hoursLoad"
+                    value={formData.hoursLoad || ""}
+                    readOnly={true}
+                    className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none pr-8 appearance-none"
+                  />
+                  {renderTooltipIcon(config.hoursLoad?.tooltip, "hoursLoad")}
+                </div>
+              </div>
+
+              {/* Campo Nome da Turma */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.name?.label || "Nome da turma"}
+                  {isCreating && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    readOnly={!isCreating && !isEditing}
+                    onChange={handleInputChange}
+                    className={`w-full p-2 rounded-md border ${
+                      isCreating && !formData.name.trim() ? "border-red-300" : "border-gray-300"
+                    } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none pr-8 appearance-none`}
+                  />
+                  {renderTooltipIcon(config.name?.tooltip, "name")}
+                </div>
+              </div>
+
+              {/* Campo Alunos */}
+              {!isCreating ? (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Alunos</label>
+                  <div className="flex items-center">
+                    <div className="w-full p-3 rounded-md border border-gray-300 bg-gray-50 text-center text-gray-500">
+                      Os alunos aparecerão aqui :)
+                    </div>
+                    <button className="ml-2 bg-[#003366] p-2 rounded-md text-white hover:bg-[#004488] transition-colors">
+                      <ExternalLink className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Campo Turno/Horário */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.shift?.label || "Turno/Horário"}
+                  {isCreating && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    name="shift"
+                    value={formData.shift || "Vespertino"}
+                    onChange={handleInputChange}
+                    disabled={!isCreating && !isEditing}
+                    className={`p-2 rounded-md border border-gray-300 ${
+                      isEditing || isCreating ? "bg-white appearance-auto" : "bg-gray-50 appearance-none"
+                    } focus:outline-none w-full`}
+                  >
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Noturno">Noturno</option>
+                    <option value="Horário Normal">Horário Normal</option>
+                    <option value="Segundo Turno">Segundo Turno</option>
+                  </select>
+                  <input
+                    type="text"
+                    name="fullTime"
+                    value={formData.fullTime || ""}
+                    onChange={handleInputChange}
+                    readOnly={!isCreating && !isEditing}
+                    className={`w-full p-2 rounded-md border ${
+                      isCreating && !formData.fullTime.trim() ? "border-red-300" : "border-gray-300"
+                    } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                    placeholder="Ex: 08:00 - 10:00"
+                  />
+                </div>
+              </div>
+
+              {/* Campo Quantidade de Alunos */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.students?.label || "Quantidade de alunos"}
+                  {isCreating && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                <input
+                  type="number"
+                  name="students"
+                  value={formData.students}
+                  readOnly={!isCreating && !isEditing}
+                  onChange={handleInputChange}
+                  className={`w-full p-2 rounded-md border ${
+                    isCreating && formData.students <= 0 ? "border-red-300" : "border-gray-300"
+                  } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                />
+              </div>
+            </div>
+
+            {isCreating && (
+              <div className="mt-4 text-sm text-gray-500">
+                <span className="text-red-500">*</span> Campos obrigatórios
+              </div>
+            )}
+
+            <div className="flex justify-end gap-4 mt-8">
+              {isCreating ? (
+                <>
+                  <button
+                    onClick={onClose}
+                    className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  >
+                    Criar Turma
+                  </button>
+                </>
+              ) : isEditing ? (
+                <>
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  >
+                    Confirmar
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={onClose}
+                  className="px-6 py-2 bg-[#02335E] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                >
+                  Concluído
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Alert popup */}
+      {showAlert && <Alert message={alertMessage} onClose={() => setShowAlert(false)} />}
+    </>
   )
 }

@@ -109,6 +109,7 @@ export default function VerTurmasPage() {
   const [classList, setClassList] = useState<ClassItemType[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [selectedClass, setSelectedClass] = useState<ClassItemType | null>(null)
+  const [isCreatingClass, setIsCreatingClass] = useState(false)
 
   const fetchClasses = async () => {
     try {
@@ -154,19 +155,41 @@ export default function VerTurmasPage() {
   }
 
   const handleAddClass = () => {
-    // Implement class addition logic here
-    // This is just a placeholder, you'll need to adapt it to your needs
-    const newId = Date.now()
+    setIsCreatingClass(true)
+  }
+
+  const handleCreateClass = (newClassData: ClassItemType) => {
+    // Add a random color to the new class
     const newColor = getRandomColor()
-    const newClass: ClassItemType = {
-      id: newId,
-      name: "Nova Turma",
-      students: 0,
-      time: "08:00 - 10:00",
+    const newClass = {
+      ...newClassData,
       color: newColor,
     }
+
+    // Add the new class to the list
     setClassList([...classList, newClass])
+
     // You might want to add API call to add the class to the backend
+    // For example:
+    // axios.post("http://localhost:9090/class/create", {
+    //   nameClass: newClass.name,
+    //   quantityStudents: newClass.students,
+    //   time: newClass.time,
+    // })
+    // .then(response => {
+    //   console.log("Turma criada com sucesso:", response.data);
+    //   // Update the class ID with the one from the server
+    //   const createdClass = response.data;
+    //   setClassList(prevList => prevList.map(item =>
+    //     item.id === newClass.id ? { ...item, id: createdClass.uuid } : item
+    //   ));
+    // })
+    // .catch(error => {
+    //   console.error("Erro ao criar turma:", error);
+    // });
+
+    // Close the creation form
+    setIsCreatingClass(false)
   }
 
   const handleClassClick = (classItem: ClassItemType) => {
@@ -175,6 +198,33 @@ export default function VerTurmasPage() {
 
   const closePopup = () => {
     setSelectedClass(null)
+    setIsCreatingClass(false)
+  }
+
+  const handleUpdateClass = (updatedData: ClassItemType) => {
+    // Update the class in the classList state
+    const updatedClassList = classList.map((classItem) => {
+      if (classItem.id === updatedData.id) {
+        return updatedData
+      }
+      return classItem
+    })
+
+    setClassList(updatedClassList)
+
+    // You might want to add an API call to update the class in the backend
+    // For example:
+    // axios.put(`http://localhost:9090/class/update/${updatedData.id}`, {
+    //   nameClass: updatedData.name,
+    //   quantityStudents: updatedData.students,
+    //   time: updatedData.time,
+    // })
+    // .then(response => {
+    //   console.log("Turma atualizada com sucesso:", response.data);
+    // })
+    // .catch(error => {
+    //   console.error("Erro ao atualizar turma:", error);
+    // });
   }
 
   const filteredClasses = classList.filter((item) => item.name?.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -195,7 +245,7 @@ export default function VerTurmasPage() {
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
           <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
           <div className="flex gap-2">
-            {viewMode === "list" && <AdicionarButton />}
+            {viewMode === "list" && <AdicionarButton onClick={handleAddClass} />}
             <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
         </div>
@@ -225,7 +275,8 @@ export default function VerTurmasPage() {
         )}
       </div>
 
-      {selectedClass && <PopupDados classData={selectedClass} onClose={closePopup} />}
+      {selectedClass && <PopupDados classData={selectedClass} onClose={closePopup} onUpdate={handleUpdateClass} />}
+      {isCreatingClass && <PopupDados onClose={closePopup} onCreate={handleCreateClass} isCreating={true} />}
     </div>
   )
 }
