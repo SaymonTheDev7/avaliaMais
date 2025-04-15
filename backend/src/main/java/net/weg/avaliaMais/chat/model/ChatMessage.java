@@ -2,6 +2,7 @@ package net.weg.avaliaMais.chat.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -59,6 +60,7 @@ public class ChatMessage {
      * Construtor padrão.
      */
     public ChatMessage() {
+<<<<<<< Updated upstream:backend/src/main/java/net/weg/avaliaMais/chat/model/ChatMessage.java
     }
 
     /**
@@ -67,6 +69,8 @@ public class ChatMessage {
      */
     @PrePersist
     public void prePersist() {
+=======
+>>>>>>> Stashed changes:backend/src/main/java/net/weg/avaliaMais/model/ChatMessage.java
         this.timestamp = LocalDateTime.now();
     }
 }
