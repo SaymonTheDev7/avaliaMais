@@ -1,5 +1,6 @@
 "use client"
-import { User, X } from "lucide-react"
+
+import { User } from "lucide-react"
 
 type ClassItemProps = {
   id: number
@@ -10,7 +11,7 @@ type ClassItemProps = {
   onClick?: () => void
 }
 
-export function ClassItem({ id, name, students, time, color, onClick }: ClassItemProps) {
+export default function ClassItem({ id, name, students, time, color, onClick }: ClassItemProps) {
   return (
     <div
       key={id}
@@ -26,8 +27,6 @@ export function ClassItem({ id, name, students, time, color, onClick }: ClassIte
           <span className="mx-2">-</span>
           <span>Horário da turma: {time}</span>
         </div>
-
-        
       </div>
     </div>
   )

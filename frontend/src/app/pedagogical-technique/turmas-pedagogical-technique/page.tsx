@@ -6,12 +6,25 @@ import Header from "@/components/header"
 import { ChevronLeft } from "lucide-react"
 import axios from "axios"
 import { SearchBar } from "@/components/search-bar"
-import { ClassItem } from "@/components/class-item"
+import ClassItem from "@/components/class-item"
 import { ClassList } from "@/components/class-list"
 import { AddButton } from "@/components/add-button"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
 import AdicionarButton from "@/components/adicionar-button"
 import { PopupDados } from "@/components/popup-dados"
+
+// Define the class item type directly in this file
+type ClassItemType = {
+  id: number
+  name: string
+  students: number
+  time: string
+  color: string
+  course?: string
+  fullTime?: string
+  shift?: string
+  hoursLoad?: string
+}
 
 const classColors = [
   "#B6B881",
@@ -91,14 +104,6 @@ const getRandomColor = () => {
   return classColors[Math.floor(Math.random() * classColors.length)]
 }
 
-type ClassItemType = {
-  id: number
-  name: string
-  students: number
-  time: string
-  color: string
-}
-
 type ExtendedItem = Partial<ClassItemType> & {
   isAddButton: boolean
   id: number
@@ -173,6 +178,9 @@ export default function VerTurmasPage() {
           students: item.quantityStudents,
           time: item.time,
           color,
+          course: item.course || "",
+          shift: item.shift || "Vespertino",
+          fullTime: item.time || "",
         }
       })
 
@@ -227,6 +235,8 @@ export default function VerTurmasPage() {
     //   nameClass: newClass.name,
     //   quantityStudents: newClass.students,
     //   time: newClass.time,
+    //   course: newClass.course,
+    //   shift: newClass.shift,
     // })
     // .then(response => {
     //   console.log("Turma criada com sucesso:", response.data);
@@ -257,7 +267,11 @@ export default function VerTurmasPage() {
     // Update the class in the classList state
     const updatedClassList = classList.map((classItem) => {
       if (classItem.id === updatedData.id) {
-        return updatedData
+        return {
+          ...updatedData,
+          // Ensure we keep the color if it's not in the updated data
+          color: updatedData.color || classItem.color,
+        }
       }
       return classItem
     })
@@ -270,6 +284,8 @@ export default function VerTurmasPage() {
     //   nameClass: updatedData.name,
     //   quantityStudents: updatedData.students,
     //   time: updatedData.time,
+    //   course: updatedData.course,
+    //   shift: updatedData.shift,
     // })
     // .then(response => {
     //   console.log("Turma atualizada com sucesso:", response.data);
@@ -322,7 +338,7 @@ export default function VerTurmasPage() {
           </div>
         ) : (
           <div className="px-4 mt-8">
-            <ClassList classes={filteredClasses} onRemoveClass={handleRemoveClass} />
+            <ClassList classes={filteredClasses} onRemoveClass={handleRemoveClass} onClassClick={handleClassClick} />
           </div>
         )}
       </div>

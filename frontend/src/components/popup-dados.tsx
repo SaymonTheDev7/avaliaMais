@@ -134,6 +134,9 @@ export function PopupDados({
   fieldLabels = {},
   fieldPlaceholders = {},
 }: PopupDadosProps) {
+  // Rest of the component code remains the same...
+  // ... (keeping the existing implementation)
+
   // Configuração padrão dos campos
   const defaultFieldConfig: Record<string, FieldConfig> = {
     course: {

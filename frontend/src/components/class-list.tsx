@@ -1,55 +1,102 @@
-import React from 'react';
-import { Users, Clock, X } from "lucide-react";
+"use client"
 
-interface ClassListProps {
-  classes: {
-    id: number;
-    name: string;
-    students: number;
-    time: string;
-    color: string;
-  }[];
-  onRemoveClass?: (id: number) => void;
+import { useState } from "react"
+import { Trash2, User } from "lucide-react"
+import { ConfirmationDialog } from "./confirmation-dialog"
+
+// Define the class item type directly in this file
+type ClassItemType = {
+  id: number
+  name: string
+  students: number
+  time: string
+  color: string
+  course?: string
+  fullTime?: string
+  shift?: string
+  hoursLoad?: string
 }
 
-export function ClassList({ classes, onRemoveClass }: ClassListProps) {
-  return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="grid grid-cols-12 bg-gray-100 py-4 font-semibold text-[#003366]">
-        <div className="col-span-1"></div>
-        <div className="col-span-4 px-4">Nome da turma</div>
-        <div className="col-span-3 px-4">Horário</div>
-        <div className="col-span-3 px-4">Quantidade de alunos</div>
-        <div className="col-span-1"></div>
-      </div>
+export type ClassListProps = {
+  classes: ClassItemType[]
+  onRemoveClass: (id: number) => void
+  onClassClick: (classItem: ClassItemType) => void
+}
 
-      {classes.map((classItem, index) => (
-        <div
-          key={classItem.id}
-          className={`grid grid-cols-12 py-4 items-center ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
-        >
-          <div className="col-span-1 flex justify-center">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: classItem.color }}
-            >
-              <div className="text-white font-bold">
-                {classItem.name.split(' ').map(name => name[0]).join('').substring(0, 2)}
-              </div>
-            </div>
-          </div>
-          <div className="col-span-4 px-4 font-medium">{classItem.name}</div>
-          <div className="col-span-3 px-4 flex items-center">
-            <Clock className="mr-2 h-4 w-4 text-[#003366]" />
-            <span>{classItem.time}</span>
-          </div>
-          <div className="col-span-3 px-4 flex items-center">
-            <Users className="mr-2 h-4 w-4 text-[#003366]" />
-            <span>{classItem.students} alunos</span>
-          </div>
-        </div>
-      ))}
+export function ClassList({ classes, onRemoveClass, onClassClick }: ClassListProps) {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [classToDelete, setClassToDelete] = useState<number | null>(null)
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-100">
+          <tr>
+            <th scope="col" className="px-6 py-3 text-left text-sm font-medium text-[#003366] tracking-wider">
+              Turma
+            </th>
+            <th scope="col" className="px-6 py-3 text-left text-sm font-medium text-[#003366] tracking-wider">
+              Alunos
+            </th>
+            <th scope="col" className="px-6 py-3 text-left text-sm font-medium text-[#003366] tracking-wider">
+              Horário
+            </th>
+            <th scope="col" className="px-6 py-3 text-right text-sm font-medium text-[#003366] tracking-wider">
+              Ações
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {classes.map((classItem) => (
+            <tr key={classItem.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => onClassClick(classItem)}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <div className="h-10 w-10 rounded-full mr-3" style={{ backgroundColor: classItem.color }}></div>
+                  <div className="text-sm font-medium text-gray-900">{classItem.name}</div>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center text-sm text-gray-500">
+                  <User className="mr-1 h-4 w-4" />
+                  <span>{classItem.students}</span>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{classItem.time}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation() // Prevent row click event
+                    setClassToDelete(classItem.id)
+                    setShowDeleteConfirmation(true)
+                  }}
+                  className="text-red-600 hover:text-red-900"
+                >
+                  <Trash2 className="h-5 w-5" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Delete confirmation dialog */}
+      <ConfirmationDialog
+        isOpen={showDeleteConfirmation}
+        onClose={() => setShowDeleteConfirmation(false)}
+        onConfirm={() => {
+          if (classToDelete !== null) {
+            onRemoveClass(classToDelete)
+            setClassToDelete(null)
+          }
+          setShowDeleteConfirmation(false)
+        }}
+        title="Excluir turma"
+        message="Tem certeza que deseja excluir a turma?"
+        confirmButtonText="Sim, excluir"
+        cancelButtonText="Não, cancelar"
+        confirmButtonColor="#F13F00"
+        cancelButtonColor="#003366"
+      />
     </div>
-  );
-  
+  )
 }
