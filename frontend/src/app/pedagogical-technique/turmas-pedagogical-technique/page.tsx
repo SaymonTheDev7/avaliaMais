@@ -104,6 +104,49 @@ type ExtendedItem = Partial<ClassItemType> & {
   id: number
 }
 
+// Lista de cursos disponíveis com suas cargas horárias
+const availableCourses = [
+  { name: "Desenvolvimento Web", hoursLoad: "120h" },
+  { name: "Programação em Java", hoursLoad: "80h" },
+  { name: "Banco de Dados", hoursLoad: "60h" },
+  { name: "Design UX/UI", hoursLoad: "90h" },
+  { name: "Marketing Digital", hoursLoad: "70h" },
+  { name: "Gestão de Projetos", hoursLoad: "100h" },
+  { name: "Inglês Técnico", hoursLoad: "60h" },
+  { name: "Redes de Computadores", hoursLoad: "80h" },
+  { name: "Inteligência Artificial", hoursLoad: "120h" },
+  { name: "Segurança da Informação", hoursLoad: "90h" },
+]
+
+// Configuração de labels e placeholders para o PopupDados
+const fieldLabels = {
+  course: "Curso",
+  hoursLoad: "Carga horária",
+  name: "Nome da turma",
+  students: "Quantidade de alunos",
+  shift: "Turno",
+  fullTime: "Horário detalhado",
+  createButton: "Criar Turma",
+  cancelButton: "Cancelar",
+  confirmButton: "Confirmar",
+  doneButton: "Concluído",
+  popupTitle: "Detalhes da Turma",
+  newClassTitle: "Nova Turma",
+  deleteButton: "Excluir Turma",
+  cancelConfirmTitle: "Descartar alterações",
+  cancelConfirmMessage: "Tem certeza que deseja descartar as alterações feitas?",
+  cancelConfirmYes: "Sim, descartar",
+  cancelConfirmNo: "Não, continuar editando",
+}
+
+const fieldPlaceholders = {
+  course: "Selecione um curso",
+  name: "Digite o nome da turma",
+  students: "0",
+  shift: "Selecione o turno",
+  fullTime: "Ex: 08:00 - 10:00",
+}
+
 export default function VerTurmasPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [classList, setClassList] = useState<ClassItemType[]>([])
@@ -149,9 +192,18 @@ export default function VerTurmasPage() {
   }
 
   const handleRemoveClass = (id: number) => {
-    // Implement class removal logic here
+    // Remove the class from the state
     setClassList(classList.filter((item) => item.id !== id))
+
     // You might want to add API call to delete the class from the backend
+    // For example:
+    // axios.delete(`http://localhost:9090/class/delete/${id}`)
+    //   .then(response => {
+    //     console.log("Turma excluída com sucesso:", response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error("Erro ao excluir turma:", error);
+    //   });
   }
 
   const handleAddClass = () => {
@@ -275,8 +327,28 @@ export default function VerTurmasPage() {
         )}
       </div>
 
-      {selectedClass && <PopupDados classData={selectedClass} onClose={closePopup} onUpdate={handleUpdateClass} />}
-      {isCreatingClass && <PopupDados onClose={closePopup} onCreate={handleCreateClass} isCreating={true} />}
+      {selectedClass && (
+        <PopupDados
+          classData={selectedClass}
+          onClose={closePopup}
+          onUpdate={handleUpdateClass}
+          onDelete={handleRemoveClass}
+          fieldLabels={fieldLabels}
+          fieldPlaceholders={fieldPlaceholders}
+          availableCourses={availableCourses}
+        />
+      )}
+
+      {isCreatingClass && (
+        <PopupDados
+          onClose={closePopup}
+          onCreate={handleCreateClass}
+          isCreating={true}
+          fieldLabels={fieldLabels}
+          fieldPlaceholders={fieldPlaceholders}
+          availableCourses={availableCourses}
+        />
+      )}
     </div>
   )
 }

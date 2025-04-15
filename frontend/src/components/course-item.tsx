@@ -20,12 +20,6 @@ export function CourseItem({ id, name, type, workload, color }: CourseItemProps)
           <span className="mx-2">-</span>
           <span>Carga horária: {workload}h</span>
         </div>
-
-        <button
-          className="absolute bottom-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 mb-1 mr-1"
-        >
-          <X className="h-4 sm:h-5 w-4 sm:w-5 cursor-pointer" />
-        </button>
       </div>
     </div>
   );

@@ -42,12 +42,6 @@ export function CourseList({ courses, onRemoveCourse }: CourseListProps) {
           <div className="col-span-3 px-4">{course.type}</div>
           <div className="col-span-3 px-4">{course.workload} horas</div>
           <div className="col-span-1 flex justify-center">
-            <button
-              onClick={() => onRemoveCourse(course.id)}
-              className="bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-            >
-              <X className="h-4 w-4 cursor-pointer" />
-            </button>
           </div>
         </div>
       ))}

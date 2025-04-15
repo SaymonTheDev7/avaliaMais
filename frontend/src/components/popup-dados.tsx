@@ -2,7 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { X, Pencil, ExternalLink, AlertCircle, Info, XCircle } from "lucide-react"
+import { X, Pencil, ExternalLink, AlertCircle, Info, XCircle, Trash2 } from "lucide-react"
+import { ConfirmationDialog } from "./confirmation-dialog"
 
 // Tipo para os dados da turma
 type ClassData = {
@@ -25,6 +26,7 @@ type FieldConfig = {
     text: string
     icon: "red" | "white" | null
   } | null
+  placeholder?: string
 }
 
 // Tipo para os cursos disponíveis
@@ -66,19 +68,35 @@ const Alert = ({ message, onClose }: AlertProps) => {
   )
 }
 
-// Lista de cursos disponíveis com suas cargas horárias
-const availableCourses: CourseOption[] = [
-  { name: "Desenvolvimento Web", hoursLoad: "120h" },
-  { name: "Programação em Java", hoursLoad: "80h" },
-  { name: "Banco de Dados", hoursLoad: "60h" },
-  { name: "Design UX/UI", hoursLoad: "90h" },
-  { name: "Marketing Digital", hoursLoad: "70h" },
-  { name: "Gestão de Projetos", hoursLoad: "100h" },
-  { name: "Inglês Técnico", hoursLoad: "60h" },
-  { name: "Redes de Computadores", hoursLoad: "80h" },
-  { name: "Inteligência Artificial", hoursLoad: "120h" },
-  { name: "Segurança da Informação", hoursLoad: "90h" },
-]
+// Tipo para as labels e placeholders
+type FieldLabels = {
+  course?: string
+  hoursLoad?: string
+  name?: string
+  students?: string
+  shift?: string
+  fullTime?: string
+  createButton?: string
+  cancelButton?: string
+  confirmButton?: string
+  doneButton?: string
+  popupTitle?: string
+  newClassTitle?: string
+  deleteButton?: string
+  cancelConfirmTitle?: string
+  cancelConfirmMessage?: string
+  cancelConfirmYes?: string
+  cancelConfirmNo?: string
+}
+
+type FieldPlaceholders = {
+  course?: string
+  hoursLoad?: string
+  name?: string
+  students?: string
+  shift?: string
+  fullTime?: string
+}
 
 type PopupDadosProps = {
   classData?: ClassData
@@ -86,7 +104,11 @@ type PopupDadosProps = {
   fieldConfig?: Record<string, FieldConfig>
   onUpdate?: (updatedData: ClassData) => void
   onCreate?: (newData: ClassData) => void
+  onDelete?: (id: number) => void
   isCreating?: boolean
+  availableCourses?: CourseOption[]
+  fieldLabels?: FieldLabels
+  fieldPlaceholders?: FieldPlaceholders
 }
 
 export function PopupDados({
@@ -95,45 +117,66 @@ export function PopupDados({
   fieldConfig,
   onUpdate,
   onCreate,
+  onDelete,
   isCreating = false,
+  availableCourses = [
+    { name: "Desenvolvimento Web", hoursLoad: "120h" },
+    { name: "Programação em Java", hoursLoad: "80h" },
+    { name: "Banco de Dados", hoursLoad: "60h" },
+    { name: "Design UX/UI", hoursLoad: "90h" },
+    { name: "Marketing Digital", hoursLoad: "70h" },
+    { name: "Gestão de Projetos", hoursLoad: "100h" },
+    { name: "Inglês Técnico", hoursLoad: "60h" },
+    { name: "Redes de Computadores", hoursLoad: "80h" },
+    { name: "Inteligência Artificial", hoursLoad: "120h" },
+    { name: "Segurança da Informação", hoursLoad: "90h" },
+  ],
+  fieldLabels = {},
+  fieldPlaceholders = {},
 }: PopupDadosProps) {
   // Configuração padrão dos campos
   const defaultFieldConfig: Record<string, FieldConfig> = {
     course: {
-      label: "Curso",
+      label: fieldLabels.course || "Curso",
       editable: isCreating, // Only editable when creating, not when editing
       tooltip: null,
+      placeholder: fieldPlaceholders.course || "Selecione um curso",
     },
     hoursLoad: {
-      label: "Carga horária",
+      label: fieldLabels.hoursLoad || "Carga horária",
       editable: false,
       tooltip: {
         text: "Esse campo herda seu valor do curso informado",
         icon: "white",
       },
+      placeholder: fieldPlaceholders.hoursLoad || "",
     },
     name: {
-      label: "Nome da turma",
+      label: fieldLabels.name || "Nome da turma",
       editable: true,
       tooltip: {
         text: isCreating ? "Atenção, esse campo não poderá ser alterado" : "Esse campo não pode ser alterado",
         icon: "red",
       },
+      placeholder: fieldPlaceholders.name || "Digite o nome da turma",
     },
     students: {
-      label: "Quantidade de alunos",
+      label: fieldLabels.students || "Quantidade de alunos",
       editable: true,
       tooltip: null,
+      placeholder: fieldPlaceholders.students || "0",
     },
     shift: {
-      label: "Turno/Horário",
+      label: fieldLabels.shift || "Turno/Horário",
       editable: true,
       tooltip: null,
+      placeholder: fieldPlaceholders.shift || "Selecione o turno",
     },
     fullTime: {
-      label: "Horário completo",
+      label: fieldLabels.fullTime || "Horário completo",
       editable: true,
       tooltip: null,
+      placeholder: fieldPlaceholders.fullTime || "Ex: 08:00 - 10:00",
     },
   }
 
@@ -161,6 +204,9 @@ export function PopupDados({
   })
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
 
   // Atualiza a carga horária quando o curso é alterado
   useEffect(() => {
@@ -173,10 +219,11 @@ export function PopupDados({
         }))
       }
     }
-  }, [formData.course])
+  }, [formData.course, availableCourses])
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing)
+    setHasChanges(false) // Reset changes flag when toggling edit mode
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -185,6 +232,7 @@ export function PopupDados({
       ...formData,
       [name]: value,
     })
+    setHasChanges(true) // Mark that changes have been made
   }
 
   const validateForm = () => {
@@ -236,6 +284,31 @@ export function PopupDados({
     onClose()
   }
 
+  const handleCancel = () => {
+    if (hasChanges && isEditing) {
+      setShowCancelConfirmation(true)
+    } else {
+      if (isCreating) {
+        onClose()
+      } else {
+        setIsEditing(false)
+      }
+    }
+  }
+
+  const handleDelete = () => {
+    if (onDelete && classData) {
+      setShowDeleteConfirmation(true)
+    }
+  }
+
+  const confirmDelete = () => {
+    if (onDelete && classData) {
+      onDelete(classData.id)
+      onClose()
+    }
+  }
+
   const Tooltip = ({ text, children }: { text: string; children: React.ReactNode }) => {
     return (
       <div className="group relative inline-block">
@@ -275,7 +348,9 @@ export function PopupDados({
           style={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
         >
           <div className="bg-[#003366] text-white p-6 relative">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center">{isCreating ? "Nova Turma" : formData.name}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center">
+              {isCreating ? fieldLabels.newClassTitle || "Nova Turma" : formData.name}
+            </h2>
 
             <button
               onClick={onClose}
@@ -299,7 +374,7 @@ export function PopupDados({
               {/* Campo Curso */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.course?.label || "Curso"}
+                  {config.course?.label}
                   {isCreating && <span className="text-red-500 ml-1">*</span>}
                 </label>
                 <div className="relative">
@@ -313,7 +388,7 @@ export function PopupDados({
                         isCreating && !formData.course ? "border-red-300" : "border-gray-300"
                       } bg-white focus:outline-none appearance-auto`}
                     >
-                      <option value="">Selecione um curso</option>
+                      <option value="">{config.course?.placeholder || "Selecione um curso"}</option>
                       {availableCourses.map((course, index) => (
                         <option key={index} value={course.name}>
                           {course.name}
@@ -322,22 +397,29 @@ export function PopupDados({
                     </select>
                   ) : (
                     // Input field for view/edit mode (not editable in edit mode)
-                    <input
-                      type="text"
-                      name="course"
-                      value={formData.course || ""}
-                      readOnly={true}
-                      className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none appearance-none"
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="course"
+                        value={formData.course || ""}
+                        readOnly={true}
+                        className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none appearance-none"
+                      />
+                      {isEditing && (
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
+                          <Tooltip text="Esse campo não pode ser editado">
+                            <AlertCircle className="h-4 w-4 text-red-500" />
+                          </Tooltip>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
 
               {/* Campo Carga Horária */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.hoursLoad?.label || "Carga horária"}
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{config.hoursLoad?.label}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -345,6 +427,7 @@ export function PopupDados({
                     value={formData.hoursLoad || ""}
                     readOnly={true}
                     className="w-full p-2 rounded-md border border-gray-300 bg-gray-50 focus:outline-none pr-8 appearance-none"
+                    placeholder={config.hoursLoad?.placeholder}
                   />
                   {renderTooltipIcon(config.hoursLoad?.tooltip, "hoursLoad")}
                 </div>
@@ -353,7 +436,7 @@ export function PopupDados({
               {/* Campo Nome da Turma */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.name?.label || "Nome da turma"}
+                  {config.name?.label}
                   {isCreating && <span className="text-red-500 ml-1">*</span>}
                 </label>
                 <div className="relative">
@@ -366,6 +449,7 @@ export function PopupDados({
                     className={`w-full p-2 rounded-md border ${
                       isCreating && !formData.name.trim() ? "border-red-300" : "border-gray-300"
                     } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none pr-8 appearance-none`}
+                    placeholder={config.name?.placeholder}
                   />
                   {renderTooltipIcon(config.name?.tooltip, "name")}
                 </div>
@@ -389,7 +473,7 @@ export function PopupDados({
               {/* Campo Turno/Horário */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.shift?.label || "Turno/Horário"}
+                  {config.shift?.label}
                   {isCreating && <span className="text-red-500 ml-1">*</span>}
                 </label>
                 <div className="flex gap-2">
@@ -417,7 +501,7 @@ export function PopupDados({
                     className={`w-full p-2 rounded-md border ${
                       isCreating && !formData.fullTime.trim() ? "border-red-300" : "border-gray-300"
                     } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
-                    placeholder="Ex: 08:00 - 10:00"
+                    placeholder={config.fullTime?.placeholder}
                   />
                 </div>
               </div>
@@ -425,7 +509,7 @@ export function PopupDados({
               {/* Campo Quantidade de Alunos */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.students?.label || "Quantidade de alunos"}
+                  {config.students?.label}
                   {isCreating && <span className="text-red-500 ml-1">*</span>}
                 </label>
                 <input
@@ -437,6 +521,7 @@ export function PopupDados({
                   className={`w-full p-2 rounded-md border ${
                     isCreating && formData.students <= 0 ? "border-red-300" : "border-gray-300"
                   } ${isEditing || isCreating ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                  placeholder={config.students?.placeholder}
                 />
               </div>
             </div>
@@ -447,45 +532,58 @@ export function PopupDados({
               </div>
             )}
 
-            <div className="flex justify-end gap-4 mt-8">
-              {isCreating ? (
-                <>
-                  <button
-                    onClick={onClose}
-                    className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleSubmit}
-                    className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                  >
-                    Criar Turma
-                  </button>
-                </>
-              ) : isEditing ? (
-                <>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleSubmit}
-                    className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
-                  >
-                    Confirmar
-                  </button>
-                </>
-              ) : (
+            <div className="flex justify-between gap-4 mt-8">
+              {/* Delete button - only show in view mode for existing classes */}
+              {!isCreating && !isEditing && onDelete && (
                 <button
-                  onClick={onClose}
-                  className="px-6 py-2 bg-[#02335E] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  onClick={handleDelete}
+                  className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium flex items-center gap-2"
                 >
-                  Concluído
+                  <Trash2 className="h-4 w-4" />
+                  {fieldLabels.deleteButton || "Excluir Turma"}
                 </button>
               )}
+
+              <div className={`flex gap-4 ${!isCreating && !isEditing && onDelete ? "ml-auto" : "w-full justify-end"}`}>
+                {isCreating ? (
+                  <>
+                    <button
+                      onClick={handleCancel}
+                      className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                    >
+                      {fieldLabels.cancelButton || "Cancelar"}
+                    </button>
+                    <button
+                      onClick={handleSubmit}
+                      className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                    >
+                      {fieldLabels.createButton || "Criar Turma"}
+                    </button>
+                  </>
+                ) : isEditing ? (
+                  <>
+                    <button
+                      onClick={handleCancel}
+                      className="px-6 py-2 bg-[#F13F00] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                    >
+                      {fieldLabels.cancelButton || "Cancelar"}
+                    </button>
+                    <button
+                      onClick={handleSubmit}
+                      className="px-6 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                    >
+                      {fieldLabels.confirmButton || "Confirmar"}
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={onClose}
+                    className="px-6 py-2 bg-[#02335E] text-white rounded-md hover:bg-opacity-90 transition-colors font-medium"
+                  >
+                    {fieldLabels.doneButton || "Concluído"}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -493,6 +591,44 @@ export function PopupDados({
 
       {/* Alert popup */}
       {showAlert && <Alert message={alertMessage} onClose={() => setShowAlert(false)} />}
+
+      {/* Cancel confirmation dialog */}
+      <ConfirmationDialog
+        isOpen={showCancelConfirmation}
+        onClose={() => setShowCancelConfirmation(false)}
+        onConfirm={() => {
+          if (isCreating) {
+            onClose()
+          } else {
+            setIsEditing(false)
+            // Reset form data to original values
+            setFormData({
+              ...(classData || defaultClassData),
+              shift: classData?.shift || defaultClassData.shift || "Vespertino",
+              fullTime: classData?.fullTime || classData?.time || "",
+            })
+          }
+        }}
+        title={fieldLabels.cancelConfirmTitle || "Descartar alterações"}
+        message={fieldLabels.cancelConfirmMessage || "Tem certeza que deseja descartar as alterações feitas?"}
+        confirmButtonText={fieldLabels.cancelConfirmYes || "Sim, descartar"}
+        cancelButtonText={fieldLabels.cancelConfirmNo || "Não, continuar editando"}
+        confirmButtonColor="#F13F00"
+        cancelButtonColor="#003366"
+      />
+
+      {/* Delete confirmation dialog */}
+      <ConfirmationDialog
+        isOpen={showDeleteConfirmation}
+        onClose={() => setShowDeleteConfirmation(false)}
+        onConfirm={confirmDelete}
+        title="Excluir turma"
+        message="Tem certeza que deseja excluir a turma?"
+        confirmButtonText="Sim, excluir"
+        cancelButtonText="Não, cancelar"
+        confirmButtonColor="#F13F00"
+        cancelButtonColor="#003366"
+      />
     </>
   )
 }
