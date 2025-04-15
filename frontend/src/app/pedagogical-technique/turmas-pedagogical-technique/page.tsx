@@ -11,7 +11,7 @@ import { ClassList } from "@/components/class-list"
 import { AddButton } from "@/components/add-button"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
 import AdicionarButton from "@/components/adicionar-button"
-import { PopupDados } from "@/components/popup-dados"
+import { PopupDados } from "@/components/popup-dados-turma"
 
 // Define the class item type directly in this file
 type ClassItemType = {
