@@ -11,15 +11,20 @@ import net.weg.avaliaMais.infra.security.TokenService;
 import net.weg.avaliaMais.infra.model.AuthUser;
 import net.weg.avaliaMais.infra.repository.AuthUserRepository;
 import net.weg.avaliaMais.repository.user.*;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+/**
+ * Controlador responsável por lidar com autenticação e registro de usuários.
+ * Disponibiliza endpoints para login, registro e obtenção do usuário autenticado.
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -34,6 +39,11 @@ public class AuthenticationController {
     private final PedagogicalAdvisorRepository pedagogicalAdvisorRepository;
     private final TokenService tokenService;
 
+    @Operation(summary = "Realizar login", description = "Autentica o usuário e retorna um token JWT.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
+    })
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationRequestDTO authenticationRequestDTO,
                                                   HttpServletResponse response) {
@@ -57,7 +67,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token, user.getRole()));
     }
 
-
+    @Operation(summary = "Registrar novo usuário", description = "Registra um novo usuário com criptografia de senha.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário registrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Usuário já existente")
+    })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterResponseDTO registerResponseDTO) {
         if (authUserRepository.findByUsername(registerResponseDTO.username()) != null) {
@@ -75,6 +89,11 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Obter usuário autenticado", description = "Retorna os dados do usuário com base no papel (role).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado")
+    })
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();

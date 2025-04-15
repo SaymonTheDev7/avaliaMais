@@ -60,6 +60,7 @@ public class ChatMessage {
      * Construtor padrão.
      */
     public ChatMessage() {
+
     }
 
     /**
