@@ -60,7 +60,7 @@ public class ChatMessage {
      * Construtor padrão.
      */
     public ChatMessage() {
-<<<<<<< Updated upstream:backend/src/main/java/net/weg/avaliaMais/chat/model/ChatMessage.java
+        // Pode ser deixado vazio para frameworks como JPA
     }
 
     /**
@@ -69,8 +69,6 @@ public class ChatMessage {
      */
     @PrePersist
     public void prePersist() {
-=======
->>>>>>> Stashed changes:backend/src/main/java/net/weg/avaliaMais/model/ChatMessage.java
         this.timestamp = LocalDateTime.now();
     }
 }
