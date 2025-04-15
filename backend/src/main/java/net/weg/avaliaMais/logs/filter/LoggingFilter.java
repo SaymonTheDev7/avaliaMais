@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
  * Este filtro captura informações como o tipo de ação (método HTTP), endpoint acessado,
  * endereço IP do cliente, horário de início e fim da requisição, além do status da resposta.
  * Os dados registrados são enviados ao {@link LogService}.
+ * </p>
  */
 @Component
 @RequiredArgsConstructor
@@ -28,11 +29,16 @@ public class LoggingFilter implements Filter {
 
     /**
      * Intercepta todas as requisições HTTP e registra logs detalhados.
+     * <p>
+     * O filtro captura dados como o tipo de requisição (método HTTP), endpoint acessado,
+     * o IP do cliente, o horário de início e fim da requisição, além do status da resposta.
+     * Depois de capturar as informações, o filtro envia os logs para o {@link LogService}.
+     * </p>
      *
      * @param request  Objeto {@link ServletRequest} que representa a requisição HTTP.
      * @param response Objeto {@link ServletResponse} que representa a resposta HTTP.
      * @param chain    Encadeamento de filtros para continuar o processamento da requisição.
-     * @throws IOException              Caso ocorra um erro de entrada/saída durante o processamento.
+     * @throws IOException Caso ocorra um erro de entrada/saída durante o processamento.
      * @throws jakarta.servlet.ServletException Caso ocorra um erro no processamento do servlet.
      */
     @Override
