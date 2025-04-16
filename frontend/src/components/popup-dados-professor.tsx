@@ -2,18 +2,22 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { X, Pencil, AlertCircle, Info, XCircle, Trash2 } from "lucide-react"
+import { X, Pencil, AlertCircle, Trash2, XCircle } from "lucide-react"
 import { ConfirmationDialog } from "./confirmation-dialog"
 
 // Tipo para os dados do professor
 type ProfessorData = {
   id: number
   name: string
-  department: string
+  email: string
+  department?: string // Mantido para compatibilidade, mas não será exibido
   hours: number
   photoUrl: string | null
   color: string
   initials?: string
+  classes?: string[]
+  shift?: string
+  professionalArea?: string
 }
 
 // Tipo para configuração dos campos
@@ -33,7 +37,7 @@ type AlertProps = {
   onClose: () => void
 }
 
-// Componente de alerta
+// Componente de alerta personalizado
 const Alert = ({ message, onClose }: AlertProps) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[100]">
@@ -63,9 +67,11 @@ const Alert = ({ message, onClose }: AlertProps) => {
 // Tipo para as labels e placeholders
 type FieldLabels = {
   name?: string
-  department?: string
+  email?: string
   hours?: string
-  photo?: string
+  classes?: string
+  shift?: string
+  professionalArea?: string
   createButton?: string
   cancelButton?: string
   confirmButton?: string
@@ -77,13 +83,18 @@ type FieldLabels = {
   cancelConfirmMessage?: string
   cancelConfirmYes?: string
   cancelConfirmNo?: string
+  viewClassesButton?: string
+  addClassButton?: string
+  removeClassButton?: string
+  classesTitle?: string
 }
 
 type FieldPlaceholders = {
   name?: string
-  department?: string
+  email?: string
   hours?: string
-  photo?: string
+  shift?: string
+  professionalArea?: string
 }
 
 type PopupDadosProfessorProps = {
@@ -109,7 +120,11 @@ export function PopupDadosProfessor({
   fieldLabels = {},
   fieldPlaceholders = {},
 }: PopupDadosProfessorProps) {
-  // Configuração padrão dos campos
+  // Adicionar o estado para o modal de turmas
+  const [showClassesModal, setShowClassesModal] = useState(false)
+  const [newClass, setNewClass] = useState("")
+
+  // Atualizar a configuração padrão dos campos para incluir os novos campos
   const defaultFieldConfig: Record<string, FieldConfig> = {
     name: {
       label: fieldLabels.name || "Nome do professor",
@@ -117,11 +132,17 @@ export function PopupDadosProfessor({
       tooltip: null,
       placeholder: fieldPlaceholders.name || "Digite o nome do professor",
     },
-    department: {
-      label: fieldLabels.department || "Área do professor",
+    email: {
+      label: fieldLabels.email || "Email do professor",
       editable: true,
       tooltip: null,
-      placeholder: fieldPlaceholders.department || "Digite a área do professor",
+      placeholder: fieldPlaceholders.email || "professor@dominio.com",
+    },
+    professionalArea: {
+      label: fieldLabels.professionalArea || "Área profissionalizante",
+      editable: true,
+      tooltip: null,
+      placeholder: fieldPlaceholders.professionalArea || "Digite a área profissionalizante",
     },
     hours: {
       label: fieldLabels.hours || "Carga horária semanal",
@@ -129,14 +150,16 @@ export function PopupDadosProfessor({
       tooltip: null,
       placeholder: fieldPlaceholders.hours || "20",
     },
-    photo: {
-      label: fieldLabels.photo || "Foto do professor",
+    shift: {
+      label: fieldLabels.shift || "Turno",
       editable: true,
-      tooltip: {
-        text: "URL da foto do professor (opcional)",
-        icon: "white",
-      },
-      placeholder: fieldPlaceholders.photo || "URL da foto (opcional)",
+      tooltip: null,
+      placeholder: fieldPlaceholders.shift || "Selecione o turno",
+    },
+    classes: {
+      label: fieldLabels.classes || "Turmas",
+      editable: true,
+      tooltip: null,
     },
   }
 
@@ -147,10 +170,13 @@ export function PopupDadosProfessor({
   const defaultProfessorData: ProfessorData = {
     id: Date.now(),
     name: "",
-    department: "",
+    email: "",
     hours: 20,
     photoUrl: null,
     color: "#003366",
+    classes: [],
+    shift: "",
+    professionalArea: "",
   }
 
   const [isEditing, setIsEditing] = useState(isCreating)
@@ -192,6 +218,29 @@ export function PopupDadosProfessor({
     setHasChanges(true) // Mark that changes have been made
   }
 
+  // Adicionar função para gerenciar turmas
+  const handleAddClass = () => {
+    if (newClass.trim() !== "") {
+      setFormData({
+        ...formData,
+        classes: [...(formData.classes || []), newClass.trim()],
+      })
+      setNewClass("")
+      setHasChanges(true)
+    }
+  }
+
+  const handleRemoveClass = (index: number) => {
+    const updatedClasses = [...(formData.classes || [])]
+    updatedClasses.splice(index, 1)
+    setFormData({
+      ...formData,
+      classes: updatedClasses,
+    })
+    setHasChanges(true)
+  }
+
+  // Atualizar a validação do formulário para incluir os novos campos obrigatórios
   const validateForm = () => {
     // Verificar campos obrigatórios
     if (!formData.name.trim()) {
@@ -200,14 +249,34 @@ export function PopupDadosProfessor({
       return false
     }
 
-    if (!formData.department.trim()) {
-      setAlertMessage("Por favor, preencha a área do professor.")
+    if (!formData.email?.trim()) {
+      setAlertMessage("Por favor, preencha o email do professor.")
+      setShowAlert(true)
+      return false
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email || "")) {
+      setAlertMessage("Por favor, informe um email válido.")
+      setShowAlert(true)
+      return false
+    }
+
+    if (!formData.professionalArea?.trim()) {
+      setAlertMessage("Por favor, preencha a área profissionalizante.")
       setShowAlert(true)
       return false
     }
 
     if (formData.hours <= 0) {
       setAlertMessage("Por favor, informe uma carga horária válida.")
+      setShowAlert(true)
+      return false
+    }
+
+    if (!formData.shift?.trim()) {
+      setAlertMessage("Por favor, selecione o turno.")
       setShowAlert(true)
       return false
     }
@@ -254,34 +323,59 @@ export function PopupDadosProfessor({
     }
   }
 
-  const Tooltip = ({ text, children }: { text: string; children: React.ReactNode }) => {
+  // Adicionar o componente modal de turmas
+  const ClassesModal = () => {
     return (
-      <div className="group relative inline-block">
-        {children}
-        <div className="absolute right-0 bottom-full mb-2 w-48 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
-          {text}
+      <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[60] p-4">
+        <div className="bg-white rounded-xl w-full max-w-md shadow-xl overflow-hidden border border-gray-200">
+          <div className="bg-[#003366] text-white p-4 relative">
+            <h2 className="text-xl font-bold text-center">{fieldLabels.classesTitle || "Gerenciar Turmas"}</h2>
+            <button
+              onClick={() => setShowClassesModal(false)}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                type="text"
+                value={newClass}
+                onChange={(e) => setNewClass(e.target.value)}
+                className="flex-1 p-2 border border-gray-300 rounded-md"
+                placeholder="Nome da turma"
+              />
+              <button
+                onClick={handleAddClass}
+                className="px-3 py-2 bg-[#319F43] text-white rounded-md hover:bg-opacity-90 transition-colors"
+              >
+                {fieldLabels.addClassButton || "Adicionar"}
+              </button>
+            </div>
+            <div className="max-h-60 overflow-y-auto">
+              {formData.classes && formData.classes.length > 0 ? (
+                <ul className="space-y-2">
+                  {formData.classes.map((className, index) => (
+                    <li key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-md">
+                      <span>{className}</span>
+                      <button onClick={() => handleRemoveClass(index)} className="text-red-500 hover:text-red-700">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-center text-gray-500 py-4">Nenhuma turma adicionada</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     )
   }
 
-  // Função para renderizar o ícone do tooltip baseado na configuração
-  const renderTooltipIcon = (config?: { text: string; icon: "red" | "white" | null } | null) => {
-    if (!config) return null
-
-    return (
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
-        <Tooltip text={config.text}>
-          {config.icon === "red" ? (
-            <AlertCircle className="h-4 w-4 text-red-500" />
-          ) : config.icon === "white" ? (
-            <Info className="h-4 w-4 text-white bg-gray-500 rounded-full p-[1px]" />
-          ) : null}
-        </Tooltip>
-      </div>
-    )
-  }
-
+  // Substituir a renderização dos campos no return para incluir os novos campos
   return (
     <>
       <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
@@ -346,29 +440,50 @@ export function PopupDadosProfessor({
                     onChange={handleInputChange}
                     className={`w-full p-2 rounded-md border ${
                       isCreating && !formData.name.trim() ? "border-red-300" : "border-gray-300"
-                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none pr-8 appearance-none`}
+                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
                     placeholder={config.name?.placeholder}
                   />
                 </div>
               </div>
 
-              {/* Campo Área do Professor */}
+              {/* Campo Email do Professor */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {config.department?.label}
+                  {config.email?.label}
+                  <span className="text-red-500 ml-1">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email || ""}
+                    readOnly={!isEditing}
+                    onChange={handleInputChange}
+                    className={`w-full p-2 rounded-md border ${
+                      isCreating && !formData.email?.trim() ? "border-red-300" : "border-gray-300"
+                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                    placeholder={config.email?.placeholder}
+                  />
+                </div>
+              </div>
+
+              {/* Campo Área Profissionalizante */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.professionalArea?.label}
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    name="department"
-                    value={formData.department}
+                    name="professionalArea"
+                    value={formData.professionalArea || ""}
                     readOnly={!isEditing}
                     onChange={handleInputChange}
                     className={`w-full p-2 rounded-md border ${
-                      isCreating && !formData.department.trim() ? "border-red-300" : "border-gray-300"
-                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none pr-8 appearance-none`}
-                    placeholder={config.department?.placeholder}
+                      isCreating && !formData.professionalArea?.trim() ? "border-red-300" : "border-gray-300"
+                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                    placeholder={config.professionalArea?.placeholder}
                   />
                 </div>
               </div>
@@ -388,28 +503,56 @@ export function PopupDadosProfessor({
                     onChange={handleInputChange}
                     className={`w-full p-2 rounded-md border ${
                       isCreating && formData.hours <= 0 ? "border-red-300" : "border-gray-300"
-                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none pr-8 appearance-none`}
+                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
                     placeholder={config.hours?.placeholder}
                   />
                 </div>
               </div>
 
-              {/* Campo URL da Foto */}
+              {/* Campo Turno */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{config.photo?.label}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {config.shift?.label}
+                  <span className="text-red-500 ml-1">*</span>
+                </label>
                 <div className="relative">
-                  <input
-                    type="text"
-                    name="photoUrl"
-                    value={formData.photoUrl || ""}
-                    readOnly={!isEditing}
+                  <select
+                    name="shift"
+                    value={formData.shift || ""}
+                    disabled={!isEditing}
                     onChange={handleInputChange}
-                    className={`w-full p-2 rounded-md border border-gray-300 ${
-                      isEditing ? "bg-white" : "bg-gray-50"
-                    } focus:outline-none pr-8 appearance-none`}
-                    placeholder={config.photo?.placeholder}
-                  />
-                  {renderTooltipIcon(config.photo?.tooltip)}
+                    className={`w-full p-2 rounded-md border ${
+                      isCreating && !formData.shift?.trim() ? "border-red-300" : "border-gray-300"
+                    } ${isEditing ? "bg-white" : "bg-gray-50"} focus:outline-none appearance-none`}
+                  >
+                    <option value="">Selecione o turno</option>
+                    <option value="Manhã">Manhã</option>
+                    <option value="Tarde">Tarde</option>
+                    <option value="Noite">Noite</option>
+                    <option value="Integral">Integral</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Campo Turmas */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{config.classes?.label}</label>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setShowClassesModal(true)}
+                    disabled={!isEditing && formData.classes?.length === 0}
+                    className={`w-full p-2 rounded-md border border-gray-300 text-left flex justify-between items-center ${
+                      isEditing ? "bg-white hover:bg-gray-50" : "bg-gray-50"
+                    } focus:outline-none`}
+                  >
+                    <span>
+                      {formData.classes?.length
+                        ? `${formData.classes.length} turma${formData.classes.length !== 1 ? "s" : ""}`
+                        : "Nenhuma turma"}
+                    </span>
+                    <span className="text-[#003366]">{fieldLabels.viewClassesButton || "Visualizar"}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -479,6 +622,9 @@ export function PopupDadosProfessor({
 
       {/* Alert popup */}
       {showAlert && <Alert message={alertMessage} onClose={() => setShowAlert(false)} />}
+
+      {/* Classes modal */}
+      {showClassesModal && <ClassesModal />}
 
       {/* Cancel confirmation dialog */}
       <ConfirmationDialog

@@ -10,11 +10,15 @@ import { PopupDadosProfessor } from "./popup-dados-professor"
 interface Professor {
   id: number
   name: string
-  department: string
+  email: string
+  department?: string
   hours: number
   photoUrl: string | null
   color: string
   initials?: string
+  classes?: string[]
+  shift?: string
+  professionalArea?: string
 }
 
 interface ProfessorListProps {
@@ -43,9 +47,11 @@ export function ProfessorList({ professors, onRemoveProfessor, onUpdateProfessor
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="grid grid-cols-12 bg-gray-100 py-4 font-semibold text-[#003366]">
           <div className="col-span-1"></div>
-          <div className="col-span-4 px-4">Nome do professor</div>
-          <div className="col-span-3 px-4">Área do professor</div>
-          <div className="col-span-3 px-4">Carga horária semanal</div>
+          <div className="col-span-3 px-4">Nome do professor</div>
+          <div className="col-span-2 px-4">Email</div>
+          <div className="col-span-2 px-4">Área profissionalizante</div>
+          <div className="col-span-2 px-4">Carga horária</div>
+          <div className="col-span-1 px-4">Turno</div>
           <div className="col-span-1"></div>
         </div>
 
@@ -79,12 +85,14 @@ export function ProfessorList({ professors, onRemoveProfessor, onUpdateProfessor
                 )}
               </div>
             </div>
-            <div className="col-span-4 px-4 font-medium">{professor.name}</div>
-            <div className="col-span-3 px-4">{professor.department}</div>
-            <div className="col-span-3 px-4 flex items-center">
+            <div className="col-span-3 px-4 font-medium">{professor.name}</div>
+            <div className="col-span-2 px-4">{professor.email || "-"}</div>
+            <div className="col-span-2 px-4">{professor.professionalArea || "-"}</div>
+            <div className="col-span-2 px-4 flex items-center">
               <Clock className="mr-2 h-4 w-4 text-[#003366]" />
               <span>{professor.hours} horas</span>
             </div>
+            <div className="col-span-1 px-4">{professor.shift || "-"}</div>
             <div className="col-span-1 flex justify-center">
               <button
                 onClick={(e) => handleDelete(e, professor.id)}

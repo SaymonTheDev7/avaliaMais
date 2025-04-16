@@ -10,29 +10,41 @@ import { PopupDadosProfessor } from "./popup-dados-professor"
 interface ProfessorItemProps {
   id: number
   name: string
-  department: string
+  email?: string
+  department?: string
   hours: number
   photoUrl: string | null
   color: string
+  classes?: string[]
+  shift?: string
+  professionalArea?: string
   onRemoveProfessor: (id: number) => void
   onUpdateProfessor?: (updatedData: {
     id: number
     name: string
-    department: string
+    email: string
+    department?: string
     hours: number
     photoUrl: string | null
     color: string
     initials?: string
+    classes?: string[]
+    shift?: string
+    professionalArea?: string
   }) => void
 }
 
 export function ProfessorItem({
   id,
   name,
+  email,
   department,
   hours,
   photoUrl,
   color,
+  classes,
+  shift,
+  professionalArea,
   onRemoveProfessor,
   onUpdateProfessor,
 }: ProfessorItemProps) {
@@ -80,11 +92,16 @@ export function ProfessorItem({
         <div className="p-4 mt-2">
           <h3 className="text-xl sm:text-2xl font-bold truncate">{name}</h3>
           <div className="flex items-center text-base mt-3">
-            <span>{department}</span>
+            <span>{professionalArea || department}</span>
             <span className="mx-2">-</span>
             <Clock className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
             <span>{hours} horas</span>
           </div>
+          {shift && (
+            <div className="text-sm mt-1">
+              <span className="bg-white/20 px-2 py-0.5 rounded-full">{shift}</span>
+            </div>
+          )}
 
           <button
             onClick={handleDelete}
@@ -117,11 +134,15 @@ export function ProfessorItem({
           professorData={{
             id,
             name,
+            email: email || "",
             department,
             hours,
             photoUrl,
             color,
             initials,
+            classes,
+            shift,
+            professionalArea,
           }}
           onClose={() => setShowPopup(false)}
           onUpdate={onUpdateProfessor}
