@@ -1,4 +1,4 @@
-import { Info, Users } from "lucide-react"
+import { Users } from "lucide-react"
 import Link from "next/link"
 
 interface ConselhoItemProps {
@@ -12,22 +12,18 @@ export function ConselhoItem({ id, date }: ConselhoItemProps) {
 
   return (
     <Link href={`/conselho/${id}`}>
-      <div className="rounded-lg overflow-hidden shadow-md cursor-pointer h-[160px] transition-transform hover:scale-105">
-        <div className="h-2/5 bg-[#0078D4]"></div>
-        <div className="h-3/5 bg-[#003366] p-4 flex flex-col justify-between">
+      <div className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]">
+        <div className="h-20" style={{ backgroundColor: "#0078D4" }}></div>
+        <div className="p-4 mt-2">
           <div className="flex items-center justify-between">
-            <div className="text-white">
-              <p className="font-medium">Conselho</p>
-              <p className="text-lg font-bold">{date}</p>
+            <h3 className="text-xl sm:text-2xl font-bold truncate">
+              <span className="font-medium text-base block">Conselho</span>
+              <span className="ml-1">{date}</span>
+            </h3>
+            <div className="flex items-center text-base">
+              <Users className="mr-1 h-4 sm:h-5 w-4 sm:w-5" />
+              <span>{participantes}</span>
             </div>
-            <div>
-              <Info className="h-6 w-6 text-white" />
-            </div>
-          </div>
-
-          <div className="flex items-center text-white mt-2">
-            <Users className="h-5 w-5 mr-2" />
-            <span className="text-sm">{participantes} participantes</span>
           </div>
         </div>
       </div>

@@ -21,7 +21,6 @@ export default function HistoricoPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   useEffect(() => {
-    // Dados iniciais de exemplo
     const initialConselhos: Conselho[] = [
       { id: 1, date: "03/01/2025" },
       { id: 2, date: "12/12/2024" },
@@ -62,7 +61,7 @@ export default function HistoricoPage() {
         </div>
 
         {viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-4 mt-8">
             {filteredConselhos.map((conselho) => (
               <ConselhoItem key={conselho.id} id={conselho.id} date={conselho.date} />
             ))}
