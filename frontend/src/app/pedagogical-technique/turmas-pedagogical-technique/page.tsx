@@ -55,7 +55,6 @@ const availableCourses = [
   { name: "Segurança da Informação", hoursLoad: "90h" },
 ]
 
-// Configuração de labels e placeholders para o PopupDados
 const fieldLabels = {
   course: "Curso",
   hoursLoad: "Carga horária",
