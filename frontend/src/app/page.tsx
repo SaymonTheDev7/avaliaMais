@@ -24,7 +24,7 @@ export default function LoginPage() {
       <div className="relative w-full h-full overflow-hidden z-0">
         <div className="absolute inset-0 bg-black/50">
           <Image
-            src="/Login-image.png"
+            src="/foto.png"
             alt="Students in a library"
             fill
             quality={100}
@@ -36,7 +36,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 flex items-center z-10 p-16">
           <div className="text-[var(--color-primary-foreground)] text-4xl md:text-5xl font-bold select-none">
             <p>O estudo é a</p>
-            <p className="text-[var(--color-accent)]">BASE</p>
+            <p className="text-[var(--color-accent)] base">BASE</p>
             <p>do sucesso!</p>
           </div>
         </div>

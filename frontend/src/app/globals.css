@@ -166,3 +166,7 @@ button, input, select, textarea {
 .animate-slide-in {
   animation: slide-in 0.7s ease-out forwards;
 }
+
+.base {
+  font-weight: bold;
+}

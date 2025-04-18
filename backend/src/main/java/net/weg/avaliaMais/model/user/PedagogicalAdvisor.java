@@ -1,13 +1,13 @@
 package net.weg.avaliaMais.model.user;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @SuperBuilder
