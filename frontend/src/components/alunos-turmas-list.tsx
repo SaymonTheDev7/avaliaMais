@@ -1,17 +1,16 @@
-import { Users, Clock, CheckCircle, AlertCircle } from "lucide-react"
+import { Users, Clock } from "lucide-react"
 
-interface ConselhoClassListProps {
+interface AlunosTurmasListProps {
   classes: {
     id: number
     name: string
     students: number
     time: string
     color: string
-    status: string
   }[]
 }
 
-export function ConselhoClassList({ classes }: ConselhoClassListProps) {
+export function AlunosTurmasList({ classes }: AlunosTurmasListProps) {
   const getCourseInitials = (fullName: string) => {
     const parts = fullName.split(" ")
 
@@ -30,7 +29,6 @@ export function ConselhoClassList({ classes }: ConselhoClassListProps) {
         <div className="col-span-4 px-4">Nome da turma</div>
         <div className="col-span-3 px-4">Horário</div>
         <div className="col-span-3 px-4">Quantidade de alunos</div>
-        <div className="col-span-1 px-4">Status</div>
       </div>
 
       {classes.map((classItem, index) => (
@@ -49,13 +47,6 @@ export function ConselhoClassList({ classes }: ConselhoClassListProps) {
                 <div className="text-white font-bold">{getCourseInitials(classItem.name)}</div>
               </div>
               <div className="font-medium">{classItem.name}</div>
-              <div className="ml-auto">
-                {classItem.status === "active" ? (
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                ) : (
-                  <Clock className="h-5 w-5 text-yellow-500" />
-                )}
-              </div>
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <div className="flex items-center">
@@ -86,17 +77,6 @@ export function ConselhoClassList({ classes }: ConselhoClassListProps) {
           <div className="hidden md:flex md:col-span-3 px-4 items-center">
             <Users className="mr-2 h-4 w-4 text-[#003366]" />
             <span>{classItem.students} alunos</span>
-          </div>
-          <div className="hidden md:flex md:col-span-1 justify-center">
-            {classItem.status === "active" ? (
-              <CheckCircle className="h-5 w-5 text-green-500" />
-            ) : classItem.status === "alert" ? (
-              <div className="bg-red-500 rounded-full w-6 h-6 flex items-center justify-center">
-                <AlertCircle className="h-4 w-4 text-white" />
-              </div>
-            ) : (
-              <Clock className="h-5 w-5 text-yellow-500" />
-            )}
           </div>
         </div>
       ))}
