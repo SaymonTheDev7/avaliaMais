@@ -53,6 +53,10 @@ public record SupervisorPostRequestDTO(
          */
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         Double workloadWeek,
 
         /**
@@ -62,6 +66,11 @@ public record SupervisorPostRequestDTO(
          */
         @NotNull(message = "O papel do supervisor não pode ser nulo")
         UserRole role
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 ) {
 
     /**
