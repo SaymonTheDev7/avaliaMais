@@ -4622,6 +4622,7 @@ java.lang.NullPointerException: Cannot invoke "org.springframework.security.core
 2025-04-11T10:16:32.798-03:00  INFO 7232 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-11T10:16:32.802-03:00  INFO 7232 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 2025-04-15T14:29:14.764-03:00  INFO 9116 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Starting AvaliaMaisApplication using Java 21.0.6 with PID 9116 (C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes started by saymon_castro in C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend)
 2025-04-15T14:29:14.765-03:00 DEBUG 9116 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
@@ -4706,6 +4707,8 @@ Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionExcep
 2025-04-15T14:31:42.526-03:00  WARN 19268 --- [avaliaMais] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
 2025-04-15T14:31:42.537-03:00  INFO 19268 --- [avaliaMais] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 =======
+=======
+>>>>>>> Stashed changes
 
 2025-04-14T08:53:55.244-03:00  INFO 9684 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Starting AvaliaMaisApplication using Java 21.0.6 with PID 9684 (C:\Users\Saymon\Documents\GitHub\avaliaMais\backend\target\classes started by Saymon in C:\Users\Saymon\Documents\GitHub\avaliaMais\backend)
 2025-04-14T08:53:55.245-03:00 DEBUG 9684 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
@@ -4727,6 +4730,9 @@ Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionExcep
 2025-04-14T08:53:57.504-03:00  WARN 9684 --- [avaliaMais] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
 2025-04-14T08:53:57.505-03:00  WARN 9684 --- [avaliaMais] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
 2025-04-14T08:53:57.519-03:00  INFO 9684 --- [avaliaMais] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
@@ -4735,6 +4741,7 @@ Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionExcep
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 2025-04-15T14:31:42.675-03:00 ERROR 19268 --- [avaliaMais] [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Duplicate table mapping 'PedagogicalAdvisor'
 2025-04-15T14:31:42.676-03:00 ERROR 19268 --- [avaliaMais] [main] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'customLoggingFilter' defined in class path resource [net/weg/avaliaMais/logs/filter/FilterConfig.class]: Unsatisfied dependency expressed through method 'loggingFilter' parameter 0: Error creating bean with name 'logService' defined in file [C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes\net\weg\avaliaMais\logs\service\LogService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'logRepository' defined in net.weg.avaliaMais.logs.repository.LogRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
@@ -5154,6 +5161,8 @@ Caused by: org.hibernate.DuplicateMappingException: Duplicate table mapping 'Ped
 2025-04-15T15:43:08.293-03:00  INFO 19804 --- [avaliaMais] [http-nio-9090-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2025-04-15T15:44:05.865-03:00  INFO 19804 --- [avaliaMais] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
 =======
+=======
+>>>>>>> Stashed changes
 2025-04-14T08:53:58.404-03:00  INFO 9684 --- [avaliaMais] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 2025-04-14T08:53:58.534-03:00  INFO 9684 --- [avaliaMais] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
 2025-04-14T08:53:58.729-03:00  INFO 9684 --- [avaliaMais] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
@@ -5173,4 +5182,7 @@ Caused by: org.hibernate.DuplicateMappingException: Duplicate table mapping 'Ped
 2025-04-14T08:54:07.737-03:00  INFO 9684 --- [avaliaMais] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-04-14T08:54:07.738-03:00  INFO 9684 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-14T08:54:07.743-03:00  INFO 9684 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

@@ -54,6 +54,10 @@ public record SupervisorPostRequestDTO(
         @NotNull(message = "A carga horária semanal não pode ser nula")
         @Positive(message = "A carga horária semanal deve ser positiva")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -70,7 +74,6 @@ public record SupervisorPostRequestDTO(
 =======
 
 
->>>>>>> Stashed changes
 ) {
 
     /**
