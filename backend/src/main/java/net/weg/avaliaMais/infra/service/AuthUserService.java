@@ -25,4 +25,8 @@ public class AuthUserService {
     public List<AuthUser> getAllUsers() {
         return authUserRepository.findAll();
     }
+
+    public void deleteUserByUsername(String username) {
+        authUserRepository.deleteAuthUsersByUsername(username);
+    }
 }

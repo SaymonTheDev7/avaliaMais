@@ -7,17 +7,19 @@ export default function CookieConsent({
   onAccept,
 }: {
   onAccept?: () => void;
-}){
+}) {
   const [hasChecked, setHasChecked] = useState(false);
   const [hasAccepted, setHasAccepted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const cookieConsent = localStorage.getItem('cookie_consent');
-    if (cookieConsent === 'accepted') {
-      setHasAccepted(true);
+    if (typeof window !== 'undefined') {
+      const cookieConsent = localStorage.getItem('cookie_consent');
+      if (cookieConsent === 'accepted') {
+        setHasAccepted(true);
+      }
+      setHasChecked(true); // só libera render depois de checar
     }
-    setHasChecked(true); // só libera render depois de checar
   }, []);
 
   const acceptAndClose = () => {
@@ -100,4 +102,4 @@ export default function CookieConsent({
       )}
     </>
   );
-};
+}

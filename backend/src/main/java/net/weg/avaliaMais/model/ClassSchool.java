@@ -37,14 +37,14 @@ public class ClassSchool {
      * Curso associado a esta turma.
      * Representa o curso ao qual a turma pertence.
      */
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE})
     private Course course;
 
     /**
      * Lista de estudantes associados a esta turma.
      * Representa os alunos matriculados na turma.
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE})
     private List<Student> students;
 
     /**

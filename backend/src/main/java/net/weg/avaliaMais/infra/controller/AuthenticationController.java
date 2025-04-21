@@ -98,6 +98,7 @@ public class AuthenticationController {
     public ResponseEntity<?> getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         AuthUser user = (AuthUser) auth.getPrincipal();
+        System.out.println("UUID do usuário logado: " + user.getUuid());
 
         return switch (user.getRole()) {
             case STUDENT, REPRESENTATIVE -> {

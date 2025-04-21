@@ -23,4 +23,6 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, UUID> {
      */
     @Query("SELECT a FROM AuthUser a WHERE a.username = :username")
     UserDetails findByUsername(@Param("username") String username);
+
+    void deleteAuthUsersByUsername(String username);
 }
