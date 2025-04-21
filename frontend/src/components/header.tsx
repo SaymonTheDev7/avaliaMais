@@ -7,7 +7,7 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
 import SidebarNavigation from "@/components/sidebar-navigation";
 
-export default function Header() {
+export default function Header({ onNotificationClick }: { onNotificationClick?: () => void }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -45,6 +45,7 @@ export default function Header() {
             variant="ghost" 
             size="icon" 
             className="hover:bg-white/10 p-2 rounded-md"
+            onClick={onNotificationClick} // Só chama na HomePage
           >
             <Bell style={{ width: "32px", height: "32px", color: "white", strokeWidth: 2 }} />
           </Button>

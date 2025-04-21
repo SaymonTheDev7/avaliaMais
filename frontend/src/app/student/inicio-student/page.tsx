@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Bell, MessageSquare, Users, User } from "lucide-react"
 import Header from "@/components/header"
 import { SearchBar } from "@/components/search-bar"
-import { NotificationPopup } from "@/components/notification-popup"
 import CardItem from "@/components/card-item"
 
 export default function HomePage() {
@@ -56,11 +55,6 @@ export default function HomePage() {
                 </div>
             </main>
 
-            {/* Popup de notificação */}
-            <NotificationPopup
-                isOpen={isNotificationOpen}
-                onClose={() => setIsNotificationOpen(false)}
-            />
         </div>
     )
 }
