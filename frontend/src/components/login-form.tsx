@@ -85,7 +85,7 @@ export default function LoginForm() {
   return (
     <div className="w-full max-w-md space-y-8 select-none">
       <div className="text-center">
-        <h2 className="font-bold text-5xl text-[#003366]">LOGIN</h2>
+        <h2 className="logininfo font-bold text-5xl text-[#003366]">LOGIN</h2>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-6">
@@ -122,7 +122,7 @@ export default function LoginForm() {
         )}
 
         <div className="text-right mr-1.5">
-          <a href="#" className="text-start text-[#003366] hover:underline">
+          <a href="#" className="passwordset text-start text-[#003366] hover:underline">
             Esqueceu a senha?
           </a>
         </div>

@@ -47,11 +47,13 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationRequestDTO authenticationRequestDTO,
                                                   HttpServletResponse response) {
+        // Criação do token de autenticação com as credenciais fornecidas
         var usernamePassword = new UsernamePasswordAuthenticationToken(
                 authenticationRequestDTO.username(),
                 authenticationRequestDTO.password()
         );
 
+        // Autenticação do usuário
         var auth = authenticationManager.authenticate(usernamePassword);
         var user = (AuthUser) auth.getPrincipal();
         var token = tokenService.generateToken(user);
@@ -60,18 +62,18 @@ public class AuthenticationController {
         var cookie = new Cookie("token", token);
 
         // Configurações do cookie
-        cookie.setHttpOnly(true);           // Impede o acesso ao cookie via JavaScript
-        cookie.setPath("/");                // O cookie será acessível em toda a aplicação
-        cookie.setMaxAge(60 * 60);          // Expiração de 1 hora
-        cookie.setSecure(false);            // Defina para true se usar HTTPS
-        cookie.setDomain("localhost");      // Certifique-se de que o domínio está configurado corretamente para seu ambiente de desenvolvimento
+        cookie.setHttpOnly(true);           // Impede o acesso do JavaScript ao cookie
+        cookie.setPath("/");                // Define o caminho do cookie como raiz para ser acessado por toda a aplicação
+        cookie.setMaxAge(60 * 60);          // Define a expiração do cookie para 1 hora
+        cookie.setSecure(false);            // Se estiver em HTTPS, altere para true
+        cookie.setDomain("localhost");     // Configuração correta para o domínio (deixe apenas "localhost" para desenvolvimento local)
 
         // Adiciona o cookie à resposta
         response.addCookie(cookie);
 
+        // Retorna o token e a função do usuário em resposta
         return ResponseEntity.ok(new LoginResponseDTO(token, user.getRole()));
     }
-
 
 
     @Operation(summary = "Registrar novo usuário", description = "Registra um novo usuário com criptografia de senha.")

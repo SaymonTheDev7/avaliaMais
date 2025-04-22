@@ -24,7 +24,7 @@ export default function LoginPage() {
       <div className="relative w-full h-full overflow-hidden z-0">
         <div className="absolute inset-0 bg-black/50">
           <Image
-            src="/foto.png"
+            src="/Login-image.png"
             alt="Students in a library"
             fill
             quality={100}

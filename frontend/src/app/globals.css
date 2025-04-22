@@ -152,6 +152,11 @@ button, input, select, textarea {
 .login {
   color: var(--foreground) !important;
   background-color: var(--background) !important;
+  font-weight: bold !important;
+}
+
+.logininfo {
+  font-weight: bold !important;
 }
 
 @keyframes slide-in {
@@ -169,4 +174,10 @@ button, input, select, textarea {
 
 .base {
   font-weight: bold;
+}
+
+
+.passwordset {
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
 }
