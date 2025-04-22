@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Menu, Bell, X } from 'lucide-react';
+import { Menu, Bell, PersonStandingIcon, Baby } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
@@ -45,16 +45,12 @@ export default function Header({ onNotificationClick }: { onNotificationClick?: 
             variant="ghost" 
             size="icon" 
             className="hover:bg-white/10 p-2 rounded-md"
-            onClick={onNotificationClick} // Só chama na HomePage
+            onClick={onNotificationClick}
           >
             <Bell style={{ width: "32px", height: "32px", color: "white", strokeWidth: 2 }} />
           </Button>
-          <Avatar className="h-10 w-10 border-2 border-white">
-            <AvatarImage
-              src="https://tryeasel.dev/placeholder.svg?width=40&height=40"
-              alt="User profile"
-            />
-            <AvatarFallback>JD</AvatarFallback>
+          <Avatar className="h-10 w-10 border-2 border-white flex items-center justify-center">
+          <Baby/> 
           </Avatar>
         </div>
       </header>

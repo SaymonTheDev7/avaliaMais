@@ -40,7 +40,7 @@ export default function InicioPedagogicalTechnique() {
     setIsLoading(true);
     setTimeout(() => {
       router.push(href);
-    }, 1000); // tempo para exibir o loading (ajustável)
+    }, 1000);
   };
 
   return (
@@ -49,7 +49,7 @@ export default function InicioPedagogicalTechnique() {
       <Header />
       <main className="container mx-auto py-8 px-12">
         <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
-          <span className="font-bold">INÍCIO</span>
+          <span className="bold select-none">INÍCIO</span>
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">

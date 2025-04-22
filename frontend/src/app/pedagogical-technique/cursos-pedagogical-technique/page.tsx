@@ -5,14 +5,13 @@ import Header from "@/components/header";
 import { ChevronLeft } from "lucide-react";
 import axios from "axios";
 import { SearchBar } from "@/components/search-bar";
-import { AddButton } from "@/components/add-button";
+import { useRouter } from "next/navigation";
 import { ViewModeToggle } from "@/components/view-mode-toggle";
 import AdicionarButton from "@/components/adicionar-button";
 import { CourseItem } from "@/components/course-item";
 import { CourseList } from "@/components/course-list";
 import ErrorToast from "@/components/erro-buscar-curso-toast";
 import CorrectToastCurso from "@/components/correct-curso-toast";  // Importando o novo toast
-import { tr } from "date-fns/locale";
 
 const classColors = [
   "#B6B881", "#D88C7E", "#A58D64", "#9F70AB", "#AF878D", "#8795BA", "#9F93D0", "#8A6FBA", "#B5B681", "#BE7DDB",
@@ -41,7 +40,8 @@ export default function VerCursosPage() {
   const [courseList, setCourseList] = useState<CourseItemType[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [showCorrectToast, setShowCorrectToast] = useState(false);  // Adicionando estado para o toast de sucesso
+  const [showCorrectToast, setShowCorrectToast] = useState(false);
+  const router = useRouter();
 
   const fetchCourses = async () => {
     try {
@@ -106,24 +106,22 @@ export default function VerCursosPage() {
       <Header />
       <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
         <div className="flex items-center mb-6 px-4">
-          <a href="#" className="text-[#003366] mr-4">
-            <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
-          </a>
+          <button onClick={() => router.back()} className="text-[#003366] mr-4">
+            <ChevronLeft className="chevron cursor-pointer" size={28} strokeWidth={2.5} />
+          </button>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
             VER CURSOS
           </h1>
         </div>
-
+  
         <div className="flex items-center mb-6 gap-4 px-4 justify-between">
           <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
           <div className="flex gap-2">
-            {viewMode === "list" && (
-              <AdicionarButton />
-            )}
+            {viewMode === "list" && <AdicionarButton />}
             <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
         </div>
-
+  
         {viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-4 mt-8">
             <div
@@ -148,21 +146,13 @@ export default function VerCursosPage() {
           </div>
         ) : (
           <div className="px-4 mt-8">
-            <CourseList
-              courses={filteredCourses}
-              onRemoveCourse={handleRemoveCourse}
-            />
+            <CourseList courses={filteredCourses} onRemoveCourse={handleRemoveCourse} />
           </div>
         )}
-
-        {showErrorToast && (
-          <ErrorToast message="Erro ao buscar cursos, tente novamente!" />
-        )}
-
-        {showCorrectToast && (
-          <CorrectToastCurso message="Cursos carregados com sucesso" />
-        )}
+  
+        {showErrorToast && <ErrorToast message="Erro ao buscar cursos, tente novamente!" />}
+        {showCorrectToast && <CorrectToastCurso message="Cursos carregados com sucesso" />}
       </div>
     </div>
   );
-}
+};  
