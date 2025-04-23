@@ -35,7 +35,7 @@ export default function InicioPedagogicalTechnique() {
     <div className="min-h-screen bg-white">
       <Header />
       <main className="container mx-auto py-8 px-12">
-        <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-15 mt-5">
+        <h1 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-10 mt-5">
           <span className="font-bold">INÍCIO</span>
         </h1>
 
@@ -45,7 +45,7 @@ export default function InicioPedagogicalTechnique() {
             <DashboardCard
               title="Ver professores"
               icon={<Users style={{ width: "32px", height: "32px", color: "white" }} />}
-              color="bg-[#29ABE2]"
+              color="bg-[#29A342]"
               href="/administrator/professores-administrator"
             />
               <DashboardCard

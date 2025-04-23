@@ -1,22 +1,17 @@
-import { Metadata } from "next";
-import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Avalia +",
-  description: "Sistema de conselho de classe",
-};
-
+import type React from "react"
+import { ThemeProvider } from "@/contexts/theme-context"
+import "./globals.css"
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="pt-BR">
-      <body className="bg-[var(--background)]">
-        {children}
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
