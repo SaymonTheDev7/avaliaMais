@@ -6924,6 +6924,7 @@ Caused by: java.sql.SQLException: Access denied for user 'root'@'localhost' (usi
 	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 2025-04-22T13:13:45.192-03:00  INFO 2248 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Starting AvaliaMaisApplication using Java 21.0.6 with PID 2248 (C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend\target\classes started by saymon_castro in C:\Users\saymon_castro\Documents\GitHub\avaliaMais\backend)
 2025-04-22T13:13:45.193-03:00 DEBUG 2248 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
 2025-04-22T13:13:45.194-03:00  INFO 2248 --- [avaliaMais] [main] n.weg.avaliaMais.AvaliaMaisApplication   : No active profile set, falling back to 1 default profile: "default"
@@ -7327,6 +7328,8 @@ Caused by: java.sql.SQLException: Access denied for user 'root'@'localhost' (usi
 
 2025-04-22T13:45:06.631-03:00  INFO 5344 --- [avaliaMais] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 2, active threads = 1, queued tasks = 0, completed tasks = 1]
 =======
+=======
+>>>>>>> Stashed changes
 2025-04-22T10:23:12.293-03:00  INFO 9304 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-04-22T10:23:12.295-03:00  INFO 9304 --- [avaliaMais] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
 2025-04-22T10:23:12.297-03:00  INFO 9304 --- [avaliaMais] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
@@ -7335,4 +7338,7 @@ Caused by: java.sql.SQLException: Access denied for user 'root'@'localhost' (usi
 2025-04-22T10:23:12.301-03:00  INFO 9304 --- [avaliaMais] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-04-22T10:23:12.302-03:00  INFO 9304 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-22T10:23:12.307-03:00  INFO 9304 --- [avaliaMais] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
