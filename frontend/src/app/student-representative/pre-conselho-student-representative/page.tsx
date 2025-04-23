@@ -1,9 +1,8 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useEffect, useRef } from "react"
-import { Calendar, Upload, X, CheckCircle, TrendingUp, Lightbulb, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from "react"
+import { Calendar, CheckCircle, TrendingUp, Lightbulb, ChevronLeft, ChevronRight, PenLine } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
@@ -11,97 +10,150 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Header from "@/components/header"
 import { motion } from "framer-motion"
-import Image from "next/image"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function PreConselho() {
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [mounted, setMounted] = useState(false)
-  const [file, setFile] = useState<File | null>(null)
-  const [filePreview, setFilePreview] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
+  const [feedbackData, setFeedbackData] = useState({
+    coordenacao: { pontosPositivos: '', pontosMelhoria: '', sugestoes: '' },
+    java: { pontosPositivos: '', pontosMelhoria: '', sugestoes: '' },
+    web: { pontosPositivos: '', pontosMelhoria: '', sugestoes: '' },
+    data: { pontosPositivos: '', pontosMelhoria: '', sugestoes: '' },
+    cloud: { pontosPositivos: '', pontosMelhoria: '', sugestoes: '' }
+  })
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0]
-      setFile(selectedFile)
-
-      // Create preview URL
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        setFilePreview(event.target?.result as string)
-      }
-      reader.readAsDataURL(selectedFile)
-    }
-  }
-
-  const handleRemoveFile = () => {
-    setFile(null)
-    setFilePreview(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
-  }
-
   if (!mounted) return null
+
+  const handlePrevious = () => {
+    router.push("/pedagogical-technique/inicio-pedagogical-technique")
+  }
+
+  const handleNext = () => {
+    const allFieldsFilled = Object.values(feedbackData).every(section => 
+      Object.values(section).every(field => field.trim() !== ''));
+    
+    if (!allFieldsFilled) {
+      toast.error("Todos os campos devem ser preenchidos antes de continuar")
+      return
+    }
+    
+    if (!date) {
+      toast.error("Por favor, selecione uma data")
+      return
+    }
+    
+    localStorage.setItem('preConselhoData', JSON.stringify({
+      feedbackData,
+      date: date?.toISOString()
+    }))
+    
+    router.push("/student-representative/pre-conselho-revisar-student-representative")
+  }
+
+  const handleFeedbackChange = (section: string, field: string, value: string) => {
+    setFeedbackData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section as keyof typeof prev],
+        [field]: value
+      }
+    }))
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
       <Header />
 
-      {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
-        {/* Title and Date Section */}
+        {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10"
+          className="mb-12 text-center"
         >
-          <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12 border-2 border-[#003366] shadow-md">
-              <AvatarImage src="/placeholder.svg?height=48&width=48" alt="Usuário" />
-              <AvatarFallback className="bg-[#003366] text-white">MI</AvatarFallback>
-            </Avatar>
-            <div>
-              <h1 className="text-3xl font-bold text-[#003366] tracking-tight">Pré conselho MI-74</h1>
-              <p className="text-slate-500 mt-2">Revise as informações antes de enviar</p>
+          <h1 className="text-4xl font-bold text-[#003366] tracking-tight mb-2">Pré-Conselho MI-74</h1>
+          <p className="text-slate-500 text-lg">Preencha os feedbacks para cada área</p>
+        </motion.div>
+
+        {/* Progress Steps */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex justify-center mb-12"
+        >
+          <div className="flex items-center">
+            <div className="flex flex-col items-center mr-8">
+              <div className="h-10 w-10 rounded-full bg-[#003366]/20 flex items-center justify-center text-[#003366] mb-2 border-2 border-[#003366]">
+                <PenLine className="h-5 w-5" />
+              </div>
+              <span className="text-sm text-[#003366] font-medium">Preenchimento</span>
+            </div>
+            
+            <div className="h-1 w-16 bg-slate-300 mx-2"></div>
+            
+            <div className="flex flex-col items-center mx-8">
+              <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-2 border-2 border-slate-300">
+                <CheckCircle className="h-5 w-5" />
+              </div>
+              <span className="text-sm text-slate-500 font-medium">Revisão</span>
+            </div>
+            
+            <div className="h-1 w-16 bg-slate-300 mx-2"></div>
+            
+            <div className="flex flex-col items-center ml-8">
+              <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-2 border-2 border-slate-300">
+                <CheckCircle className="h-5 w-5" />
+              </div>
+              <span className="text-sm text-slate-500 font-medium">Assinatura</span>
             </div>
           </div>
+        </motion.div>
 
+        {/* Date Picker */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex justify-center mb-10"
+        >
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="flex items-center gap-2 bg-white p-2 pl-4 rounded-full shadow-md border border-slate-200 hover:shadow-lg transition-all duration-300 h-auto"
+                className="flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-md border border-slate-200 hover:shadow-lg transition-all duration-300 h-auto"
               >
-                <Calendar className="h-5 w-5 text-[#003366]" />
-                <span className="text-sm font-medium text-slate-600">
-                  {date ? format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }) : "Selecionar data"}
+                <Calendar className="calendar h-5 w-5 text-[#003366]" />
+                <span className="text-base font-medium text-slate-600">
+                  {date ? format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }) : "Selecionar data do conselho"}
                 </span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
+            <PopoverContent className="w-auto p-0 custom-calendar" align="end">
               <CalendarComponent
                 mode="single"
                 selected={date}
                 onSelect={setDate}
                 locale={ptBR}
-                className="border rounded-md"
+                className="border border-slate-200 rounded-md"
               />
-            </PopoverContent>
+          </PopoverContent>
           </Popover>
         </motion.div>
 
-        {/* All Sections */}
+        {/* Feedback Sections */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="space-y-8"
         >
           {/* Coordenação pedagógica */}
@@ -110,9 +162,10 @@ export default function PreConselho() {
               <FeedbackSection 
                 color="yellow" 
                 title="Coordenação pedagógica" 
-                avatar="/placeholder.svg?height=48&width=48"
                 name="Ana Silva"
                 role="Coordenadora Pedagógica"
+                feedback={feedbackData.coordenacao}
+                onFeedbackChange={(field, value) => handleFeedbackChange('coordenacao', field, value)}
               />
             </div>
           </div>
@@ -123,9 +176,10 @@ export default function PreConselho() {
               <FeedbackSection 
                 color="pink" 
                 title="Programação JAVA" 
-                avatar="/placeholder.svg?height=48&width=48"
                 name="Romário Hornburg"
                 role="Professor de JAVA"
+                feedback={feedbackData.java}
+                onFeedbackChange={(field, value) => handleFeedbackChange('java', field, value)}
               />
             </div>
           </div>
@@ -136,9 +190,10 @@ export default function PreConselho() {
               <FeedbackSection 
                 color="blue" 
                 title="Programação Web e Mobile" 
-                avatar="/placeholder.svg?height=48&width=48"
                 name="Kristian Erdmann"
                 role="Professor de Web e Mobile"
+                feedback={feedbackData.web}
+                onFeedbackChange={(field, value) => handleFeedbackChange('web', field, value)}
               />
             </div>
           </div>
@@ -149,9 +204,10 @@ export default function PreConselho() {
               <FeedbackSection 
                 color="green" 
                 title="Data Science" 
-                avatar="/placeholder.svg?height=48&width=48"
                 name="João Pedro da Silva Valentim"
                 role="Professor de Data Science"
+                feedback={feedbackData.data}
+                onFeedbackChange={(field, value) => handleFeedbackChange('data', field, value)}
               />
             </div>
           </div>
@@ -162,73 +218,11 @@ export default function PreConselho() {
               <FeedbackSection 
                 color="purple" 
                 title="Fundamentos de Cloud Computing" 
-                avatar="/placeholder.svg?height=48&width=48"
                 name="Iago Soares da Silva"
                 role="Professor de Cloud Computing"
+                feedback={feedbackData.cloud}
+                onFeedbackChange={(field, value) => handleFeedbackChange('cloud', field, value)}
               />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Attachment Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="mt-8 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden"
-        >
-          <div className="p-8">
-            <div className="flex items-center gap-4 mb-8">
-              <Avatar className="h-12 w-12 border-2 border-slate-300 shadow-md">
-                <AvatarImage src="/placeholder.svg?height=48&width=48" alt="Anexo" />
-                <AvatarFallback className="bg-slate-400 text-white">AN</AvatarFallback>
-              </Avatar>
-              <div>
-                <h2 className="text-2xl font-bold text-[#003366]">Anexo</h2>
-                <p className="text-slate-500">Folha de assinaturas</p>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-slate-200 focus-within:shadow-lg">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-2 rounded-full bg-slate-100 text-slate-600 shadow-sm">
-                  <Upload className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[#003366]">Folha de assinaturas</h3>
-                  <p className="text-slate-500 text-sm">A folha deve ser clara e legível, deve conter a folha inteira, sem borrões e com boa iluminação</p>
-                </div>
-              </div>
-
-              {filePreview ? (
-                <div className="relative w-full rounded-lg overflow-hidden">
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="h-8 w-8 rounded-full absolute top-2 right-2 z-10 shadow-md"
-                    onClick={handleRemoveFile}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                  <Image
-                    src={filePreview || "/placeholder.svg"}
-                    alt="Uploaded file preview"
-                    width={800}
-                    height={400}
-                    className="w-full h-auto object-cover rounded-lg"
-                  />
-                </div>
-              ) : (
-                <div
-                  className="border-2 border-dashed border-slate-300 rounded-lg h-[120px] flex flex-col items-center justify-center cursor-pointer hover:border-[#003366] transition-colors"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <Upload className="h-8 w-8 text-slate-400 mb-2" />
-                  <p className="text-slate-600 font-medium">Clique para selecionar um arquivo</p>
-                  <p className="text-slate-400 text-sm">ou arraste e solte aqui</p>
-                </div>
-              )}
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
             </div>
           </div>
         </motion.div>
@@ -237,20 +231,25 @@ export default function PreConselho() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="flex justify-between mt-8"
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex justify-between mt-12"
         >
-          <Button
+            <Button
             variant="outline"
-            className="bg-white border-[#003366] text-[#003366] hover:bg-[#003366]/5 hover:border-[#003366] transition-all px-6 py-2 h-auto rounded-full shadow-sm group"
+            onClick={handlePrevious}
+            className="bg-white border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white transition px-4 py-2 h-auto rounded-md shadow group text-base"
           >
-            <ChevronLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Anterior
+            <ChevronLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
+            Voltar
           </Button>
 
-          <Button className="bg-[#003366] text-white hover:bg-[#002244] transition-all px-6 py-2 h-auto rounded-full shadow-md group">
-            Próximo
-            <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+
+          <Button 
+            onClick={handleNext}
+            className="bg-[#003366] text-white hover:bg-[#002244] transition px-4 py-2 h-auto rounded-md shadow group text-base"
+          >
+            Continuar
+            <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
           </Button>
         </motion.div>
       </main>
@@ -258,19 +257,22 @@ export default function PreConselho() {
   )
 }
 
-// Feedback Section Component
+// Os componentes FeedbackSection e FeedbackCard permanecem exatamente iguais
+
 function FeedbackSection({ 
   color, 
   title, 
-  avatar,
   name,
-  role
+  role,
+  feedback,
+  onFeedbackChange
 }: { 
   color: "yellow" | "pink" | "blue" | "green" | "purple"
   title: string
-  avatar: string
   name: string
   role: string
+  feedback: { pontosPositivos: string, pontosMelhoria: string, sugestoes: string }
+  onFeedbackChange: (field: string, value: string) => void
 }) {
   const getColorClasses = (color: string) => {
     const colorMap: Record<string, { bg: string, border: string, iconBg: string, iconColor: string, hoverBorder: string, focusRing: string, avatarBorder: string }> = {
@@ -328,15 +330,12 @@ function FeedbackSection({
   return (
     <div>
       <div className="flex items-center gap-4 mb-8">
-        <Avatar className={`h-12 w-12 border-2 ${colorClasses.avatarBorder} shadow-md`}>
-          <AvatarImage src={avatar} alt={name} />
-          <AvatarFallback className={color === "yellow" ? "bg-yellow-400" : 
+        <div className={`h-12 w-12 rounded-full flex items-center justify-center ${color === "yellow" ? "bg-yellow-400" : 
                            color === "pink" ? "bg-pink-500" : 
                            color === "blue" ? "bg-blue-500" : 
-                           color === "green" ? "bg-green-500" : "bg-purple-500"}>
-            {name.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
+                           color === "green" ? "bg-green-500" : "bg-purple-500"} text-white font-bold`}>
+          {name.charAt(0)}
+        </div>
         <div>
           <h2 className="text-2xl font-bold text-[#003366]">{title}</h2>
           <p className="text-slate-500">{name} • {role}</p>
@@ -344,12 +343,13 @@ function FeedbackSection({
       </div>
 
       <div className="grid grid-cols-1 gap-8">
-        {/* Pontos Positivos */}
         <FeedbackCard
           icon={<CheckCircle className="h-6 w-6" />}
           title="Pontos positivos"
           description="Destaque os aspectos positivos observados"
           placeholder="Digite aqui os pontos positivos..."
+          value={feedback.pontosPositivos}
+          onChange={(value) => onFeedbackChange('pontosPositivos', value)}
           bgColor={colorClasses.bg}
           borderColor={colorClasses.border}
           iconBg={colorClasses.iconBg}
@@ -359,12 +359,13 @@ function FeedbackSection({
           delay={0}
         />
 
-        {/* Pontos de Melhoria */}
         <FeedbackCard
           icon={<TrendingUp className="h-6 w-6" />}
           title="Pontos de melhoria"
           description="Indique aspectos que precisam ser melhorados"
           placeholder="Digite aqui os pontos de melhoria..."
+          value={feedback.pontosMelhoria}
+          onChange={(value) => onFeedbackChange('pontosMelhoria', value)}
           bgColor={colorClasses.bg}
           borderColor={colorClasses.border}
           iconBg={colorClasses.iconBg}
@@ -374,12 +375,13 @@ function FeedbackSection({
           delay={0.1}
         />
 
-        {/* Sugestões de Melhoria */}
         <FeedbackCard
           icon={<Lightbulb className="h-6 w-6" />}
           title="Sugestões de melhoria"
           description="Proponha sugestões para os pontos de melhoria"
           placeholder="Digite aqui as sugestões de melhoria..."
+          value={feedback.sugestoes}
+          onChange={(value) => onFeedbackChange('sugestoes', value)}
           bgColor={colorClasses.bg}
           borderColor={colorClasses.border}
           iconBg={colorClasses.iconBg}
@@ -393,12 +395,13 @@ function FeedbackSection({
   )
 }
 
-// Feedback Card Component
 function FeedbackCard({
   icon,
   title,
   description,
   placeholder,
+  value,
+  onChange,
   bgColor,
   borderColor,
   iconBg,
@@ -411,6 +414,8 @@ function FeedbackCard({
   title: string
   description: string
   placeholder: string
+  value: string
+  onChange: (value: string) => void
   bgColor: string
   borderColor: string
   iconBg: string
@@ -435,7 +440,10 @@ function FeedbackCard({
       </div>
       <textarea
         placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="w-full h-[120px] rounded-lg p-4 border border-slate-200 bg-white/80 focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366]/30 outline-none resize-none text-slate-700 placeholder:text-slate-400 transition-all"
+        required
       />
     </motion.div>
   )
