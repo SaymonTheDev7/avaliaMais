@@ -35,19 +35,19 @@ export default function HomePage() {
 
                 <div className="flex flex-col lg:flex-row items-center justify-center gap-16 mt-15 flex-wrap">
                     <CardItem
-                        href="#"
+                        href="/student/chat-student"
                         icon={<MessageSquare className="h-12 w-12" />}
                         title="Chat"
                         className="lg:mt-8"
                     />
                     <CardItem
-                        href="#"
+                        href="/student/turmas-student"
                         icon={<Users className="h-12 w-12" />}
                         title="Minhas Turmas"
                         className="lg:h-80"
                     />
                     <CardItem
-                        href="#"
+                        href="/student/perfil-student"
                         icon={<User className="h-12 w-12" />}
                         title="Perfil"
                         className="lg:mt-8"

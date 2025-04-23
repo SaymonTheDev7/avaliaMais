@@ -37,7 +37,7 @@ const getRandomColor = () => {
 }
 
 const initialClassData = [
-  { id: 1, name: "WF-78 PSIN 2024/1", students: 21, time: "13:40-22:00", status: "active" },
+  { id: 1, name: "MI-74 PSIN 2023/1", students: 21, time: "13:40-22:00", status: "active" },
   { id: 2, name: "MQ-75 PSIN 2024/2", students: 21, time: "13:40-22:00", status: "pending" },
   { id: 3, name: "JB-76 PSIN 2023/2", students: 21, time: "13:40-22:00", status: "pending" },
   { id: 4, name: "MI-75 PSIN 2023/2", students: 21, time: "13:40-22:00", status: "active" },
@@ -88,7 +88,7 @@ export default function ConselhoGeralPage() {
       <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 px-4">
           <div className="flex items-center">
-            <Link href="/pedagogical-technique/inicio-pedagogical-technique" className="text-[#003366] mr-4">
+            <Link href="/student/inicio-student" className="text-[#003366] mr-4">
               <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase pb-1 border-b-2 border-[#003366] w-fit">
@@ -97,12 +97,6 @@ export default function ConselhoGeralPage() {
           </div>
         </div>
 
-        {/* Botão centralizado para telas pequenas */}
-        <div className="flex justify-center mb-4 sm:hidden">
-          <button className="bg-[#003366] hover:bg-[#005099] text-white px-4 py-2 rounded-md text-lg transition duration-200 w-4/5 max-w-xs">
-            Finalizar conselho
-          </button>
-        </div>
 
         <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 px-4 justify-between">
           <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
