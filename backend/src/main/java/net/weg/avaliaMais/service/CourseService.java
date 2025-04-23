@@ -3,6 +3,7 @@ package net.weg.avaliaMais.service;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.Course;
 import net.weg.avaliaMais.model.dto.request.CoursePostRequestDTO;
+import net.weg.avaliaMais.model.dto.request.CourseUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.CourseResponseDTO;
 import net.weg.avaliaMais.repository.CourseRepository;
 import net.weg.avaliaMais.repository.specification.CourseSpecification;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +37,7 @@ public class CourseService {
      * @throws IllegalArgumentException Se já existir um curso com o mesmo nome fornecido.
      */
     public CourseResponseDTO addCourse(CoursePostRequestDTO coursePostRequestDTO) {
-        if (courseRepository.findByNameCourse(coursePostRequestDTO.nameCourse()) != null) {
+        if (courseRepository.findByNameCourse(coursePostRequestDTO.nameCourse()).isPresent()) {
             throw new IllegalArgumentException("Já existe um curso com o nome fornecido");
         }
         Course courseSave = courseRepository.save(coursePostRequestDTO.converter());
@@ -53,20 +56,15 @@ public class CourseService {
      * @return Um objeto {@link CourseResponseDTO} com os dados do curso atualizado.
      * @throws RuntimeException Se o curso com o nome fornecido não for encontrado.
      */
-    public CourseResponseDTO updateCoursePerName(String nameCourse, CoursePostRequestDTO coursePostRequestDTO) {
-        Course course = courseRepository.findByNameCourse(nameCourse);
-        if (course == null) {
-            throw new RuntimeException("Curso não encontrado");
-        }
-        course.setNameCourse(coursePostRequestDTO.nameCourse());
-        course.setStartAndEndLocation(coursePostRequestDTO.startAndEndLocation());
-        course.setTypeCourse(coursePostRequestDTO.typeCourse());
-        course.setShift(coursePostRequestDTO.shift());
-        course.setWorkloadCourse(coursePostRequestDTO.workloadCourse());
-        course.setTime(coursePostRequestDTO.time());
+    public CourseResponseDTO updateCoursePerName(String nameCourse, CourseUpdateRequestDTO dto) {
+        Course course = courseRepository.findByNameCourse(nameCourse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
+
+        dto.applyTo(course); // Aplica apenas os campos não nulos
         courseRepository.save(course);
         return course.toDto();
     }
+
 
     /**
      * Deleta um curso com base no nome fornecido.
@@ -113,10 +111,13 @@ public class CourseService {
      */
     public CourseResponseDTO findCoursePerName(String nameCourse) {
         if (nameCourse == null || nameCourse.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do curso não pode ser vazio");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O nome do curso não pode ser vazio");
         }
-        Course course = courseRepository.findByNameCourse(nameCourse);
-        return course == null ? null : course.toDto();
+
+        Course course = courseRepository.findByNameCourse(nameCourse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
+
+        return course.toDto();
     }
 
     /**

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,7 +22,8 @@ public interface CourseRepository extends JpaRepository<Course, UUID>, JpaSpecif
      * @param nameCourse O nome do curso a ser buscado.
      * @return O curso correspondente ao nome fornecido.
      */
-    Course findByNameCourse(String nameCourse);
+    Optional<Course> findByNameCourse(String nameCourse);
+
 
     /**
      * Encontra todos os cursos com o mesmo nome do curso.

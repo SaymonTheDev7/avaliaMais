@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.CoursePostRequestDTO;
+import net.weg.avaliaMais.model.dto.request.CourseUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.CourseResponseDTO;
 import net.weg.avaliaMais.service.CourseService;
 import org.springframework.data.domain.Pageable;
@@ -39,10 +40,14 @@ public class CourseController {
     @Operation(summary = "Atualizar um curso pelo nome", description = "Atualiza um curso existente com base no nome fornecido")
     @ApiResponse(responseCode = "200", description = "Curso atualizado com sucesso")
     @ApiResponse(responseCode = "404", description = "Curso não encontrado")
-    public ResponseEntity<CourseResponseDTO> updateCoursePerName(@PathVariable String nameCourse, @RequestBody @Valid CoursePostRequestDTO coursePostRequestDTO) {
-        CourseResponseDTO response = courseService.updateCoursePerName(nameCourse, coursePostRequestDTO);
+    public ResponseEntity<CourseResponseDTO> updateCoursePerName(
+            @PathVariable String nameCourse,
+            @RequestBody CourseUpdateRequestDTO courseUpdateRequestDTO) {
+
+        CourseResponseDTO response = courseService.updateCoursePerName(nameCourse, courseUpdateRequestDTO);
         return ResponseEntity.ok(response);
     }
+
 
     @DeleteMapping("/delete/{nameCourse}")
     @Operation(summary = "Deletar um curso pelo nome", description = "Remove um curso com base no nome fornecido")

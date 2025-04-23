@@ -1,21 +1,21 @@
 "use client"
 
-import { X, XCircle } from 'lucide-react'
+import { X, CheckCircle } from 'lucide-react'
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 
-interface ErrorToastProps {
+interface DeleteToastProps {
   message?: string
   duration?: number
   onClose?: () => void
 }
 
-export default function ErrorToast({
-  message = "Erro ao carregar curso. Tente novamente.",
+export default function DeleteToastCurso({
+  message = "Curso excluído com sucesso",
   duration = 5000,
   onClose,
-}: ErrorToastProps) {
+}: DeleteToastProps) {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function ErrorToast({
         duration: 0.4,
       }}
     >
-      <div className="bg-[var(--destructive)] px-4 py-2 text-white flex items-center">
+      <div className="bg-amber-600 px-4 py-2 text-white flex items-center">
         <div className="h-8 w-24 relative mx-auto">
           <Image src="/avalia-logo.png" alt="Avalia+" fill className="object-contain" />
         </div>
@@ -57,7 +57,7 @@ export default function ErrorToast({
         </button>
       </div>
       <div className="bg-white p-4 text-center flex items-center justify-center gap-2">
-        <XCircle className="h-5 w-5 text-red-600" />
+        <CheckCircle className="h-5 w-5 text-amber-600" />
         <p className="text-gray-800 font-medium text-lg">{message}</p>
       </div>
     </motion.div>
