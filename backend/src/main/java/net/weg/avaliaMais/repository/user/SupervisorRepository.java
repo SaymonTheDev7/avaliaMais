@@ -21,13 +21,6 @@ import java.util.UUID;
 @Repository
 public interface SupervisorRepository extends JpaRepository<Supervisor, UUID>, JpaSpecificationExecutor<Supervisor> {
 
-    /**
-     * Encontra todos os supervisores com paginação.
-     *
-     * @param pageable O objeto {@link Pageable} contendo informações de paginação.
-     * @return Uma página de supervisores.
-     */
-
     Optional<Supervisor> findByAuthUserUuid(UUID uuid);
 
     Page<Supervisor> findAll(Pageable pageable);

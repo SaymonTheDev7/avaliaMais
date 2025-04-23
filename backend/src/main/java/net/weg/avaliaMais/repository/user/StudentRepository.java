@@ -19,13 +19,6 @@ import java.util.UUID;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, UUID>, JpaSpecificationExecutor<Student> {
 
-    /**
-     * Verifica se já existe um estudante com o e-mail informado.
-     *
-     * @param email O e-mail a ser verificado.
-     * @return {@code true} se um estudante com o e-mail já existir, caso contrário {@code false}.
-     */
-    boolean existsByEmail(String email);
 
     Optional<Student> findByAuthUserUuid(UUID uuid);
 

@@ -1,6 +1,7 @@
 package net.weg.avaliaMais.service.user;
 
 import lombok.RequiredArgsConstructor;
+import net.weg.avaliaMais.infra.repository.AuthUserRepository;
 import net.weg.avaliaMais.model.dto.request.PedagogicalAdvisorPostRequestDTO;
 import net.weg.avaliaMais.model.dto.response.PedagogicalAdvisorResponseDTO;
 import net.weg.avaliaMais.model.user.PedagogicalAdvisor;
@@ -23,6 +24,7 @@ public class PedagogicalAdvisorService {
 
     /** Repositório para persistência e consulta de orientadores pedagógicos. */
     private final PedagogicalAdvisorRepository pedagogicalAdvisorRepository;
+    private final AuthUserRepository authUserRepository;
 
     /**
      * Adiciona um novo orientador pedagógico ao sistema.
@@ -31,7 +33,7 @@ public class PedagogicalAdvisorService {
      * @return um {@link PedagogicalAdvisorResponseDTO} representando o orientador salvo.
      */
     public PedagogicalAdvisorResponseDTO addPedagogicalAdvisor(PedagogicalAdvisorPostRequestDTO dto) {
-        PedagogicalAdvisor savedAdvisor = pedagogicalAdvisorRepository.save(dto.converter());
+        PedagogicalAdvisor savedAdvisor = pedagogicalAdvisorRepository.save(dto.converter(authUserRepository));
         return savedAdvisor.toDto();
     }
 
