@@ -41,7 +41,7 @@ const getRandomColor = () => {
   return classColors[Math.floor(Math.random() * classColors.length)]
 }
 
-// Lista de cursos disponíveis com suas cargas horárias
+
 const availableCourses = [
   { name: "Desenvolvimento Web", hoursLoad: "120h" },
   { name: "Programação em Java", hoursLoad: "80h" },
@@ -90,7 +90,7 @@ export default function VerTurmasPage() {
   const [selectedClass, setSelectedClass] = useState<ClassItemType | null>(null)
   const [isCreatingClass, setIsCreatingClass] = useState(false)
 
-  // Load classes from localStorage on component mount
+  
   useEffect(() => {
     const storedClasses = localStorage.getItem('classes');
     if (storedClasses) {
@@ -98,7 +98,7 @@ export default function VerTurmasPage() {
     }
   }, []);
 
-  // Save classes to localStorage whenever classList changes
+  
   useEffect(() => {
     localStorage.setItem('classes', JSON.stringify(classList));
   }, [classList]);
@@ -116,10 +116,9 @@ export default function VerTurmasPage() {
   }
 
   const handleCreateClass = (newClassData: ClassItemType) => {
-    // Add a random color to the new class
     const newClass = {
       ...newClassData,
-      id: Date.now(), // Generate a unique ID
+      id: Date.now(),
       color: getRandomColor(),
     }
 
