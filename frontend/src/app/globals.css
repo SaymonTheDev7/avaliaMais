@@ -194,3 +194,72 @@ button, input, select, textarea {
   color: var(--foreground) !important;
   background-color: var(--background) !important;
 }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+
+/* Remover TODOS os estilos laranja do calendário */
+.rdp {
+  --rdp-accent-color: #003366;
+  --rdp-background-color: #f0f4f8;
+}
+
+.rdp-button {
+  color: #003366;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: var(--rdp-background-color);
+  color: #003366;
+}
+
+.rdp-day_selected {
+  background-color: var(--rdp-accent-color) !important;
+  color: white !important;
+}
+
+.rdp-day_selected:hover {
+  background-color: var(--rdp-accent-color) !important;
+}
+
+.rdp-day_today:not(.rdp-day_selected) {
+  color: #003366;
+  font-weight: bold;
+}
+
+.rdp-caption_label {
+  color: #003366;
+}
+
+.rdp-nav_button {
+  color: #003366;
+}
+
+.rdp-nav_button:hover {
+  background-color: #f0f4f8;
+}
+
+/* Forçar remoção do laranja em todos os estados */
+.custom-calendar {
+  --rdp-accent-color: #003366 !important;
+  --rdp-background-color: #f0f4f8 !important;
+}
+
+.custom-calendar .rdp-day_selected,
+.custom-calendar .rdp-day_selected:hover,
+.custom-calendar .rdp-day_selected:focus {
+  background-color: #003366 !important;
+  color: white !important;
+}
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
