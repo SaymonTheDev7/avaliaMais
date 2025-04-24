@@ -13,7 +13,7 @@ interface AlunosTurmasProps {
 
 export function AlunosTurmasItem({ id, name, students, time, color }: AlunosTurmasProps) {
   return (
-    <Link href={`/student/historico-conselhos-student`}>
+    <Link href={`/teacher/alunos-teacher`}>
       <div className="relative rounded-xl overflow-hidden shadow-md bg-[#003366] text-white h-[180px]">
         <div className="h-20" style={{ backgroundColor: color }}></div>
         <div className="p-4 mt-2">

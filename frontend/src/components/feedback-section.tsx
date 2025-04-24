@@ -22,7 +22,7 @@ const feedbacks = [
 export default function FeedbackSection() {
   return (
     <div>
-      <h2 className="text-4xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-8">
+      <h2 className="text-3xl font-bold text-[#02335E] border-b-2 border-gray-300 pb-3 mb-8">
         FEEDBACKS ANTERIORES
       </h2>
       
