@@ -2,97 +2,90 @@ package net.weg.avaliaMais.service.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.weg.avaliaMais.model.ClassSchool;
-import net.weg.avaliaMais.model.user.Teacher;
+import net.weg.avaliaMais.infra.model.AuthUser;
+import net.weg.avaliaMais.infra.repository.AuthUserRepository;
 import net.weg.avaliaMais.model.dto.request.TeacherPostRequestDTO;
+import net.weg.avaliaMais.model.dto.request.TeacherUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.TeacherResponseDTO;
-import net.weg.avaliaMais.repository.ClassRepository;
+import net.weg.avaliaMais.model.user.Teacher;
 import net.weg.avaliaMais.repository.user.TeacherRepository;
-import net.weg.avaliaMais.repository.specification.TeacherSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.data.jpa.domain.Specification.where;
-
-/**
- * Serviço responsável pelas operações de negócio relacionadas à entidade {@link Teacher}.
- * Oferece funcionalidades de cadastro, exclusão e busca com ou sem filtros.
- */
 @Service
 @RequiredArgsConstructor
 public class TeacherService {
 
-    /** Repositório de professores para operações no banco de dados. */
     private final TeacherRepository teacherRepository;
-
-    /** Repositório de turmas utilizado para associar professores a turmas. */
-    private final ClassRepository classRepository;
+    private final AuthUserRepository authUserRepository;
 
     /**
-     * Adiciona um novo professor ao sistema com base nos dados fornecidos.
-     *
-     * @param teacherPostRequestDTO DTO contendo as informações do professor.
-     * @return {@link TeacherResponseDTO} com os dados do professor salvo.
+     * Adiciona um novo professor ao sistema.
      */
-    public TeacherResponseDTO addTeacher(TeacherPostRequestDTO teacherPostRequestDTO) {
-        List<ClassSchool> allClasses = classRepository.findAll();
-        Teacher teacherSave = teacherPostRequestDTO.converter(allClasses);
-        if (teacherSave.getClassIds() == null) {
-            teacherSave.setClassIds(List.of());
-        }
-        teacherSave = teacherRepository.save(teacherSave);
-        return teacherSave.toDto();
+    public TeacherResponseDTO addTeacher(TeacherPostRequestDTO dto) {
+        AuthUser authUser = authUserRepository.findById(dto.authUserUuid())
+                .orElseThrow(() -> new RuntimeException("Usuário autenticado não encontrado"));
+
+        Teacher teacher = dto.toEntity(authUser);
+        teacher = teacherRepository.save(teacher);
+
+        return new TeacherResponseDTO(teacher);
     }
 
     /**
-     * Remove um professor do sistema com base em seu UUID.
-     *
-     * @param uuid identificador único do professor.
-     * @throws RuntimeException caso o professor não seja encontrado.
+     * Atualiza os dados de um professor existente.
+     */
+    @Transactional
+    public TeacherResponseDTO updateTeacher(UUID uuid, TeacherUpdateRequestDTO dto) {
+        Teacher teacher = teacherRepository.findById(uuid)
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+
+        if (dto.email() != null) teacher.setEmail(dto.email());
+        if (dto.workShift() != null) teacher.setWorkShift(dto.workShift());
+        if (dto.workloadWeek() != null) teacher.setWorkloadWeek(dto.workloadWeek());
+        if (dto.professionalArea() != null) teacher.setProfessionalArea(dto.professionalArea());
+
+        if (dto.authUserUuid() != null) {
+            AuthUser authUser = authUserRepository.findById(dto.authUserUuid())
+                    .orElseThrow(() -> new RuntimeException("Usuário autenticado não encontrado"));
+            teacher.setAuthUser(authUser);
+        }
+
+        teacher = teacherRepository.save(teacher);
+        return new TeacherResponseDTO(teacher);
+    }
+
+    /**
+     * Remove um professor com base em seu UUID.
      */
     @Transactional
     public void deleteTeacherByUUID(UUID uuid) {
         if (!teacherRepository.existsByUuid(uuid)) {
-            throw new RuntimeException("Teacher not found");
+            throw new RuntimeException("Professor não encontrado");
         }
         teacherRepository.deleteByUuid(uuid);
     }
 
     /**
-     * Retorna todos os professores cadastrados, com suporte à paginação.
-     *
-     * @param page número da página.
-     * @param size quantidade de elementos por página.
-     * @return página de {@link TeacherResponseDTO}.
+     * Busca um professor específico pelo UUID.
      */
-    public Page<TeacherResponseDTO> findAllTeachers(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
-        return teacherPage.map(TeacherResponseDTO::new);
+    public TeacherResponseDTO findByUuid(UUID uuid) {
+        return teacherRepository.findById(uuid)
+                .map(TeacherResponseDTO::new)
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
     }
 
     /**
-     * Retorna professores filtrados por nome, email ou curso, com suporte à paginação.
-     *
-     * @param name     filtro por nome (opcional).
-     * @param email    filtro por email (opcional).
-     * @param course   filtro por curso (opcional).
-     * @param pageable objeto de paginação.
-     * @return página de {@link TeacherResponseDTO} contendo os resultados filtrados.
+     * Lista todos os professores com paginação.
      */
-    public Page<TeacherResponseDTO> findAllTeachersSpecification(String name, String email, String course, Pageable pageable) {
-        Specification<Teacher> filtros = where(null);
-        if (name != null) filtros = filtros.and(TeacherSpecification.hasName(name));
-        if (email != null) filtros = filtros.and(TeacherSpecification.hasEmail(email));
-        if (course != null) filtros = filtros.and(TeacherSpecification.hasCourse(course));
-
-        return teacherRepository.findAll(filtros, pageable).map(TeacherResponseDTO::new);
+    public Page<TeacherResponseDTO> findAllTeachers(int page, int size) {
+        if (page < 0) page = 0;
+        if (size > 50) size = 50;
+        Pageable pageable = PageRequest.of(page, size);
+        return teacherRepository.findAll(pageable).map(TeacherResponseDTO::new);
     }
-
 }

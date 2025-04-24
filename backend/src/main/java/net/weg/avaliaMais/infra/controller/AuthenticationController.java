@@ -73,7 +73,6 @@ public class AuthenticationController {
     }
 
 
-
     @Operation(summary = "Registrar novo usuário", description = "Registra um novo usuário com criptografia de senha.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário registrado com sucesso"),
@@ -81,6 +80,9 @@ public class AuthenticationController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterResponseDTO registerResponseDTO) {
+        if (authUserRepository.findByUsername(registerResponseDTO.username()) != null) {
+            return ResponseEntity.badRequest().body("Usuário já existe!");
+        }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerResponseDTO.password());
         AuthUser user = AuthUser.builder()
