@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.weg.avaliaMais.model.dto.request.StudentPostRequestDTO;
+import net.weg.avaliaMais.model.dto.request.StudentUpdateRequestDTO;
 import net.weg.avaliaMais.model.dto.response.ClassResponseDTO;
 import net.weg.avaliaMais.model.dto.response.StudentResponseDTO;
 import net.weg.avaliaMais.service.user.StudentService;
@@ -36,6 +37,16 @@ public class StudentController {
             @ApiResponse(responseCode = "201", description = "Estudante criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
+
+    @PatchMapping("/update/{uuid}")
+    public ResponseEntity<StudentResponseDTO> updateStudent(
+            @PathVariable UUID uuid,
+            @RequestBody StudentUpdateRequestDTO dto
+    ) {
+        StudentResponseDTO updatedStudent = studentService.updateStudent(uuid, dto);
+        return ResponseEntity.ok(updatedStudent);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<StudentResponseDTO> addStudent(@RequestBody @Valid StudentPostRequestDTO studentPostRequestDTO) {
         StudentResponseDTO response = studentService.addStudent(studentPostRequestDTO);
@@ -51,6 +62,11 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/findByUuid/{uuid}")
+    public StudentResponseDTO findStudentByUuid(@PathVariable UUID uuid) {
+        return studentService.findByUuid(uuid);
+    }
+
     @Operation(summary = "Buscar todos os estudantes", description = "Retorna uma lista paginada de todos os estudantes")
     @GetMapping("/find/all")
     public ResponseEntity<Page<StudentResponseDTO>> findAllStudents(@RequestParam int page) {
@@ -58,21 +74,8 @@ public class StudentController {
         return ResponseEntity.ok(studentResponseDTOs);
     }
 
-    @Operation(summary = "Buscar turmas de um estudante", description = "Retorna as turmas associadas a um estudante específico")
-    @GetMapping("/{studentUuid}/classes")
-    public ResponseEntity<Page<ClassResponseDTO>> findStudentClasses(
-            @PathVariable UUID studentUuid,
-            @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) String course,
-            @RequestParam(required = false) String shift,
-            @RequestParam(required = false) String location,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ClassResponseDTO> studentClasses = studentService.findStudentClasses(studentUuid, year, course, shift, location, pageable);
-        return ResponseEntity.ok(studentClasses);
-    }
+
 
     @GetMapping("/advanced-filtration")
     @Operation(summary = "Filtragem avançada de alunos", description = "Filtra alunos com base nos parâmetros fornecidos.")

@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"

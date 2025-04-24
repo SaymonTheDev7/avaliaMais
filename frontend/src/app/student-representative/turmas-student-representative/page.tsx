@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import { ChevronLeft } from "lucide-react"
 import { SearchBar } from "@/components/search-bar"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
@@ -88,7 +88,7 @@ export default function ConselhoGeralPage() {
       <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 px-4">
           <div className="flex items-center">
-            <Link href="/pedagogical-technique/inicio-pedagogical-technique" className="text-[#003366] mr-4">
+            <Link href="/student-representative/inicio-student-representative" className="text-[#003366] mr-4">
               <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase pb-1 border-b-2 border-[#003366] w-fit">

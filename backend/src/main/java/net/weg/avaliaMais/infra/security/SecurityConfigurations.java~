@@ -47,7 +47,6 @@ public class SecurityConfigurations {
                     corsConfiguration.addAllowedMethod("PUT");
                     corsConfiguration.addAllowedMethod("DELETE");
                     corsConfiguration.addAllowedMethod("CATCH");
-                    corsConfiguration.addAllowedMethod("PATCH");
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;

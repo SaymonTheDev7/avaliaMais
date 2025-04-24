@@ -1,12 +1,23 @@
 "use client"
 import { X } from "lucide-react"
 
+interface Notification {
+  id: number
+  title: string
+  message: string
+  actionLabel: string
+  actionUrl: string
+}
+
 interface NotificationPopupProps {
   isOpen: boolean
   onClose: () => void
+  notifications: Notification[]
+  onMarkAsRead: (id: number) => void  // Adicionando a função para marcar como lida
+  onDelete: (id: number) => void      // Adicionando a função para excluir
 }
 
-export function NotificationPopup({ isOpen, onClose }: NotificationPopupProps) {
+export function NotificationPopup({ isOpen, onClose, notifications, onMarkAsRead, onDelete }: NotificationPopupProps) {
   if (!isOpen) return null
 
   return (
@@ -20,25 +31,39 @@ export function NotificationPopup({ isOpen, onClose }: NotificationPopupProps) {
           </button>
         </div>
         <div className="p-4 space-y-4 max-h-[80vh] overflow-y-auto">
-          {/* Notification 1 */}
-          <div className="bg-white text-[#003366] rounded-lg p-4">
-            <h3 className="text-xl font-bold mb-2">Preencha o pré-concelho!</h3>
-            <p className="mb-4">
-              Olá representante! A equipe pedagógica solicita que você, juntamente com os colegas de turma realizem o
-              pré-concelho até o dia 12/04/2025. Em caso de dúvida, entrar em contato.
-            </p>
-            <button className="bg-[#003366] text-white px-4 py-2 rounded-md font-medium">Preencher</button>
-          </div>
-
-          {/* Notification 2 */}
-          <div className="bg-white text-[#003366] rounded-lg p-4">
-            <h3 className="text-xl font-bold mb-2">Feedback Disponível!</h3>
-            <p className="mb-4">
-              Você já pode consultar seu feedback semestral na turma MI-74 PSIN 2023/1. Em caso de dúvida, entrar em
-              contato.
-            </p>
-            <button className="bg-[#003366] text-white px-4 py-2 rounded-md font-medium">Preencher</button>
-          </div>
+          {notifications.length === 0 ? (
+            <div className="text-center text-gray-200">Nenhuma notificação</div>
+          ) : (
+            notifications.map((notification) => (
+              <div
+                key={notification.id}
+                className="bg-white text-[#003366] rounded-lg p-4"
+              >
+                <h3 className="text-xl font-bold mb-2">{notification.title}</h3>
+                <p className="mb-4">{notification.message}</p>
+                <a
+                  href={notification.actionUrl}
+                  className="bg-[#003366] text-white px-4 py-2 rounded-md font-medium"
+                >
+                  {notification.actionLabel}
+                </a>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={() => onMarkAsRead(notification.id)}
+                    className="text-sm text-gray-300"
+                  >
+                    Marcar como lida
+                  </button>
+                  <button
+                    onClick={() => onDelete(notification.id)}
+                    className="text-sm text-red-500"
+                  >
+                    Excluir
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import { ChevronLeft } from "lucide-react"
 import { SearchBar } from "@/components/search-bar"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
