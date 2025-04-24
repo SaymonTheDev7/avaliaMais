@@ -2,17 +2,21 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Header from "@/components/header"
 import { ChevronLeft } from "lucide-react"
 import { SearchBar } from "@/components/search-bar"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
+import { PopupConselhoClasse } from "@/components/popup-dados-concelho"
 
 type ViewMode = "grid" | "list"
 
 export default function ConselhoGeralPage() {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [hasActiveCouncils, setHasActiveCouncils] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
 
   useEffect(() => {
     setHasActiveCouncils(false)
@@ -20,6 +24,15 @@ export default function ConselhoGeralPage() {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
+  }
+
+  const handleTogglePopup = () => {
+    setShowPopup(!showPopup)
+  }
+
+  // Adicione uma função para redirecionar diretamente sem o popup
+  const handleRedirectToPreConselho = () => {
+    router.push("/pedagogical-technique/pre-conselho-off-pedagogical-technique")
   }
 
   return (
@@ -47,18 +60,21 @@ export default function ConselhoGeralPage() {
             <p className="text-center text-lg mb-4">
               Nenhum conselho está acontecendo, caso queira iniciar um clique no botão abaixo.
             </p>
-            <button className="bg-[#003366] hover:bg-[#005099] text-white px-8 py-2 rounded-md text-lg transition duration-200">
+            <button
+              className="bg-[#003366] hover:bg-[#005099] text-white px-8 py-2 rounded-md text-lg transition duration-200"
+              onClick={handleTogglePopup}
+            >
               Iniciar conselho
             </button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-[60vh]">
-            <p className="text-center text-lg mb-4">
-              Nenhum conselho ativo no momento.
-            </p>
+            <p className="text-center text-lg mb-4">Nenhum conselho ativo no momento.</p>
           </div>
         )}
       </div>
+
+      {showPopup && <PopupConselhoClasse onClose={handleTogglePopup} />}
     </div>
   )
 }
