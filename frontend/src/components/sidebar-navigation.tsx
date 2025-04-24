@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { Home, Users, FileText, MessageCircle, Settings, Archive, LogOut, Plus, X, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface NavItemProps {
   icon: React.ReactNode
@@ -50,6 +51,7 @@ interface SidebarProps {
 }
 
 export default function SidebarNavigation({ onClose }: SidebarProps) {
+  const router = useRouter()
   const [isClosing, setIsClosing] = useState(false)
   const [activeItem, setActiveItem] = useState("Início")
 
@@ -57,8 +59,10 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
     setIsClosing(true)
   }
 
-  const handleItemClick = (label: string) => {
+  const navigateTo = (path: string, label: string) => {
     setActiveItem(label)
+    router.push(path)
+    handleClose()
   }
 
   return (
@@ -128,13 +132,13 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Home className="w-7 h-7" />}
             label="Início"
             active={activeItem === "Início"}
-            onClick={() => handleItemClick("Início")}
+            onClick={() => navigateTo("/pedagogical-technique", "Início")}
           />
           <NavItem
             icon={<Users className="w-7 h-7" />}
             label="Pré-Conselho"
             active={activeItem === "Pré-Conselho"}
-            onClick={() => handleItemClick("Pré-Conselho")}
+            onClick={() => navigateTo("/pedagogical-technique/pre-conselho-off-pedagogical-technique", "Pré-Conselho")}
           />
           <NavItem
             icon={
@@ -147,13 +151,13 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             }
             label="Conselho Geral"
             active={activeItem === "Conselho Geral"}
-            onClick={() => handleItemClick("Conselho Geral")}
+            onClick={() => navigateTo("/pedagogical-technique/conselho-geral-nao-iniciado-pedagogical-technique", "Conselho Geral")}
           />
           <NavItem
             icon={<MessageCircle className="w-7 h-7" />}
             label="Chat"
             active={activeItem === "Chat"}
-            onClick={() => handleItemClick("Chat")}
+            onClick={() => navigateTo("/pedagogical-technique/chat-pedagogical-technique", "Chat")}
           />
 
           <div className="mt-6 mb-2 px-4 text-sm font-semibold text-sidebar-foreground/70 uppercase tracking-wider">
@@ -163,7 +167,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Settings className="w-7 h-7" />}
             label="Ajustes"
             active={activeItem === "Ajustes"}
-            onClick={() => handleItemClick("Ajustes")}
+            onClick={() => navigateTo("/pedagogical-technique/settings-pedagogical-technique", "Ajustes")}
           />
         </div>
 
@@ -172,7 +176,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
           <Button
             variant="ghost"
             className="w-full justify-start gap-3 text-white hover:text-white hover:bg-white/10 rounded-xl py-5"
-            onClick={handleClose}
+            onClick={() => navigateTo("/", "Sair")}
           >
             <LogOut className="w-7 h-7" />
             <span className="font-medium text-lg">Sair</span>
