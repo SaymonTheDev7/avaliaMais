@@ -6,13 +6,22 @@ import { useEffect, useState } from "react"
 
 interface LoadingScreenProps {
   isLoading: boolean
+  children?: React.ReactNode
 }
 
-export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
+export default function LoadingScreen({ isLoading, children }: LoadingScreenProps) {
   const [visible, setVisible] = useState(isLoading)
   const [progress, setProgress] = useState(0)
+  const [clientSide, setClientSide] = useState(false)
+
+  // Ensure we're on the client side before rendering animations
+  useEffect(() => {
+    setClientSide(true)
+  }, [])
 
   useEffect(() => {
+    if (!clientSide) return
+
     if (isLoading) {
       setVisible(true)
       setProgress(0)
@@ -40,8 +49,29 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
       setProgress(100)
       setTimeout(() => setVisible(false), 500)
     }
-  }, [isLoading])
+  }, [isLoading, clientSide])
 
+  // If we're not on the client side yet, return a simple loading indicator
+  // This prevents hydration errors by not rendering any random values on the server
+  if (!clientSide) {
+    return isLoading ? (
+      <div 
+        className="fixed inset-0 flex items-center justify-center z-50"
+        style={{ backgroundColor: "var(--foreground)" }}
+      >
+        <div className="text-white text-xl">Carregando...</div>
+      </div>
+    ) : (
+      <>{children}</>
+    )
+  }
+
+  // If loading is complete and animation has finished, render children
+  if (!visible && !isLoading) {
+    return <>{children}</>
+  }
+
+  // Client-side animation rendering
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -54,33 +84,45 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
       style={{ backgroundColor: "var(--foreground)" }}
     >
       <div className="relative flex flex-col items-center justify-center space-y-12 p-8">
-        {/* Partículas de fundo */}
+        {/* Partículas de fundo - Only rendered on client side */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-blue-600/30"
-              initial={{
-                x: Math.random() * 600 - 300,
-                y: Math.random() * 600 - 300,
-                scale: Math.random() * 0.5 + 0.5,
-                opacity: Math.random() * 0.5,
-              }}
-              animate={{
-                y: [null, Math.random() * -200 - 100],
-                opacity: [null, 0],
-              }}
-              transition={{
-                duration: Math.random() * 5 + 5,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-              style={{
-                left: `${50 + Math.random() * 40 - 20}%`,
-                top: `${50 + Math.random() * 40 - 20}%`,
-              }}
-            />
-          ))}
+          {clientSide && [...Array(15)].map((_, i) => {
+            // Generate random values only on the client side
+            const randomX = Math.random() * 600 - 300
+            const randomY = Math.random() * 600 - 300
+            const randomScale = Math.random() * 0.5 + 0.5
+            const randomOpacity = Math.random() * 0.5
+            const randomDuration = Math.random() * 5 + 5
+            const randomLeftPos = `${50 + Math.random() * 40 - 20}%`
+            const randomTopPos = `${50 + Math.random() * 40 - 20}%`
+            const randomYAnim = Math.random() * -200 - 100
+
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 rounded-full bg-blue-600/30"
+                initial={{
+                  x: randomX,
+                  y: randomY,
+                  scale: randomScale,
+                  opacity: randomOpacity,
+                }}
+                animate={{
+                  y: [null, randomYAnim],
+                  opacity: [null, 0],
+                }}
+                transition={{
+                  duration: randomDuration,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                }}
+                style={{
+                  left: randomLeftPos,
+                  top: randomTopPos,
+                }}
+              />
+            )
+          })}
         </div>
 
         {/* Logo com efeito de brilho */}

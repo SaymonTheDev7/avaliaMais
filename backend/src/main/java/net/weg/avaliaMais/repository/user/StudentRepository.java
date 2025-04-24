@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,4 +37,5 @@ public interface StudentRepository extends JpaRepository<Student, UUID>, JpaSpec
      * @return {@code true} se um estudante com o UUID existir, caso contrário {@code false}.
      */
     boolean existsByUuid(UUID uuid);
+
 }

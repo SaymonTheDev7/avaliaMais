@@ -26,12 +26,11 @@ public class Student extends User {
     public StudentResponseDTO toDto() {
         return new StudentResponseDTO(
                 this.getUuid(),
-                this.getAuthUser().getUsername(),
                 this.getEmail(),
                 this.getWorkShift(),
                 this.getWorkloadWeek(),
-                this.getClassIds(),
-                this.currentCourse != null ? this.currentCourse.getUuid() : null
+                this.currentCourse != null ? this.currentCourse.getUuid() : null,
+                this.getAuthUser().getUuid()
         );
     }
 }

@@ -51,7 +51,7 @@ public class ClassSchool {
      * Lista de professores associados a esta turma.
      * Representa os docentes responsáveis pela turma.
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE})
     private List<Teacher> teachers;
 
     /**
