@@ -123,14 +123,6 @@ Se deseja sugerir melhorias, reportar bugs ou contribuir com o código, sinta-se
 
 - Abrir uma [issue](https://github.com/SaymonTheDev7/avaliaMais/issues)
 - Criar um pull request com suas modificações
-
----
-
-## 📝 Licença
-
-Este projeto está sob a licença **MIT**.  
-Você pode usá-lo, modificá-lo e distribuí-lo livremente.
-
 ---
 
 Feito com 💚 por uma equipe dedicada à inovação na educação.
