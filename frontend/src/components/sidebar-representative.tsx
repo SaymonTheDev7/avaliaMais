@@ -138,7 +138,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
         {/* Perfil do usuário */}
         <div
           className="p-4 mx-4 my-6 bg-white/10 rounded-xl cursor-pointer"
-          onClick={() => navigateTo("/pedagogical-technique/perfil-pedagogical-technique", "Perfil")}
+          onClick={() => navigateTo("/student-representative/perfil-student-representative", "Perfil")}
         >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
@@ -160,13 +160,13 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Home className="w-7 h-7" />}
             label="Início"
             active={activeItem === "Início"}
-            onClick={() => navigateTo("/pedagogical-technique/inicio-pedagogical-technique", "Início")}
+            onClick={() => navigateTo("/student-representative/inicio-student-representative", "Início")}
           />
           <NavItem
             icon={<Users className="w-7 h-7" />}
             label="Pré-Conselho"
             active={activeItem === "Pré-Conselho"}
-            onClick={() => navigateTo("/pedagogical-technique/pre-conselho-off-pedagogical-technique", "Pré-Conselho")}
+            onClick={() => navigateTo("/student-representative/pre-conselho-student-representative", "Pré-Conselho")}
           />
           <NavItem
             icon={
@@ -185,7 +185,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<MessageCircle className="w-7 h-7" />}
             label="Chat"
             active={activeItem === "Chat"}
-            onClick={() => navigateTo("/pedagogical-technique/chat-pedagogical-technique", "Chat")}
+            onClick={() => navigateTo("/student-representative/chat-student-representative", "Chat")}
           />
 
           <div className="mt-6 mb-2 px-4 text-sm font-semibold text-sidebar-foreground/70 uppercase tracking-wider">

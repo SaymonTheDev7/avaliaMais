@@ -64,11 +64,8 @@ export default function PreConselho() {
         ...prev[section as keyof typeof prev],
         [field]: value
       }
-    }))
-
-    const [date, setDate] = useState<Date | undefined>();
-  const [open, setOpen] = useState(false);
-  }
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
