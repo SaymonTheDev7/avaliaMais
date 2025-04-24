@@ -38,7 +38,7 @@ Para rodar o projeto localmente, você precisará ter instalado:
 ## 📦 Instruções para instalação/uso:
 
 1. Clone o repositório: `https://github.com/SaymonTheDev7/avaliaMais`
-2. Acesse o diretório do projeto: `cd avaliaMais`
+2. Acesse o diretório do projeto: `cd avaliaMais/frontend`
 3. Instale as dependências: `npm install` ou `yarn install`
 4. Rode o projeto: `npm run dev` ou `yarn dev`
 5. Acesse no navegador: `http://localhost:3000`
