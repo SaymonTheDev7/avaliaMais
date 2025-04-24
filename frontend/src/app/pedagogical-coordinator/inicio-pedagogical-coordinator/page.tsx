@@ -44,37 +44,37 @@ export default function InicioPedagogicalTechnique() {
             title="Ver professores"
             icon={<Users style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#29ABE2]"
-            href="/pedagogical-technique/professores-pedagogical-technique"
+            href="/pedagogical-coordinator/professores-pedagogical-coordinator"
           />
           <DashboardCard
             title="Ver turmas"
             icon={<Book style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#808080]"
-            href="/pedagogical-technique/turmas-pedagogical-technique"
+            href="/pedagogical-coordinator/turmas-pedagogical-coordinator"
           />
           <DashboardCard
             title="Ver alunos"
             icon={<Bus style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#29ABE2]"
-            href="/pedagogical-technique/alunos-pedagogical-technique"
+            href="/pedagogical-coordinator/alunos-pedagogical-coordinator"
           />
           <DashboardCard
             title="Ver cursos"
             icon={<GraduationCap style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#F05050]"
-            href="/pedagogical-technique/cursos-pedagogical-technique"
+            href="/pedagogical-coordinator/cursos-pedagogical-coordinator"
           />
           <DashboardCard
             title="Histórico de conselhos"
             icon={<Home style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#FF7F50]"
-            href="/pedagogical-technique/conselhos-pedagogical-technique"
+            href="/pedagogical-coordinator/historico-conselhos-pedagogical-coordinator"
           />
           <DashboardCard
             title="Pedagógico"
             icon={<Apple style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#B22222]"
-            href="/pedagogical-technique/pedagogico"
+            href="/pedagogical-coordinator/pedagogico-pedagogical-coordinator"
           />
         </div>
       </main>
