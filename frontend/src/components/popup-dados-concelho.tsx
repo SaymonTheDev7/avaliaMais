@@ -233,23 +233,24 @@ export function PopupConselhoClasse({ onClose, isCreating = true }: PopupConselh
   const router = useRouter()
   // Dados fictícios para turmas e professores
   const turmas = [
-    { id: "t1", name: "1º Ano A - Ensino Médio" },
-    { id: "t2", name: "1º Ano B - Ensino Médio" },
-    { id: "t3", name: "2º Ano A - Ensino Médio" },
-    { id: "t4", name: "2º Ano B - Ensino Médio" },
-    { id: "t5", name: "3º Ano A - Ensino Médio" },
-    { id: "t6", name: "3º Ano B - Ensino Médio" },
+    { id: "t1", name: "MI-74 PSIN 2023/2" },
+    { id: "t2", name: "WF-78 PSIN 2024/1" },
+    { id: "t3", name: "MQ-75 PSIN 2024/2" },
+    { id: "t4", name: "JB-76 PSIN 2023/2" },
+    { id: "t5", name: "MI-75 PSIN 2023/2" },
+    { id: "t6", name: "FG-75 PSIN 2023/2" },
+    { id: "t7", name: "TP-74 PSIN 2023/2" },
+    { id: "t8", name: "FA-73 PSIN 2023/2" },
   ]
 
   const professores = [
-    { id: "p1", name: "Ana Silva - Matemática" },
-    { id: "p2", name: "Carlos Oliveira - Português" },
-    { id: "p3", name: "Mariana Santos - História" },
-    { id: "p4", name: "Roberto Almeida - Geografia" },
-    { id: "p5", name: "Fernanda Lima - Biologia" },
-    { id: "p6", name: "Paulo Costa - Física" },
-    { id: "p7", name: "Juliana Martins - Química" },
-    { id: "p8", name: "Ricardo Souza - Educação Física" },
+    { id: "p1", name: "Romário Hornburg" },
+    { id: "p2", name: "Kristian Erdermann" },
+    { id: "p3", name: "João Pedro Valentim" },
+    { id: "p4", name: "Roberto Baungartel" },
+    { id: "p5", name: "Bruno da Silva Andrade" },
+    { id: "p6", name: "Vinicius Jacobowski" },
+    { id: "p7", name: "Fabiano da Silva" },
   ]
 
   const [formData, setFormData] = useState<ConselhoData>({
