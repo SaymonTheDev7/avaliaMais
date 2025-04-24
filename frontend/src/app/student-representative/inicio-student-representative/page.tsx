@@ -21,12 +21,10 @@ export default function HomePage() {
 
             <main className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
                 <div className="flex items-center mb-6">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] border-b-2 border-[#003366] pb-1">
+                    <h1 className="text-2xl sm:text-4xl ml-5 mt-5 font-bold text-[#003366]  border-b-2 border-[#003366] pb-1">
                         Bem-vindo, André!
                     </h1>
                 </div>
-
-                <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
 
                 <div className="text-center my-14 mt-18">
                     <h2 className="text-4xl sm:text-5xl font-bold text-[#003366] leading-snug">
