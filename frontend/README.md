@@ -1,8 +1,4 @@
-# 📚 Avalia+
-
-**Avalia+** é um sistema desenvolvido para facilitar e otimizar o processo de avaliação pedagógica, oferecendo uma plataforma organizada, intuitiva e eficiente para o acompanhamento e gestão de informações educacionais 🎓✨.
-
----
+# 📚 Avalia+ - Frontend
 
 ## 🚀 Tecnologias utilizadas:
 
@@ -67,4 +63,3 @@ Para rodar o projeto localmente, você precisará ter instalado:
     - **lib**: Contém funções auxiliares e bibliotecas customizadas
 
 ---
-
