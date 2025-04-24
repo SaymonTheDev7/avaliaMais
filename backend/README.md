@@ -67,5 +67,4 @@ Para rodar o projeto **backend** localmente, você precisará ter instalado:
           - **websocket**: Contém a lógica para WebSockets, caso exista comunicação em tempo real  
       - **resources**: Contém arquivos de configuração, como o `application.properties`  
     - **test**: Contém os testes da aplicação  
-      - **java**: Contém os testes unitários e de integração da aplicação  
   - **target**: Contém os arquivos gerados durante o build do projeto, como os artefatos `.jar` ou `.war`
