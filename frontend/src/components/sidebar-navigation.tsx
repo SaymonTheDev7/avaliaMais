@@ -1,12 +1,13 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Home, Users, FileText, MessageCircle, Settings, Archive, LogOut, Plus, X, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
+import LoadingScreen from "./loading-screen" // Ajuste o caminho conforme necessário
 
 interface NavItemProps {
   icon: React.ReactNode
@@ -25,9 +26,7 @@ const NavItem = ({ icon, label, active = false, onClick }: NavItemProps) => {
       <Button
         variant="ghost"
         className={`w-full justify-start gap-4 font-medium px-6 py-5 transition-all rounded-xl
-                   hover:bg-white/10 hover:text-white relative ${
-                     active ? "bg-white/20 text-white" : "text-sidebar-foreground"
-                   }`}
+                   hover:bg-white/10 hover:text-white relative ${active ? "bg-white/20 text-white" : "text-sidebar-foreground"}`}
         onClick={onClick}
       >
         <div className="flex items-center w-full">
@@ -52,21 +51,47 @@ interface SidebarProps {
 
 export default function SidebarNavigation({ onClose }: SidebarProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const [isClosing, setIsClosing] = useState(false)
   const [activeItem, setActiveItem] = useState("Início")
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentPath, setCurrentPath] = useState(pathname)
 
   const handleClose = () => {
     setIsClosing(true)
   }
 
   const navigateTo = (path: string, label: string) => {
+    if (path === currentPath) {
+      handleClose()
+      return
+    }
+
     setActiveItem(label)
+    setIsLoading(true)
+    setCurrentPath(path)
     router.push(path)
     handleClose()
   }
 
+  useEffect(() => {
+    // Atualiza o item ativo baseado na rota atual quando o componente é montado
+    const updateActiveItem = () => {
+      if (pathname.includes("pre-conselho")) setActiveItem("Pré-Conselho")
+      else if (pathname.includes("conselho-geral")) setActiveItem("Conselho Geral")
+      else if (pathname.includes("chat")) setActiveItem("Chat")
+      else if (pathname.includes("settings")) setActiveItem("Ajustes")
+      else setActiveItem("Início")
+    }
+
+    updateActiveItem()
+  }, [pathname])
+
   return (
     <>
+      {/* Tela de carregamento */}
+      <LoadingScreen isLoading={isLoading} />
+
       {/* Fundo escuro ao abrir o menu */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -111,7 +136,10 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
         </div>
 
         {/* Perfil do usuário */}
-        <div className="p-4 mx-4 my-6 bg-white/10 rounded-xl">
+        <div
+          className="p-4 mx-4 my-6 bg-white/10 rounded-xl cursor-pointer"
+          onClick={() => navigateTo("/pedagogical-technique/perfil-pedagogical-technique", "Perfil")}
+        >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
               <Image src="/juciene.png" alt="Técnica Pedagógica" width={48} height={48} className="object-cover" />
@@ -132,7 +160,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Home className="w-7 h-7" />}
             label="Início"
             active={activeItem === "Início"}
-            onClick={() => navigateTo("/pedagogical-technique", "Início")}
+            onClick={() => navigateTo("/pedagogical-technique/inicio-pedagogical-technique", "Início")}
           />
           <NavItem
             icon={<Users className="w-7 h-7" />}
