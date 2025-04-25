@@ -59,7 +59,7 @@ Para rodar o projeto **backend** localmente, você precisará ter instalado:
         - **avaliama**: Contém os pacotes do projeto Avalia+  
           - **chat**: Contém as lógicas e classes relacionadas ao chat  
           - **controller**: Contém os controladores REST que gerenciam as rotas e lógicas do servidor  
-          - **infra**: Contém as implementações de infraestrutura, como configurações de banco de dados  
+          - **infra**: Contém as implementações de Spring security
           - **logs**: Contém os pacotes relacionados ao gerenciamento de logs  
           - **model**: Contém as entidades de modelo do banco de dados  
           - **repository**: Contém os repositórios para interagir com o banco de dados  
