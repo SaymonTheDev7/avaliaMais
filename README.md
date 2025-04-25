@@ -35,18 +35,19 @@
 
 ## 📌 Versões Utilizadas
 
-| Tecnologia         | Versão         |
-|--------------------|----------------|
-| Java               | 21             |
-| Spring Boot        | 3.3.10         |
-| Maven              | Última         |
-| MySQL              | Última         |
-| Postman            | Última         |
-| React              | Última         |
-| Next.js            | Última         |
-| TypeScript         | Última         |
-| Shadcn UI          | Última         |
-| VS Code            | Última         |
+| Tecnologia         | Versão  |
+|--------------------|---------|
+| Java               | 21      |
+| Spring Boot        | 3.3.10  |
+| Maven              | 3.9.9   |
+| MySQL              | 9.2.0   |
+| Postman            | 11.42.4 |
+| React              | 19.1.0  |
+| Next.js            | 13.4    |
+| TypeScript         | 5.8     |
+| Shadcn UI          | 2.0.8   |
+| VS Code            | 1.99.3  |
+
 
 ---
 
