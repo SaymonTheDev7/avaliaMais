@@ -1,7 +1,7 @@
 "use client"
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
-import Header from "@/components/header-student-representative"
+import Header from "@/components/header-student"
 import { useState } from "react"
 
 const professores = [
@@ -105,7 +105,7 @@ export default function ConselhoClassePage() {
         {/* Cabeçalho */}
         <div className="flex items-center mb-8">
           <Link 
-            href="/student-representative/turmas-student-representative" 
+            href="/student/turmas-student" 
             className="text-[#003366] hover:bg-gray-100 p-1 rounded-full transition-colors"
           >
             <ChevronLeft size={32} strokeWidth={2.5} />

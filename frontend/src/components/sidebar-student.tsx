@@ -138,15 +138,15 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
         {/* Perfil do usuário */}
         <div
           className="p-4 mx-4 my-6 bg-white/10 rounded-xl cursor-pointer"
-          onClick={() => navigateTo("/student-representative/perfil-student-representative", "Perfil")}
+          onClick={() => navigateTo("/pedagogical-technique/perfil-pedagogical-technique", "Perfil")}
         >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
-              <Image src="/gustavo.png" alt="Representante de turma" width={48} height={48} className="object-cover" />
+              <Image src="/andre.png" alt="Aluno" width={48} height={48} className="object-cover" />
             </div>
             <div>
-              <h3 className="font-medium text-sm text-sidebar-foreground">Representante de turma</h3>
-              <p className="text-xs text-sidebar-foreground/70">representante@escola.edu</p>
+              <h3 className="font-medium text-sm text-sidebar-foreground">Estudante</h3>
+              <p className="text-xs text-sidebar-foreground/70">estudante@escola.edu</p>
             </div>
           </div>
         </div>
@@ -160,13 +160,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Home className="w-7 h-7" />}
             label="Início"
             active={activeItem === "Início"}
-            onClick={() => navigateTo("/student-representative/inicio-student-representative", "Início")}
-          />
-          <NavItem
-            icon={<Users className="w-7 h-7" />}
-            label="Pré-Conselho"
-            active={activeItem === "Pré-Conselho"}
-            onClick={() => navigateTo("/student-representative/pre-conselho-student-representative", "Pré-Conselho")}
+            onClick={() => navigateTo("/student/inicio-student", "Início")}
           />
           <NavItem
             icon={
@@ -179,13 +173,13 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             }
             label="Conselho Geral"
             active={activeItem === "Conselho Geral"}
-            onClick={() => navigateTo("/student-representative/conselhos-student-representative", "Conselho Geral")}
+            onClick={() => navigateTo("/student/conselhos-student", "Conselho Geral")}
           />
           <NavItem
             icon={<MessageCircle className="w-7 h-7" />}
             label="Chat"
             active={activeItem === "Chat"}
-            onClick={() => navigateTo("/student-representative/chat-student-representative", "Chat")}
+            onClick={() => navigateTo("/student/chat-student", "Chat")}
           />
 
           <div className="mt-6 mb-2 px-4 text-sm font-semibold text-sidebar-foreground/70 uppercase tracking-wider">
@@ -195,7 +189,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Settings className="w-7 h-7" />}
             label="Ajustes"
             active={activeItem === "Ajustes"}
-            onClick={() => navigateTo("/student-representative/settings-student-representative", "Ajustes")}
+            onClick={() => navigateTo("/pedagogical-technique/settings-pedagogical-technique", "Ajustes")}
           />
         </div>
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import ProfileCard from '@/components/profile-card';
 import FeedbackSection from '@/components/feedback-section';
-import Header from '@/components/header';
+import Header from '@/components/header-administrator';
 
 export default function ProfilePage() {
   return (

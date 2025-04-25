@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Header from "@/components/header"
+import Header from "@/components/header-administrator"
 import { ChevronLeft } from "lucide-react"
 import { SearchBar } from "@/components/search-bar"
 import { ViewModeToggle } from "@/components/view-mode-toggle"
@@ -89,7 +89,7 @@ export default function VerPedagogicoPage() {
       <Header />
       <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
         <div className="flex items-center mb-6 px-4">
-          <Link href="#" className="text-[#003366] mr-4">
+          <Link href="/administrator/inicio-administrator" className="text-[#003366] mr-4">
             <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">

@@ -5,7 +5,7 @@ import { Menu, Bell, X, Check, Trash2, AlertTriangle, Calendar, ClipboardCheck }
 import { Button } from "@/components/ui/button"
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import Image from "next/image"
-import SidebarRepresentative from "@/components/sidebar-representative"
+import SidebarStudent from "@/components/sidebar-student"
 import Link from "next/link"
 
 export default function Header() {
@@ -171,7 +171,7 @@ export default function Header() {
         </div>
       </header>
 
-      {isSidebarOpen && <SidebarRepresentative onClose={closeSidebar} />}
+      {isSidebarOpen && <SidebarStudent onClose={closeSidebar} />}
     </div>
   )
 }

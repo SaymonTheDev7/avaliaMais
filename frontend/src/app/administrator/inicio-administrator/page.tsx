@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Header from '@/components/header';
+import Header from '@/components/header-administrator';
 import { Users, Book, Bus, GraduationCap, Home, Apple } from 'lucide-react';
 
 type DashboardCardProps = {
