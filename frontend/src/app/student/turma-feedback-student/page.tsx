@@ -1,45 +1,54 @@
 "use client"
-import Header from "@/components/header"
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
+import Header from "@/components/header-student-representative"
 
 export default function ConselhoClassePage() {
-    return (
-            <div className="flex flex-col h-screen bg-white">
+  return (
+    <div className="flex flex-col h-screen bg-white">
       <Header />
-      <div className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
-        <div className="flex items-center mb-6 px-4">
-          <Link href="#" className="text-[#003366] mr-4">
-            <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
+      
+      <div className="p-4 flex-1 mx-4 md:mx-10 mt-6">
+        {/* Cabeçalho */}
+        <div className="flex items-center mb-6">
+          <Link 
+            href="/student-representative/turmas-student-representative" 
+            className="text-[#003366] mr-4"
+          >
+            <ChevronLeft size={28} strokeWidth={2.5} />
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
-            Conselho de Classe 12/03/2024
+          <h1 className="text-2xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
+            CONSELHO DE CLASSE - 12/03/2024
           </h1>
         </div>
 
-                {/* Content section */}
-                <div className="space-y-10 px-4 md:px-6 lg:px-10 mt-8">
-                    {/* Devolutiva Individual Card */}
-                    <div className="bg-[#003366] text-white rounded-lg overflow-hidden">
-                        <div className="p-6 md:p-8">
-                            <h2 className="text-2xl md:text-3xl font-bold mb-4">Devolutiva Individual</h2>
-                            <p className="text-base md:text-xl">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Devolutiva da Turma Card */}
-                    <div className="bg-[#003366] text-white rounded-lg overflow-hidden">
-                        <div className="p-6 md:p-8">
-                            <h2 className="text-2xl md:text-3xl font-bold mb-4">Devolutiva da Turma</h2>
-                            <p className="text-base md:text-xl">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+        {/* Feedback Compacto */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Feedback Individual */}
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <div className="bg-[#003366] px-6 py-3"> {/* py-3 em vez de py-4 */}
+              <h2 className="text-xl font-bold text-white">DEVOLUTIVA INDIVIDUAL</h2>
             </div>
+            <div className="p-5"> {/* p-5 em vez de p-6/p-8 */}
+              <p className="text-gray-700 leading-tight"> {/* leading-tight para reduzir espaço entre linhas */}
+                O aluno demonstrou excelente desempenho nas atividades em grupo, com contribuições relevantes. Sugere-se maior atenção aos prazos de entrega.
+              </p>
+            </div>
+          </div>
+
+          {/* Feedback da Turma */}
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <div className="bg-[#003366] px-6 py-3">
+              <h2 className="text-xl font-bold text-white">DEVOLUTIVA DA TURMA</h2>
+            </div>
+            <div className="p-5">
+              <p className="text-gray-700 leading-tight">
+                A turma apresentou evolução significativa no bimestre, com destaque para o trabalho colaborativo. Necessidade de maior participação nas discussões.
+              </p>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  )
 }

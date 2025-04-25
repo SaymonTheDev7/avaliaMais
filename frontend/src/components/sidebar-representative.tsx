@@ -166,7 +166,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Users className="w-7 h-7" />}
             label="Pré-Conselho"
             active={activeItem === "Pré-Conselho"}
-            onClick={() => navigateTo("/student-representative/pre-conselho-student-representative", "Pré-Conselho")}
+            onClick={() => navigateTo("/student-representative/turmas-student-representative", "Pré-Conselho")}
           />
           <NavItem
             icon={
