@@ -51,7 +51,7 @@ const HistoricoConselhosPage = () => {
             <ChevronLeft size={28} strokeWidth={2.5} />
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
-            HISTÓRICO DE CONSELHOS
+            CONSELHOS | MI-74 PSIN 2023/1
           </h1>
         </div>
 

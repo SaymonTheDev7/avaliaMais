@@ -179,7 +179,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             }
             label="Conselho Geral"
             active={activeItem === "Conselho Geral"}
-            onClick={() => navigateTo("/pedagogical-technique/conselho-geral-nao-iniciado-pedagogical-technique", "Conselho Geral")}
+            onClick={() => navigateTo("/student-representative/turmas-student-representative", "Conselho Geral")}
           />
           <NavItem
             icon={<MessageCircle className="w-7 h-7" />}
