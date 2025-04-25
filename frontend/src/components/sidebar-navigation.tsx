@@ -77,8 +77,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
   useEffect(() => {
     // Atualiza o item ativo baseado na rota atual quando o componente é montado
     const updateActiveItem = () => {
-      if (pathname.includes("pre-conselho")) setActiveItem("Pré-Conselho")
-      else if (pathname.includes("conselho-geral")) setActiveItem("Conselho Geral")
+       if (pathname.includes("conselho-geral")) setActiveItem("Conselho Geral")
       else if (pathname.includes("chat")) setActiveItem("Chat")
       else if (pathname.includes("settings")) setActiveItem("Ajustes")
       else setActiveItem("Início")
@@ -161,12 +160,6 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             label="Início"
             active={activeItem === "Início"}
             onClick={() => navigateTo("/pedagogical-technique/inicio-pedagogical-technique", "Início")}
-          />
-          <NavItem
-            icon={<Users className="w-7 h-7" />}
-            label="Pré-Conselho"
-            active={activeItem === "Pré-Conselho"}
-            onClick={() => navigateTo("/pedagogical-technique/pre-conselho-off-pedagogical-technique", "Pré-Conselho")}
           />
           <NavItem
             icon={
