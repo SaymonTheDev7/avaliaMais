@@ -1,15 +1,15 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Upload, X, CheckCircle, PenLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import SignaturePad from "@/components/signature-pad"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import Image from "next/image"
 
 export default function PreConselhoAssinatura() {
@@ -18,15 +18,42 @@ export default function PreConselhoAssinatura() {
   const [signatureImage, setSignatureImage] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>("draw")
   const [isSigned, setIsSigned] = useState(false)
+  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
+  useEffect(() => {
+    // Verificar se o pré-conselho já foi completado
+    const activeConselhoId = localStorage.getItem('activeConselhoId')
+    if (activeConselhoId) {
+      const conselhos = JSON.parse(localStorage.getItem('preConselhos') || '[]')
+      const conselhoAtual = conselhos.find((c: any) => c.id === parseInt(activeConselhoId))
+      
+      if (conselhoAtual?.status === "completed") {
+        setIsAlreadyCompleted(true)
+        toast.warning("Este pré-conselho já foi respondido e não pode ser editado novamente")
+      }
+    } else {
+      // Se não houver activeConselhoId, redireciona para o histórico
+      router.push("/student-representative/historico-conselhos-student-representative")
+    }
+  }, [router])
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isAlreadyCompleted) return
+    
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
+      
+      // Verificar tamanho do arquivo (máximo 5MB)
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast.error("O arquivo deve ter no máximo 5MB")
+        return
+      }
+      
       setFile(selectedFile)
 
-      // Create preview URL
+      // Criar preview
       const reader = new FileReader()
       reader.onload = (event) => {
         setFilePreview(event.target?.result as string)
@@ -36,6 +63,7 @@ export default function PreConselhoAssinatura() {
   }
 
   const handleRemoveFile = () => {
+    if (isAlreadyCompleted) return
     setFile(null)
     setFilePreview(null)
     if (fileInputRef.current) {
@@ -44,10 +72,12 @@ export default function PreConselhoAssinatura() {
   }
 
   const handleRemoveSignature = () => {
+    if (isAlreadyCompleted) return
     setSignatureImage(null)
   }
 
   const handleSaveSignature = (signatureDataUrl: string) => {
+    if (isAlreadyCompleted) return
     setSignatureImage(signatureDataUrl)
   }
 
@@ -56,21 +86,76 @@ export default function PreConselhoAssinatura() {
   }
 
   const handleSubmit = () => {
-    // Aqui você pode adicionar a lógica para enviar os dados
-    console.log("Arquivo enviado:", file)
-    console.log("Assinatura desenhada:", signatureImage)
-    console.log("Assinatura confirmada:", isSigned)
-    router.push("/student-representative/confirmacao") // Página de confirmação
+    if (isAlreadyCompleted) {
+      toast.error("Este pré-conselho já foi respondido")
+      return
+    }
+
+    if (!isSigned) {
+      toast.error("Você deve concordar com o termo de responsabilidade")
+      return
+    }
+
+    if (!signatureImage && !filePreview) {
+      toast.error("Por favor, adicione sua assinatura")
+      return
+    }
+
+    // Salvar dados completos do formulário no localStorage
+    const preConselhoData = JSON.parse(localStorage.getItem('preConselhoData') || '{}')
+    const dadosCompletos = {
+      ...preConselhoData,
+      assinatura: signatureImage || filePreview,
+      dataAssinatura: new Date().toISOString()
+    }
+
+    localStorage.setItem('preConselhoCompleto', JSON.stringify(dadosCompletos))
+
+    // Atualizar o status do pré-conselho no histórico
+    const activeConselhoId = localStorage.getItem('activeConselhoId')
+    if (activeConselhoId) {
+      const conselhos = JSON.parse(localStorage.getItem('preConselhos') || '[]')
+      const updatedConselhos = conselhos.map((c: any) => 
+        c.id === parseInt(activeConselhoId) ? { 
+          ...c, 
+          status: "completed",
+          descricao: `Pré-conselho concluído em ${new Date().toLocaleDateString('pt-BR')}`
+        } : c
+      )
+      localStorage.setItem('preConselhos', JSON.stringify(updatedConselhos))
+    }
+
+    toast.success("Pré-conselho assinado e enviado com sucesso!")
+    router.push("/student-representative/pre-conselho-confirmacao-student-representative")
   }
 
   const hasValidSignature = (activeTab === "draw" && signatureImage) || (activeTab === "upload" && filePreview)
+
+  if (isAlreadyCompleted) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
+        <Header />
+        <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-[#003366] mb-4">Pré-conselho já respondido</h1>
+            <p className="text-slate-600 mb-6">Este pré-conselho já foi respondido e não pode ser editado novamente.</p>
+            <Button 
+              onClick={() => router.push("/student-representative/historico-conselhos-student-representative")}
+              className="bg-[#003366] text-white"
+            >
+              Voltar para o histórico
+            </Button>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
       <Header />
 
-      {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
+      <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
         {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -78,8 +163,8 @@ export default function PreConselhoAssinatura() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h1 className="text-4xl font-bold text-[#003366] tracking-tight mb-2">Finalização do Pré-Conselho</h1>
-          <p className="text-slate-500 text-lg">Confirme e assine para envio</p>
+          <h1 className="text-4xl font-bold text-[#003366] tracking-tight mb-2">Assinar Pré-Conselho</h1>
+          <p className="text-slate-500 text-lg">Revise e assine o documento do MI-74</p>
         </motion.div>
 
         {/* Progress Steps */}
@@ -91,22 +176,22 @@ export default function PreConselhoAssinatura() {
         >
           <div className="flex items-center">
             <div className="flex flex-col items-center mr-8">
-              <div className="h-10 w-10 rounded-full bg-[#003366] flex items-center justify-center text-white mb-2">
+              <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-2 border-2 border-green-300">
                 <CheckCircle className="h-5 w-5" />
               </div>
-              <span className="text-sm text-[#003366] font-medium">Preenchimento</span>
+              <span className="text-sm text-green-600 font-medium">Preenchimento</span>
             </div>
 
-            <div className="h-1 w-16 bg-[#003366] mx-2"></div>
+            <div className="h-1 w-16 bg-green-300 mx-2"></div>
 
             <div className="flex flex-col items-center mx-8">
-              <div className="h-10 w-10 rounded-full bg-[#003366] flex items-center justify-center text-white mb-2">
+              <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-2 border-2 border-green-300">
                 <CheckCircle className="h-5 w-5" />
               </div>
-              <span className="text-sm text-[#003366] font-medium">Revisão</span>
+              <span className="text-sm text-green-600 font-medium">Revisão</span>
             </div>
 
-            <div className="h-1 w-16 bg-[#003366] mx-2"></div>
+            <div className="h-1 w-16 bg-green-300 mx-2"></div>
 
             <div className="flex flex-col items-center ml-8">
               <div className="h-10 w-10 rounded-full bg-[#003366]/20 flex items-center justify-center text-[#003366] mb-2 border-2 border-[#003366]">
@@ -175,7 +260,7 @@ export default function PreConselhoAssinatura() {
                       </Button>
                     </div>
                     <Image
-                      src={signatureImage || "/placeholder.svg"}
+                      src={signatureImage}
                       alt="Signature preview"
                       width={600}
                       height={200}
@@ -183,9 +268,7 @@ export default function PreConselhoAssinatura() {
                     />
                   </div>
                 ) : (
-                  <div className="flex justify-center">
-                    <SignaturePad onSave={handleSaveSignature} />
-                  </div>
+                  <SignaturePad onSave={handleSaveSignature} />
                 )}
               </TabsContent>
 
@@ -207,7 +290,7 @@ export default function PreConselhoAssinatura() {
                         </Button>
                       </div>
                       <Image
-                        src={filePreview || "/placeholder.svg"}
+                        src={filePreview}
                         alt="Uploaded file preview"
                         width={800}
                         height={400}
@@ -282,25 +365,25 @@ export default function PreConselhoAssinatura() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex justify-between mt-12"
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="flex justify-between"
         >
           <Button
             variant="outline"
             onClick={handlePrevious}
-            className="bg-white border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white transition px-4 py-2 h-auto rounded-md shadow group text-base"
+            className="bg-white border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white transition px-6 py-3 h-auto rounded-lg shadow group text-base"
           >
-            <ChevronLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
-            Voltar
+            <ChevronLeft className="h-5 w-5 mr-1 group-hover:-translate-x-0.5 transition-transform" />
+            Voltar para revisão
           </Button>
 
           <Button
             onClick={handleSubmit}
             disabled={!hasValidSignature || !isSigned}
-            className="bg-[#003366] text-white hover:bg-[#002244] transition px-4 py-2 h-auto rounded-md shadow group text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#003366] text-white hover:bg-[#002244] transition px-6 py-3 h-auto rounded-lg shadow group text-base disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Enviar formulário
-            <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
+            <CheckCircle className="h-5 w-5 mr-2" />
+            Confirmar e Enviar
           </Button>
         </motion.div>
       </main>

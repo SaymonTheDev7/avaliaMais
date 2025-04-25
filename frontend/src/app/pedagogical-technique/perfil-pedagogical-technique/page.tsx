@@ -1,25 +1,173 @@
 "use client";
 
 import React from 'react';
-import ProfileCard from '@/components/profile-card';
-import FeedbackSection from '@/components/feedback-section';
 import Header from '@/components/header';
+import Image from 'next/image';
+import { Card } from '@/components/ui/card';
+import { MessageSquareHeart, Mail, Users, Clock, Star } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 
 export default function ProfilePage() {
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
-      <div className="mt-20 container mx-auto py-8 px-4 max-w-4xl">
-        <ProfileCard
- 
-          name="André Felipe Witt"
-          turma="AI PSIN-2023/2 - MI74"
-          horario="2° turno"
-          contato="andre_witt@email.com"
-          imageUrl="https://tryeasel.dev/placeholder.svg?width=200&height=200"
-        />
-        <FeedbackSection />
+
+      {/* Cabeçalho com botão de voltar e título */}
+      <div className="container mx-auto px-4 pt-8 max-w-4xl">
+        <div className="flex items-center mb-6 px-4">
+          <Link 
+            href="/pedagogical-technique/inicio-pedagogical-technique" 
+            className="text-[#003366] mr-4"
+          >
+            <ChevronLeft className="chevron" size={28} strokeWidth={2.5} />
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#003366] uppercase border-b-2 border-[#003366] pb-1">
+            PERFIL
+          </h1>
+        </div>
       </div>
-    </>
+
+      <div className="container mx-auto px-4 py-6 max-w-4xl">
+        {/* Profile Card */}
+        <div className="relative mt-8">
+          <div className="absolute -top-12 left-6 w-28 h-28 rounded-full border-4 border-white shadow-xl overflow-hidden z-10">
+            <Image
+              src="/juciene.png"
+              alt="Juciene Silva"
+              width={112}
+              height={112}
+              className="object-cover w-full h-full"
+              priority
+            />
+          </div>
+          
+          <Card className="pt-16 pb-8 px-6 rounded-3xl bg-white border border-gray-100 shadow-sm">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Juciene de Oliveira Mota</h1>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium w-fit">
+                    Coordenadora Pedagógica
+                  </span>
+                  <div className="flex items-center text-amber-500">
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                  </div>
+                </div>
+                
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <Mail className="w-5 h-5 text-blue-600" />
+                    <span>juciene@email.com</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <Clock className="w-5 h-5 text-blue-600" />
+                    <span>2º Turno</span>
+                  </div>
+                </div>
+              </div>
+              
+              <Link 
+                href="/pedagogical-technique/chat-pedagogical-technique"
+                className="h-12 px-6 flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl font-medium shadow-md hover:shadow-lg transition-all hover:from-blue-700 hover:to-blue-600"
+                style={{ color: 'white' }}
+              >
+                Enviar Mensagem
+              </Link>
+            </div>
+          </Card>
+        </div>
+        
+        {/* Feedback Section */}
+        <div className="mt-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-pink-100 rounded-lg">
+              <MessageSquareHeart className="w-6 h-6 text-pink-600" />
+            </div>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800">
+              Feedbacks sobre a atuação
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Card className="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                    A
+                  </div>
+                </div>
+                <div>
+                  <p className="text-gray-700">
+                    "A coordenação da Juciene tem sido de grande importância para o nosso aprendizado. Ela sempre nos orienta de maneira clara e objetiva."
+                  </p>
+                  <p className="mt-3 text-sm text-gray-500 font-medium">
+                    Aluno MI74
+                  </p>
+                </div>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold">
+                    B
+                  </div>
+                </div>
+                <div>
+                  <p className="text-gray-700">
+                    "Juciene tem uma capacidade incrível de nos ajudar a entender o conteúdo. Suas explicações são sempre claras e práticas."
+                  </p>
+                  <p className="mt-3 text-sm text-gray-500 font-medium">
+                    Aluno MI78
+                  </p>
+                </div>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold">
+                    C
+                  </div>
+                </div>
+                <div>
+                  <p className="text-gray-700">
+                    "Sempre disposta a ajudar, a Juciene tem sido fundamental no nosso desenvolvimento acadêmico. A maneira como lida com as situações é admirável."
+                  </p>
+                  <p className="mt-3 text-sm text-gray-500 font-medium">
+                    Aluno WF75
+                  </p>
+                </div>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">
+                    D
+                  </div>
+                </div>
+                <div>
+                  <p className="text-gray-700">
+                    "A coordenação e a organização da Juciene são impecáveis. Sua atuação tem facilitado muito o nosso aprendizado e a nossa adaptação."
+                  </p>
+                  <p className="mt-3 text-sm text-gray-500 font-medium">
+                    Aluno MI75
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

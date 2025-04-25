@@ -12,4 +12,13 @@ export interface ClassData {
     hoursLoad?: string
   }
 
+  export interface Notification {
+    id: number
+    title: string
+    message: string
+    time: string
+    read: boolean
+    type: 'deadline' | 'meeting' | 'form' | 'reminder' | 'system'
+}
+
  

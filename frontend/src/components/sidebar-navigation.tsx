@@ -1,11 +1,13 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Home, Users, FileText, MessageCircle, Settings, Archive, LogOut, Plus, X, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { useRouter, usePathname } from "next/navigation"
+import LoadingScreen from "./loading-screen" // Ajuste o caminho conforme necessário
 
 interface NavItemProps {
   icon: React.ReactNode
@@ -24,9 +26,7 @@ const NavItem = ({ icon, label, active = false, onClick }: NavItemProps) => {
       <Button
         variant="ghost"
         className={`w-full justify-start gap-4 font-medium px-6 py-5 transition-all rounded-xl
-                   hover:bg-white/10 hover:text-white relative ${
-                     active ? "bg-white/20 text-white" : "text-sidebar-foreground"
-                   }`}
+                   hover:bg-white/10 hover:text-white relative ${active ? "bg-white/20 text-white" : "text-sidebar-foreground"}`}
         onClick={onClick}
       >
         <div className="flex items-center w-full">
@@ -50,19 +50,47 @@ interface SidebarProps {
 }
 
 export default function SidebarNavigation({ onClose }: SidebarProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [isClosing, setIsClosing] = useState(false)
   const [activeItem, setActiveItem] = useState("Início")
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentPath, setCurrentPath] = useState(pathname)
 
   const handleClose = () => {
     setIsClosing(true)
   }
 
-  const handleItemClick = (label: string) => {
+  const navigateTo = (path: string, label: string) => {
+    if (path === currentPath) {
+      handleClose()
+      return
+    }
+
     setActiveItem(label)
+    setIsLoading(true)
+    setCurrentPath(path)
+    router.push(path)
+    handleClose()
   }
+
+  useEffect(() => {
+    // Atualiza o item ativo baseado na rota atual quando o componente é montado
+    const updateActiveItem = () => {
+       if (pathname.includes("conselho-geral")) setActiveItem("Conselho Geral")
+      else if (pathname.includes("chat")) setActiveItem("Chat")
+      else if (pathname.includes("settings")) setActiveItem("Ajustes")
+      else setActiveItem("Início")
+    }
+
+    updateActiveItem()
+  }, [pathname])
 
   return (
     <>
+      {/* Tela de carregamento */}
+      <LoadingScreen isLoading={isLoading} />
+
       {/* Fundo escuro ao abrir o menu */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -107,7 +135,10 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
         </div>
 
         {/* Perfil do usuário */}
-        <div className="p-4 mx-4 my-6 bg-white/10 rounded-xl">
+        <div
+          className="p-4 mx-4 my-6 bg-white/10 rounded-xl cursor-pointer"
+          onClick={() => navigateTo("/pedagogical-technique/perfil-pedagogical-technique", "Perfil")}
+        >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
               <Image src="/juciene.png" alt="Técnica Pedagógica" width={48} height={48} className="object-cover" />
@@ -128,13 +159,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Home className="w-7 h-7" />}
             label="Início"
             active={activeItem === "Início"}
-            onClick={() => handleItemClick("Início")}
-          />
-          <NavItem
-            icon={<Users className="w-7 h-7" />}
-            label="Pré-Conselho"
-            active={activeItem === "Pré-Conselho"}
-            onClick={() => handleItemClick("Pré-Conselho")}
+            onClick={() => navigateTo("/pedagogical-technique/inicio-pedagogical-technique", "Início")}
           />
           <NavItem
             icon={
@@ -147,13 +172,13 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             }
             label="Conselho Geral"
             active={activeItem === "Conselho Geral"}
-            onClick={() => handleItemClick("Conselho Geral")}
+            onClick={() => navigateTo("/pedagogical-technique/conselho-geral-nao-iniciado-pedagogical-technique", "Conselho Geral")}
           />
           <NavItem
             icon={<MessageCircle className="w-7 h-7" />}
             label="Chat"
             active={activeItem === "Chat"}
-            onClick={() => handleItemClick("Chat")}
+            onClick={() => navigateTo("/pedagogical-technique/chat-pedagogical-technique", "Chat")}
           />
 
           <div className="mt-6 mb-2 px-4 text-sm font-semibold text-sidebar-foreground/70 uppercase tracking-wider">
@@ -163,7 +188,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
             icon={<Settings className="w-7 h-7" />}
             label="Ajustes"
             active={activeItem === "Ajustes"}
-            onClick={() => handleItemClick("Ajustes")}
+            onClick={() => navigateTo("/pedagogical-technique/settings-pedagogical-technique", "Ajustes")}
           />
         </div>
 
@@ -172,7 +197,7 @@ export default function SidebarNavigation({ onClose }: SidebarProps) {
           <Button
             variant="ghost"
             className="w-full justify-start gap-3 text-white hover:text-white hover:bg-white/10 rounded-xl py-5"
-            onClick={handleClose}
+            onClick={() => navigateTo("/", "Sair")}
           >
             <LogOut className="w-7 h-7" />
             <span className="font-medium text-lg">Sair</span>

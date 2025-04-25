@@ -81,7 +81,7 @@ export default function InicioPedagogicalTechnique() {
             title="Histórico de conselhos"
             icon={<Home style={{ width: "32px", height: "32px", color: "white" }} />}
             color="bg-[#FF7F50]"
-            onClick={() => handleNavigation("/pedagogical-technique/conselhos-pedagogical-technique")}
+            onClick={() => handleNavigation("/pedagogical-technique/historico-conselhos-pedagogical-technique")}
           />
           <DashboardCard
             title="Pedagógico"

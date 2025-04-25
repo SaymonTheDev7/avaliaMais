@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -64,11 +64,8 @@ export default function PreConselho() {
         ...prev[section as keyof typeof prev],
         [field]: value
       }
-    }))
-
-    const [date, setDate] = useState<Date | undefined>();
-  const [open, setOpen] = useState(false);
-  }
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">

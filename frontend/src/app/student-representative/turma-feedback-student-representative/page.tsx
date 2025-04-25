@@ -1,5 +1,5 @@
 "use client"
-import Header from "@/components/header"
+import Header from "@/components/header-student-representative"
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 

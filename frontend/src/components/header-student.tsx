@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Menu, Bell, X, Check, Trash2 } from "lucide-react"
+import { Menu, Bell, X, Check, Trash2, AlertTriangle, Calendar, ClipboardCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import Image from "next/image"
-import SidebarNavigation from "@/components/sidebar-navigation"
+import SidebarRepresentative from "@/components/sidebar-representative"
 import Link from "next/link"
 
 export default function Header() {
@@ -15,32 +15,7 @@ export default function Header() {
   const notificationsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setNotifications([
-      {
-        id: 1,
-        title: "Novo conselho agendado",
-        message: "O conselho da turma 3A foi agendado para amanhã",
-        time: "10 minutos atrás",
-        read: false,
-        type: "important"
-      },
-      {
-        id: 2,
-        title: "Mensagem recebida",
-        message: "Você tem uma nova mensagem do professor João",
-        time: "1 hora atrás",
-        read: true,
-        type: "message"
-      },
-      {
-        id: 3,
-        title: "Atualização do sistema",
-        message: "Nova versão do sistema disponível",
-        time: "2 dias atrás",
-        read: true,
-        type: "system"
-      }
-    ])
+    setNotifications([])
   }, [])
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev)
@@ -71,8 +46,10 @@ export default function Header() {
   }, [])
 
   const typeLabels: Record<Notification["type"], string> = {
-    important: "Importante",
-    message: "Mensagem",
+    deadline: "Prazo",
+    meeting: "Reunião",
+    form: "Formulário",
+    reminder: "Lembrete",
     system: "Sistema"
   }
 
@@ -105,7 +82,7 @@ export default function Header() {
                 <div className="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
                   <h3 className="font-semibold text-gray-800">Notificações</h3>
                   <Link 
-                    href="/pedagogical-technique/notifications-pedagogical-technique"
+                    href="/student-representative/notifications"
                     style={{ color: "#003366", fontWeight: 500 }}
                     className="text-sm hover:underline"
                     onClick={() => setIsNotificationsOpen(false)}
@@ -130,10 +107,14 @@ export default function Header() {
                           <div className="flex-1 pr-2">
                             <div className="flex items-center gap-2 mb-1">
                               <span className={`text-xs font-semibold px-2 py-0.5 rounded-full capitalize ${
-                                notification.type === "important"
+                                notification.type === "deadline"
                                   ? "bg-red-100 text-red-700"
-                                  : notification.type === "message"
+                                  : notification.type === "meeting"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : notification.type === "form"
                                   ? "bg-green-100 text-green-700"
+                                  : notification.type === "reminder"
+                                  ? "bg-orange-100 text-orange-700"
                                   : "bg-gray-200 text-gray-700"
                               }`}>
                                 {typeLabels[notification.type]}
@@ -177,10 +158,10 @@ export default function Header() {
           </div>
 
           {/* Link for Avatar */}
-          <Link href="/pedagogical-technique/perfil-pedagogical-technique">
+          <Link href="/student/perfil-student">
             <Avatar className="h-10 w-10 border-2 border-white cursor-pointer">
-              <AvatarImage src="/juciene.png" alt="Técnica Pedagógica" />
-              <AvatarFallback>TP</AvatarFallback>
+            <AvatarImage src="/andre.png" alt="Gustavo" />
+            <AvatarFallback>AR</AvatarFallback>
             </Avatar>
           </Link>
 
@@ -190,7 +171,7 @@ export default function Header() {
         </div>
       </header>
 
-      {isSidebarOpen && <SidebarNavigation onClose={closeSidebar} />}
+      {isSidebarOpen && <SidebarRepresentative onClose={closeSidebar} />}
     </div>
   )
 }
@@ -201,5 +182,6 @@ interface Notification {
   message: string
   time: string
   read: boolean
-  type: 'important' | 'message' | 'system'
+  type: 'deadline' | 'meeting' | 'form' | 'reminder' | 'system'
+  icon?: React.ReactNode
 }

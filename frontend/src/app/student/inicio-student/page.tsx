@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import { Bell, MessageSquare, Users, User } from "lucide-react"
-import Header from "@/components/header"
-import { SearchBar } from "@/components/search-bar"
+import Header from "@/components/header-student"
 import CardItem from "@/components/card-item"
 
 export default function HomePage() {
@@ -16,7 +15,7 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-white relative">
-            <Header onNotificationClick={() => setIsNotificationOpen(true)} />
+            <Header/>
 
             <main className="p-4 md:p-6 flex-1 ml-2 md:ml-6 lg:ml-10 mr-2 md:mr-6 lg:mr-10 mt-8">
                 <div className="flex items-center mb-6">
